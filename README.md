@@ -36,7 +36,7 @@
 
 ```bash
 git clone https://github.com/VidiPT89/iMarble.git
-cd iMarble/iMarbleApp
+cd iMarble
 open iMarble.xcodeproj
 ```
 
@@ -54,7 +54,7 @@ opponents' marbles. Switch language and appearance at any time from Settings.
 Build and run the `iMarble` scheme in Xcode (`⌘R`), or verify the project compiles via:
 
 ```bash
-xcodebuild -project iMarbleApp/iMarble.xcodeproj -scheme iMarble -destination 'generic/platform=iOS Simulator' build
+xcodebuild -project iMarble.xcodeproj -scheme iMarble -destination 'generic/platform=iOS Simulator' build
 ```
 
 Unit tests cover the core game rules, turn management and victory conditions.
