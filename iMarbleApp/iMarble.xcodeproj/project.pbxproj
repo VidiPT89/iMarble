@@ -1,0 +1,648 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		05201072984DDB38122BE4FE /* GameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D6926EE6B5BFF7E3C3206B6 /* GameView.swift */; };
+		0A3CA68E463D25E70C8D3B72 /* Player.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F75F951690F1450F7C9177F /* Player.swift */; };
+		0D5119DF8256420DBE3015DE /* LocalizationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D56BC5C579430B33DAAF2F67 /* LocalizationManager.swift */; };
+		1B9E9D8D389D904022C95B13 /* AppTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 624FFE95140D6BCBD0E29C12 /* AppTheme.swift */; };
+		23A64F95287E72131887F2A1 /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 765FD161C33B42B44AB24068 /* RootView.swift */; };
+		2848D2B5518AE4AFB1B26C23 /* RulesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFDF5878A456217714B299D9 /* RulesView.swift */; };
+		2DC9FE988FEAAD020B866BA6 /* PowerMeterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9657B4CD383CB5E501F56445 /* PowerMeterView.swift */; };
+		3633F9E28077EC4077CD053E /* ScoreRules.swift in Sources */ = {isa = PBXBuildFile; fileRef = FEB0CFCBDFFD256A0E01BCA3 /* ScoreRules.swift */; };
+		3C2DF7AF1D34D650B2BC73F4 /* GamePhase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50666460A7D13EAAB2BFB652 /* GamePhase.swift */; };
+		477B9DB4A794AEBE83A5D23B /* GameEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 684B92325415F3893F68AFA4 /* GameEngine.swift */; };
+		4B4809FEB3345F18A6B068EB /* PlayerStatusView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4F021D58EAD27456B69BD81 /* PlayerStatusView.swift */; };
+		4BAC9BCB95D86C2ABDABE318 /* TurnManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B83A01DE2A55C0CDF345650 /* TurnManagerTests.swift */; };
+		5470C511397CD648DF372AE9 /* Hole.swift in Sources */ = {isa = PBXBuildFile; fileRef = 604F9EAE0274A0C2C20E80BF /* Hole.swift */; };
+		5E4C8DED3E2A518F833DC143 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBAD71D6EE1F02A419D91CFE /* SettingsView.swift */; };
+		658472954F29AFC2E1DC4118 /* GameBoardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB8FD2125610C23E2A850F91 /* GameBoardView.swift */; };
+		6B63DDD4945BF9A381DF4020 /* GameRulesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74E4FB85A9A398E04124C05A /* GameRulesTests.swift */; };
+		6FB1C2CC6939075F8081B9ED /* GameRules.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0174BC8DEDCA47B9A8861F2C /* GameRules.swift */; };
+		70D58424D5E1DFE575857AC0 /* TurnManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23578363DC0C5C88489D9560 /* TurnManager.swift */; };
+		74B7356C3D9C3346C0CF2B71 /* SetupGameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEDA2AF584CA0478890146BB /* SetupGameView.swift */; };
+		82BD6302806221158A149C22 /* HoleResolver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50E9D4066964F7965EE73C58 /* HoleResolver.swift */; };
+		8AC3311303B8382BDD4036F7 /* GameOverView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A0BB2AC2062A6BA02D47B88 /* GameOverView.swift */; };
+		8DBAD6CF5B43B327AA87E34C /* VictoryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02B7B56338B6C6AAD4926476 /* VictoryTests.swift */; };
+		8E4C9AF11FE2AB56A9FDDE84 /* GameViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D9365BCC4E8070792062594 /* GameViewModel.swift */; };
+		945EF874B6AD6B1D48F3F77E /* AIPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5768D283BDE090375321881 /* AIPlayer.swift */; };
+		A5AD9E8BA1CD0616DDCAF0F7 /* PhysicsEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7EBE3A40726B37A1CCF1797 /* PhysicsEngine.swift */; };
+		B6E4E3861EFC1A8628FA4C6D /* SoundManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEB5BAA38BCB598477309DFF /* SoundManager.swift */; };
+		BE0A1297A309E972BBE6339B /* MainMenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF7BFFF30DEFC1C0FD1FAC2B /* MainMenuView.swift */; };
+		C23D05AE01E3152D1AC6D167 /* SplashView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D894E51D51A1729EB12F52C /* SplashView.swift */; };
+		C431A43D6976F1F58FB7FA4E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0CA9BAC179BBD03A31DA9124 /* Assets.xcassets */; };
+		C49DE0E5E995821A05942EBA /* SettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BE76A079504E356E436EA55 /* SettingsViewModel.swift */; };
+		C4DFB034776717411A5D028C /* LocalizedStrings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F92CD06E5B378B13D9F4699 /* LocalizedStrings.swift */; };
+		CC012AF9F32656F6463698A1 /* GameMessageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66F7254ABADA64F9A5045AB0 /* GameMessageView.swift */; };
+		CD69BC2351B624D8DBF525E8 /* MarbleScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = A642A46C637B5F703BF8EABB /* MarbleScene.swift */; };
+		D214482B01E883487C5C4163 /* CodablePoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDE2896DBCFC780ED7471E82 /* CodablePoint.swift */; };
+		D58A2145B0EFB0CBF13FF075 /* TutorialView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C1F337868CCC8AA87CCCFAB /* TutorialView.swift */; };
+		DFD41328A4C65D02A7B7C115 /* MarbleNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = FEF1679296B688F4D290AE8F /* MarbleNode.swift */; };
+		E04143E92C349C944CABFB82 /* AttackResolver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 442BF8BA538DDE4519861A55 /* AttackResolver.swift */; };
+		E2FFEC95475BC9D8B68C69C3 /* Marble.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3A91802A48A387383565311 /* Marble.swift */; };
+		E53EF4037A44E4A0F6BCB4C2 /* SetupViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E051AD044B3B6AB6BD67432D /* SetupViewModel.swift */; };
+		E9E67C274E95DE31FBE316CF /* HapticsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000D8FAD3BE37E518813280C /* HapticsManager.swift */; };
+		FAA4A7DF6FD8C09B5A1EC80B /* iMarbleApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A29CA57AF41BA0E5697C8DE /* iMarbleApp.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		4BF11F3F20463B957E727414 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 2C8D3C036A9EFE95B44454FB /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 516FD99A72E3124A7E9EB385;
+			remoteInfo = iMarble;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		000D8FAD3BE37E518813280C /* HapticsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HapticsManager.swift; sourceTree = "<group>"; };
+		0174BC8DEDCA47B9A8861F2C /* GameRules.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameRules.swift; sourceTree = "<group>"; };
+		02B7B56338B6C6AAD4926476 /* VictoryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VictoryTests.swift; sourceTree = "<group>"; };
+		0A0BB2AC2062A6BA02D47B88 /* GameOverView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameOverView.swift; sourceTree = "<group>"; };
+		0CA9BAC179BBD03A31DA9124 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		1A29CA57AF41BA0E5697C8DE /* iMarbleApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iMarbleApp.swift; sourceTree = "<group>"; };
+		23578363DC0C5C88489D9560 /* TurnManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TurnManager.swift; sourceTree = "<group>"; };
+		2B83A01DE2A55C0CDF345650 /* TurnManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TurnManagerTests.swift; sourceTree = "<group>"; };
+		2C1F337868CCC8AA87CCCFAB /* TutorialView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialView.swift; sourceTree = "<group>"; };
+		3BE76A079504E356E436EA55 /* SettingsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewModel.swift; sourceTree = "<group>"; };
+		3F92CD06E5B378B13D9F4699 /* LocalizedStrings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizedStrings.swift; sourceTree = "<group>"; };
+		442BF8BA538DDE4519861A55 /* AttackResolver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttackResolver.swift; sourceTree = "<group>"; };
+		50666460A7D13EAAB2BFB652 /* GamePhase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GamePhase.swift; sourceTree = "<group>"; };
+		50E9D4066964F7965EE73C58 /* HoleResolver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HoleResolver.swift; sourceTree = "<group>"; };
+		5D6926EE6B5BFF7E3C3206B6 /* GameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameView.swift; sourceTree = "<group>"; };
+		5F75F951690F1450F7C9177F /* Player.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Player.swift; sourceTree = "<group>"; };
+		604F9EAE0274A0C2C20E80BF /* Hole.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Hole.swift; sourceTree = "<group>"; };
+		624FFE95140D6BCBD0E29C12 /* AppTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppTheme.swift; sourceTree = "<group>"; };
+		66F7254ABADA64F9A5045AB0 /* GameMessageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameMessageView.swift; sourceTree = "<group>"; };
+		684B92325415F3893F68AFA4 /* GameEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameEngine.swift; sourceTree = "<group>"; };
+		6D894E51D51A1729EB12F52C /* SplashView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashView.swift; sourceTree = "<group>"; };
+		6D9365BCC4E8070792062594 /* GameViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameViewModel.swift; sourceTree = "<group>"; };
+		74E4FB85A9A398E04124C05A /* GameRulesTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameRulesTests.swift; sourceTree = "<group>"; };
+		765FD161C33B42B44AB24068 /* RootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootView.swift; sourceTree = "<group>"; };
+		9657B4CD383CB5E501F56445 /* PowerMeterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PowerMeterView.swift; sourceTree = "<group>"; };
+		A4F021D58EAD27456B69BD81 /* PlayerStatusView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerStatusView.swift; sourceTree = "<group>"; };
+		A642A46C637B5F703BF8EABB /* MarbleScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarbleScene.swift; sourceTree = "<group>"; };
+		AB8FD2125610C23E2A850F91 /* GameBoardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameBoardView.swift; sourceTree = "<group>"; };
+		BDE2896DBCFC780ED7471E82 /* CodablePoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodablePoint.swift; sourceTree = "<group>"; };
+		BFDF5878A456217714B299D9 /* RulesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RulesView.swift; sourceTree = "<group>"; };
+		CEDA2AF584CA0478890146BB /* SetupGameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetupGameView.swift; sourceTree = "<group>"; };
+		D56BC5C579430B33DAAF2F67 /* LocalizationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizationManager.swift; sourceTree = "<group>"; };
+		E051AD044B3B6AB6BD67432D /* SetupViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetupViewModel.swift; sourceTree = "<group>"; };
+		E2BFAD7B8F30F77BAD7DBF05 /* iMarble.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = iMarble.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		E7E562E966814A939700D09D /* iMarbleTests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = iMarbleTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		EB3A2192CD498710E75CEF31 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		EEB5BAA38BCB598477309DFF /* SoundManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoundManager.swift; sourceTree = "<group>"; };
+		EF7BFFF30DEFC1C0FD1FAC2B /* MainMenuView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainMenuView.swift; sourceTree = "<group>"; };
+		F3A91802A48A387383565311 /* Marble.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Marble.swift; sourceTree = "<group>"; };
+		F5768D283BDE090375321881 /* AIPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AIPlayer.swift; sourceTree = "<group>"; };
+		F7EBE3A40726B37A1CCF1797 /* PhysicsEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhysicsEngine.swift; sourceTree = "<group>"; };
+		FBAD71D6EE1F02A419D91CFE /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		FEB0CFCBDFFD256A0E01BCA3 /* ScoreRules.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScoreRules.swift; sourceTree = "<group>"; };
+		FEF1679296B688F4D290AE8F /* MarbleNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarbleNode.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXGroup section */
+		095CA4385C578FA8D26C95FD /* iMarble */ = {
+			isa = PBXGroup;
+			children = (
+				61068A98ED0076A1F8E98B14 /* App */,
+				48713500948F727BEBCE318A /* Components */,
+				CB4CF3996640786767C976F4 /* GameEngine */,
+				4DE44D587538C5294BF24F70 /* Localization */,
+				2772B07178A57B6858F5E98B /* Models */,
+				73846D703ECF54A134FB21D2 /* Resources */,
+				4914E0D7787B585B007BEA3F /* Theme */,
+				486268F39FD83D7402B018A8 /* ViewModels */,
+				54A900E713F3DB408DCF4182 /* Views */,
+			);
+			path = iMarble;
+			sourceTree = "<group>";
+		};
+		2772B07178A57B6858F5E98B /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				BDE2896DBCFC780ED7471E82 /* CodablePoint.swift */,
+				50666460A7D13EAAB2BFB652 /* GamePhase.swift */,
+				0174BC8DEDCA47B9A8861F2C /* GameRules.swift */,
+				604F9EAE0274A0C2C20E80BF /* Hole.swift */,
+				F3A91802A48A387383565311 /* Marble.swift */,
+				5F75F951690F1450F7C9177F /* Player.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		2B0E13B445F5B3651E5602FF /* iMarbleTests */ = {
+			isa = PBXGroup;
+			children = (
+				74E4FB85A9A398E04124C05A /* GameRulesTests.swift */,
+				2B83A01DE2A55C0CDF345650 /* TurnManagerTests.swift */,
+				02B7B56338B6C6AAD4926476 /* VictoryTests.swift */,
+			);
+			path = iMarbleTests;
+			sourceTree = "<group>";
+		};
+		486268F39FD83D7402B018A8 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				6D9365BCC4E8070792062594 /* GameViewModel.swift */,
+				3BE76A079504E356E436EA55 /* SettingsViewModel.swift */,
+				E051AD044B3B6AB6BD67432D /* SetupViewModel.swift */,
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		48713500948F727BEBCE318A /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				66F7254ABADA64F9A5045AB0 /* GameMessageView.swift */,
+				A4F021D58EAD27456B69BD81 /* PlayerStatusView.swift */,
+				9657B4CD383CB5E501F56445 /* PowerMeterView.swift */,
+			);
+			path = Components;
+			sourceTree = "<group>";
+		};
+		4914E0D7787B585B007BEA3F /* Theme */ = {
+			isa = PBXGroup;
+			children = (
+				624FFE95140D6BCBD0E29C12 /* AppTheme.swift */,
+			);
+			path = Theme;
+			sourceTree = "<group>";
+		};
+		4DE44D587538C5294BF24F70 /* Localization */ = {
+			isa = PBXGroup;
+			children = (
+				D56BC5C579430B33DAAF2F67 /* LocalizationManager.swift */,
+				3F92CD06E5B378B13D9F4699 /* LocalizedStrings.swift */,
+			);
+			path = Localization;
+			sourceTree = "<group>";
+		};
+		54A900E713F3DB408DCF4182 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				AB8FD2125610C23E2A850F91 /* GameBoardView.swift */,
+				0A0BB2AC2062A6BA02D47B88 /* GameOverView.swift */,
+				5D6926EE6B5BFF7E3C3206B6 /* GameView.swift */,
+				EF7BFFF30DEFC1C0FD1FAC2B /* MainMenuView.swift */,
+				BFDF5878A456217714B299D9 /* RulesView.swift */,
+				FBAD71D6EE1F02A419D91CFE /* SettingsView.swift */,
+				CEDA2AF584CA0478890146BB /* SetupGameView.swift */,
+				6D894E51D51A1729EB12F52C /* SplashView.swift */,
+				2C1F337868CCC8AA87CCCFAB /* TutorialView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		61068A98ED0076A1F8E98B14 /* App */ = {
+			isa = PBXGroup;
+			children = (
+				1A29CA57AF41BA0E5697C8DE /* iMarbleApp.swift */,
+				EB3A2192CD498710E75CEF31 /* Info.plist */,
+				765FD161C33B42B44AB24068 /* RootView.swift */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
+		73846D703ECF54A134FB21D2 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				0CA9BAC179BBD03A31DA9124 /* Assets.xcassets */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		75B3F31CC37D616BF1831EA8 = {
+			isa = PBXGroup;
+			children = (
+				095CA4385C578FA8D26C95FD /* iMarble */,
+				2B0E13B445F5B3651E5602FF /* iMarbleTests */,
+				E11618195AD76F377E1D17AF /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		CB4CF3996640786767C976F4 /* GameEngine */ = {
+			isa = PBXGroup;
+			children = (
+				F5768D283BDE090375321881 /* AIPlayer.swift */,
+				442BF8BA538DDE4519861A55 /* AttackResolver.swift */,
+				684B92325415F3893F68AFA4 /* GameEngine.swift */,
+				000D8FAD3BE37E518813280C /* HapticsManager.swift */,
+				50E9D4066964F7965EE73C58 /* HoleResolver.swift */,
+				FEF1679296B688F4D290AE8F /* MarbleNode.swift */,
+				A642A46C637B5F703BF8EABB /* MarbleScene.swift */,
+				F7EBE3A40726B37A1CCF1797 /* PhysicsEngine.swift */,
+				FEB0CFCBDFFD256A0E01BCA3 /* ScoreRules.swift */,
+				EEB5BAA38BCB598477309DFF /* SoundManager.swift */,
+				23578363DC0C5C88489D9560 /* TurnManager.swift */,
+			);
+			path = GameEngine;
+			sourceTree = "<group>";
+		};
+		E11618195AD76F377E1D17AF /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				E2BFAD7B8F30F77BAD7DBF05 /* iMarble.app */,
+				E7E562E966814A939700D09D /* iMarbleTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		516FD99A72E3124A7E9EB385 /* iMarble */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = C1FDFFB7292F0327A2EE1B92 /* Build configuration list for PBXNativeTarget "iMarble" */;
+			buildPhases = (
+				27B14B5A3F7898D30A2094A4 /* Sources */,
+				D3D02FEAA9A64EA1D9FB553B /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = iMarble;
+			packageProductDependencies = (
+			);
+			productName = iMarble;
+			productReference = E2BFAD7B8F30F77BAD7DBF05 /* iMarble.app */;
+			productType = "com.apple.product-type.application";
+		};
+		648C20257293738625C7637D /* iMarbleTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D9A1F3EFFDA570DE9DE992AD /* Build configuration list for PBXNativeTarget "iMarbleTests" */;
+			buildPhases = (
+				9E863ABC8EBAA41268DF532A /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				A607FBD827DA658A55F78930 /* PBXTargetDependency */,
+			);
+			name = iMarbleTests;
+			packageProductDependencies = (
+			);
+			productName = iMarbleTests;
+			productReference = E7E562E966814A939700D09D /* iMarbleTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		2C8D3C036A9EFE95B44454FB /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1430;
+				TargetAttributes = {
+					516FD99A72E3124A7E9EB385 = {
+						DevelopmentTeam = "";
+						ProvisioningStyle = Automatic;
+					};
+					648C20257293738625C7637D = {
+						DevelopmentTeam = "";
+						ProvisioningStyle = Automatic;
+					};
+				};
+			};
+			buildConfigurationList = BC9AED9BB8ABA9426A01FB38 /* Build configuration list for PBXProject "iMarble" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+				en,
+			);
+			mainGroup = 75B3F31CC37D616BF1831EA8;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
+			productRefGroup = E11618195AD76F377E1D17AF /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				516FD99A72E3124A7E9EB385 /* iMarble */,
+				648C20257293738625C7637D /* iMarbleTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		D3D02FEAA9A64EA1D9FB553B /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C431A43D6976F1F58FB7FA4E /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		27B14B5A3F7898D30A2094A4 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				945EF874B6AD6B1D48F3F77E /* AIPlayer.swift in Sources */,
+				1B9E9D8D389D904022C95B13 /* AppTheme.swift in Sources */,
+				E04143E92C349C944CABFB82 /* AttackResolver.swift in Sources */,
+				D214482B01E883487C5C4163 /* CodablePoint.swift in Sources */,
+				658472954F29AFC2E1DC4118 /* GameBoardView.swift in Sources */,
+				477B9DB4A794AEBE83A5D23B /* GameEngine.swift in Sources */,
+				CC012AF9F32656F6463698A1 /* GameMessageView.swift in Sources */,
+				8AC3311303B8382BDD4036F7 /* GameOverView.swift in Sources */,
+				3C2DF7AF1D34D650B2BC73F4 /* GamePhase.swift in Sources */,
+				6FB1C2CC6939075F8081B9ED /* GameRules.swift in Sources */,
+				05201072984DDB38122BE4FE /* GameView.swift in Sources */,
+				8E4C9AF11FE2AB56A9FDDE84 /* GameViewModel.swift in Sources */,
+				E9E67C274E95DE31FBE316CF /* HapticsManager.swift in Sources */,
+				5470C511397CD648DF372AE9 /* Hole.swift in Sources */,
+				82BD6302806221158A149C22 /* HoleResolver.swift in Sources */,
+				0D5119DF8256420DBE3015DE /* LocalizationManager.swift in Sources */,
+				C4DFB034776717411A5D028C /* LocalizedStrings.swift in Sources */,
+				BE0A1297A309E972BBE6339B /* MainMenuView.swift in Sources */,
+				E2FFEC95475BC9D8B68C69C3 /* Marble.swift in Sources */,
+				DFD41328A4C65D02A7B7C115 /* MarbleNode.swift in Sources */,
+				CD69BC2351B624D8DBF525E8 /* MarbleScene.swift in Sources */,
+				A5AD9E8BA1CD0616DDCAF0F7 /* PhysicsEngine.swift in Sources */,
+				0A3CA68E463D25E70C8D3B72 /* Player.swift in Sources */,
+				4B4809FEB3345F18A6B068EB /* PlayerStatusView.swift in Sources */,
+				2DC9FE988FEAAD020B866BA6 /* PowerMeterView.swift in Sources */,
+				23A64F95287E72131887F2A1 /* RootView.swift in Sources */,
+				2848D2B5518AE4AFB1B26C23 /* RulesView.swift in Sources */,
+				3633F9E28077EC4077CD053E /* ScoreRules.swift in Sources */,
+				5E4C8DED3E2A518F833DC143 /* SettingsView.swift in Sources */,
+				C49DE0E5E995821A05942EBA /* SettingsViewModel.swift in Sources */,
+				74B7356C3D9C3346C0CF2B71 /* SetupGameView.swift in Sources */,
+				E53EF4037A44E4A0F6BCB4C2 /* SetupViewModel.swift in Sources */,
+				B6E4E3861EFC1A8628FA4C6D /* SoundManager.swift in Sources */,
+				C23D05AE01E3152D1AC6D167 /* SplashView.swift in Sources */,
+				70D58424D5E1DFE575857AC0 /* TurnManager.swift in Sources */,
+				D58A2145B0EFB0CBF13FF075 /* TutorialView.swift in Sources */,
+				FAA4A7DF6FD8C09B5A1EC80B /* iMarbleApp.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		9E863ABC8EBAA41268DF532A /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6B63DDD4945BF9A381DF4020 /* GameRulesTests.swift in Sources */,
+				4BAC9BCB95D86C2ABDABE318 /* TurnManagerTests.swift in Sources */,
+				8DBAD6CF5B43B327AA87E34C /* VictoryTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		A607FBD827DA658A55F78930 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 516FD99A72E3124A7E9EB385 /* iMarble */;
+			targetProxy = 4BF11F3F20463B957E727414 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		3999722F81971538E2AAE246 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = "";
+				ENABLE_PREVIEWS = YES;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"DEBUG=1",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SUPPORTS_MACCATALYST = NO;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		3DC518B01AFC3CFC5F96E1BD /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = dev.ividi.iMarbleTests;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/iMarble.app/iMarble";
+			};
+			name = Debug;
+		};
+		44360B5533E1180241C6CC06 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = iMarble/App/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = dev.ividi.imarble;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		566A9F07F553D096546F6C33 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = dev.ividi.iMarbleTests;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/iMarble.app/iMarble";
+			};
+			name = Release;
+		};
+		60C7CD5401D1A4F476FF195E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = "";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_PREVIEWS = YES;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SUPPORTS_MACCATALYST = NO;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		FDE9FD03D823B7D21B0C1778 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = iMarble/App/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = dev.ividi.imarble;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		BC9AED9BB8ABA9426A01FB38 /* Build configuration list for PBXProject "iMarble" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				3999722F81971538E2AAE246 /* Debug */,
+				60C7CD5401D1A4F476FF195E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		C1FDFFB7292F0327A2EE1B92 /* Build configuration list for PBXNativeTarget "iMarble" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				44360B5533E1180241C6CC06 /* Debug */,
+				FDE9FD03D823B7D21B0C1778 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		D9A1F3EFFDA570DE9DE992AD /* Build configuration list for PBXNativeTarget "iMarbleTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				3DC518B01AFC3CFC5F96E1BD /* Debug */,
+				566A9F07F553D096546F6C33 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 2C8D3C036A9EFE95B44454FB /* Project object */;
+}
