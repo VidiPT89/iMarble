@@ -26,6 +26,7 @@ struct GameView: View {
                     .padding(.top, 60)
                 Spacer()
             }
+            .allowsHitTesting(false)
 
             if viewModel.isPaused {
                 pauseOverlay
