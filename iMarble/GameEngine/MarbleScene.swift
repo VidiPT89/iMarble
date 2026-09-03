@@ -1,4 +1,5 @@
 import SpriteKit
+import UIKit
 
 protocol MarbleSceneDelegate: AnyObject {
     func marbleScene(_ scene: MarbleScene, canLaunch marbleID: UUID) -> Bool
@@ -18,7 +19,7 @@ final class MarbleScene: SKScene {
 
     private var marbleNodes: [UUID: MarbleNode] = [:]
     private var holeNodes: [Int: SKShapeNode] = [:]
-    private var groundNode: SKShapeNode?
+    private var groundNode: SKSpriteNode?
     private var launchLineNode: SKShapeNode?
     private var draggingMarbleID: UUID?
     private var dragStart: CGPoint = .zero
@@ -28,7 +29,15 @@ final class MarbleScene: SKScene {
     private var palmoRangeNode: SKShapeNode?
     private var aimArrowNode: SKShapeNode?
     private var aimDotNodes: [SKShapeNode] = []
-    var reduceMotion = false
+    private var objectiveGlowNode: SKShapeNode?
+    private var objectiveHoleNumber: Int?
+    var reduceMotion = false {
+        didSet {
+            for node in marbleNodes.values {
+                node.configureMotion(reduceMotion: reduceMotion)
+            }
+        }
+    }
 
     private static func launchLineSize(for sceneSize: CGSize) -> CGSize {
         sceneSize.height > sceneSize.width
@@ -54,9 +63,8 @@ final class MarbleScene: SKScene {
         holeNodes.removeAll()
         size = sceneSize
 
-        let ground = SKShapeNode(rectOf: sceneSize)
-        ground.fillColor = SKColor(red: 0.22, green: 0.14, blue: 0.06, alpha: 1)
-        ground.strokeColor = .clear
+        let ground = SKSpriteNode(texture: Self.groundTexture())
+        ground.size = sceneSize
         ground.position = CGPoint(x: sceneSize.width / 2, y: sceneSize.height / 2)
         ground.zPosition = -10
         addChild(ground)
@@ -71,8 +79,10 @@ final class MarbleScene: SKScene {
         launchLineNode = launchLine
 
         for hole in holes {
-            let node = SKShapeNode(circleOfRadius: CGFloat(hole.radius))
-            node.fillColor = SKColor.black.withAlphaComponent(0.75)
+            let radius = CGFloat(hole.radius)
+            let node = SKShapeNode(circleOfRadius: radius)
+            node.fillTexture = Self.holeTexture(radius: radius)
+            node.fillColor = .white
             node.strokeColor = SKColor(red: 0.95, green: 0.6, blue: 0.1, alpha: 1)
             node.lineWidth = 2
             node.position = hole.position.cgPoint
@@ -82,13 +92,39 @@ final class MarbleScene: SKScene {
         }
     }
 
+    /// Highlights the hole the current player should aim at with a soft
+    /// pulsing golden ring; pass nil to clear the highlight.
+    func setObjectiveHole(_ number: Int?) {
+        guard objectiveHoleNumber != number else { return }
+        objectiveHoleNumber = number
+        objectiveGlowNode?.removeAllActions()
+        objectiveGlowNode?.removeFromParent()
+        objectiveGlowNode = nil
+        guard let number, let holeNode = holeNodes[number] else { return }
+        let radius = holeNode.frame.width / 2
+        let glow = SKShapeNode(circleOfRadius: radius + 6)
+        glow.strokeColor = SKColor(red: 1.0, green: 0.78, blue: 0.25, alpha: 0.9)
+        glow.lineWidth = 3
+        glow.fillColor = .clear
+        glow.position = holeNode.position
+        glow.zPosition = 2
+        addChild(glow)
+        objectiveGlowNode = glow
+        guard !reduceMotion else { return }
+        let pulse = SKAction.sequence([
+            .group([.scale(to: 1.08, duration: 0.85), .fadeAlpha(to: 0.35, duration: 0.85)]),
+            .group([.scale(to: 1.0, duration: 0.85), .fadeAlpha(to: 0.9, duration: 0.85)]),
+        ])
+        glow.run(.repeatForever(pulse))
+    }
+
     /// Repositions existing field elements (ground, launch line, holes) for a
     /// new scene size without removing marble nodes, preserving in-progress
     /// game state.
     func relayoutField(holes: [Hole], sceneSize: CGSize) {
         size = sceneSize
 
-        groundNode?.path = CGPath(rect: CGRect(x: -sceneSize.width / 2, y: -sceneSize.height / 2, width: sceneSize.width, height: sceneSize.height), transform: nil)
+        groundNode?.size = sceneSize
         groundNode?.position = CGPoint(x: sceneSize.width / 2, y: sceneSize.height / 2)
 
         let lineSize = Self.launchLineSize(for: sceneSize)
@@ -103,6 +139,7 @@ final class MarbleScene: SKScene {
     func addMarble(_ marble: Marble, color: SKColor) {
         let node = MarbleNode(marbleID: marble.id, radius: CGFloat(GameRules.marbleRadius), color: color)
         node.position = marble.position.cgPoint
+        node.configureMotion(reduceMotion: reduceMotion)
         node.isProtected = marble.isProtected
         addChild(node)
         marbleNodes[marble.id] = node
@@ -425,5 +462,89 @@ final class MarbleScene: SKScene {
                 }
             }
         }
+    }
+
+    private static var cachedGroundTexture: SKTexture?
+    private static var cachedHoleTextures: [CGFloat: SKTexture] = [:]
+
+    private static func groundTexture() -> SKTexture {
+        if let cached = cachedGroundTexture { return cached }
+        let size = CGSize(width: 256, height: 256)
+        let renderer = UIGraphicsImageRenderer(size: size)
+        let image = renderer.image { context in
+            let cg = context.cgContext
+            let rect = CGRect(origin: .zero, size: size)
+            let base = UIColor(red: 0.22, green: 0.14, blue: 0.06, alpha: 1)
+            base.setFill()
+            cg.fill(rect)
+
+            let colorSpace = CGColorSpaceCreateDeviceRGB()
+            let vignette = [
+                UIColor.clear.cgColor,
+                UIColor.black.withAlphaComponent(0.22).cgColor,
+            ]
+            if let gradient = CGGradient(colorsSpace: colorSpace, colors: vignette as CFArray, locations: [0, 1]) {
+                cg.drawRadialGradient(
+                    gradient,
+                    startCenter: CGPoint(x: size.width / 2, y: size.height / 2),
+                    startRadius: size.width * 0.2,
+                    endCenter: CGPoint(x: size.width / 2, y: size.height / 2),
+                    endRadius: size.width * 0.75,
+                    options: []
+                )
+            }
+
+            var generator = SystemRandomNumberGenerator()
+            for _ in 0..<420 {
+                let x = CGFloat.random(in: 0...size.width, using: &generator)
+                let y = CGFloat.random(in: 0...size.height, using: &generator)
+                let speckSize = CGFloat.random(in: 0.6...2.0, using: &generator)
+                let lighten = Bool.random(using: &generator)
+                let alpha = CGFloat.random(in: 0.08...0.2, using: &generator)
+                let color = lighten
+                    ? UIColor(red: 0.34, green: 0.23, blue: 0.11, alpha: alpha)
+                    : UIColor(red: 0.12, green: 0.07, blue: 0.03, alpha: alpha)
+                color.setFill()
+                cg.fillEllipse(in: CGRect(x: x, y: y, width: speckSize, height: speckSize))
+            }
+        }
+        let texture = SKTexture(image: image)
+        texture.filteringMode = .linear
+        cachedGroundTexture = texture
+        return texture
+    }
+
+    private static func holeTexture(radius: CGFloat) -> SKTexture {
+        if let cached = cachedHoleTextures[radius] { return cached }
+        let diameter = radius * 2
+        let renderer = UIGraphicsImageRenderer(size: CGSize(width: diameter, height: diameter))
+        let image = renderer.image { context in
+            let cg = context.cgContext
+            let rect = CGRect(x: 0, y: 0, width: diameter, height: diameter)
+            cg.saveGState()
+            cg.addEllipse(in: rect)
+            cg.clip()
+            let colorSpace = CGColorSpaceCreateDeviceRGB()
+            let colors = [
+                UIColor(red: 0.62, green: 0.4, blue: 0.12, alpha: 1).cgColor,
+                UIColor(red: 0.22, green: 0.13, blue: 0.05, alpha: 1).cgColor,
+                UIColor.black.cgColor,
+            ]
+            if let gradient = CGGradient(colorsSpace: colorSpace, colors: colors as CFArray, locations: [0, 0.55, 1]) {
+                cg.drawRadialGradient(
+                    gradient,
+                    startCenter: CGPoint(x: diameter / 2, y: diameter / 2),
+                    startRadius: 0,
+                    endCenter: CGPoint(x: diameter / 2, y: diameter / 2),
+                    endRadius: diameter / 2,
+                    options: []
+                )
+            }
+            cg.restoreGState()
+        }
+        let texture = SKTexture(image: image)
+        texture.filteringMode = .linear
+        cachedHoleTextures[radius] = texture
+        return texture
     }
 }
