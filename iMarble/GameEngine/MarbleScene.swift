@@ -159,6 +159,14 @@ final class MarbleScene: SKScene {
         }
     }
 
+    /// Highlights which marble is currently draggable to launch, so the
+    /// player can tell theirs apart from a selected attack target.
+    func setReadyToLaunch(_ id: UUID?) {
+        for (nodeID, node) in marbleNodes {
+            node.isReadyToLaunch = (nodeID == id)
+        }
+    }
+
     /// Shows a dashed aim line from the marble in the direction it will fly,
     /// growing and shifting color (yellow → red) with the launch power ratio.
     func updateAimIndicator(origin: CGPoint, direction: CGVector, ratio: CGFloat) {

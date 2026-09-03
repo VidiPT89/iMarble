@@ -10,9 +10,13 @@ final class MarbleNode: SKShapeNode {
     var isTargeted: Bool = false {
         didSet { targetRingNode.isHidden = !isTargeted }
     }
+    var isReadyToLaunch: Bool = false {
+        didSet { updateReadyRing() }
+    }
 
     private let ringNode: SKShapeNode
     private let targetRingNode: SKShapeNode
+    private let readyRingNode: SKShapeNode
     private let glassNode: SKSpriteNode
     private var reduceMotion = false
 
@@ -20,6 +24,7 @@ final class MarbleNode: SKShapeNode {
         self.marbleID = marbleID
         self.ringNode = SKShapeNode(circleOfRadius: radius + 4)
         self.targetRingNode = SKShapeNode(circleOfRadius: radius + 7)
+        self.readyRingNode = SKShapeNode(circleOfRadius: radius + 10)
         self.glassNode = SKSpriteNode(texture: MarbleNode.texture(for: color, radius: radius))
         super.init()
         self.path = CGPath(ellipseIn: CGRect(x: -radius, y: -radius, width: radius * 2, height: radius * 2), transform: nil)
@@ -52,6 +57,13 @@ final class MarbleNode: SKShapeNode {
         targetRingNode.isHidden = true
         targetRingNode.zPosition = 11
         addChild(targetRingNode)
+
+        readyRingNode.strokeColor = SKColor.systemGreen
+        readyRingNode.lineWidth = 2.5
+        readyRingNode.fillColor = .clear
+        readyRingNode.isHidden = true
+        readyRingNode.zPosition = 8
+        addChild(readyRingNode)
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -63,6 +75,22 @@ final class MarbleNode: SKShapeNode {
         if isProtected {
             updateProtectionRing()
         }
+        if isReadyToLaunch {
+            updateReadyRing()
+        }
+    }
+
+    private func updateReadyRing() {
+        readyRingNode.removeAllActions()
+        readyRingNode.isHidden = !isReadyToLaunch
+        readyRingNode.alpha = 1
+        readyRingNode.setScale(1)
+        guard isReadyToLaunch, !reduceMotion else { return }
+        let pulse = SKAction.sequence([
+            .group([.scale(to: 1.15, duration: 0.6), .fadeAlpha(to: 0.4, duration: 0.6)]),
+            .group([.scale(to: 1.0, duration: 0.6), .fadeAlpha(to: 1.0, duration: 0.6)]),
+        ])
+        readyRingNode.run(.repeatForever(pulse))
     }
 
     private func updateProtectionRing() {
