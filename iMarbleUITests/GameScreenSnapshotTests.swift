@@ -180,6 +180,37 @@ final class GameScreenSnapshotTests: XCTestCase {
         XCTAssertTrue(app.state == .runningForeground)
     }
 
+    func testTournamentModeStartsWithFirstStage() throws {
+        let app = XCUIApplication()
+        app.launch()
+
+        let skipButton = app.buttons["tutorialSkip"]
+        if skipButton.waitForExistence(timeout: 5) {
+            skipButton.tap()
+        }
+
+        let playButton = app.buttons["playButton"]
+        XCTAssertTrue(playButton.waitForExistence(timeout: 5))
+        playButton.tap()
+
+        let tournamentSegment = app.buttons["Torneio"].exists ? app.buttons["Torneio"] : app.buttons["Tournament"]
+        XCTAssertTrue(tournamentSegment.waitForExistence(timeout: 5))
+        tournamentSegment.tap()
+
+        let startButton = app.buttons["startGameButton"]
+        XCTAssertTrue(startButton.waitForExistence(timeout: 5))
+        startButton.tap()
+
+        // Stage 1 is covas mode, which reuses the existing "gameBoard" board.
+        let board = app.otherElements["gameBoard"]
+        XCTAssertTrue(board.waitForExistence(timeout: 8))
+        Thread.sleep(forTimeInterval: 0.5)
+        attachScreenshot(named: "tournament-0-stage1-start")
+
+        XCTAssertTrue(app.staticTexts["Prova 1 de 3"].exists || app.staticTexts["Stage 1 of 3"].exists)
+        XCTAssertTrue(app.state == .runningForeground)
+    }
+
     private func attachScreenshot(named name: String) {
         let attachment = XCTAttachment(screenshot: XCUIScreen.main.screenshot())
         attachment.name = name

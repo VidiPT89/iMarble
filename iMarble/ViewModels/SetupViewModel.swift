@@ -4,7 +4,7 @@ final class SetupViewModel: ObservableObject {
     @Published var players: [Player]
     @Published var gameMode: GameMode = .covas {
         didSet {
-            if gameMode == .chase {
+            if gameMode == .chase || gameMode == .tournament {
                 while players.count > 2 { players.removeLast() }
             }
         }
