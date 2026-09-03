@@ -20,7 +20,6 @@ final class GameViewModel: ObservableObject, MarbleSceneDelegate {
     let scene: MarbleScene
     private let engine: GameEngine
     private var turnManager: TurnManager
-    private var activeMarbleIndexByPlayer: [UUID: Int] = [:]
     private var moveTimeoutWorkItem: DispatchWorkItem?
     private var attackInProgress = false
     private var attackerWasInsideHoleAtLaunch = false
