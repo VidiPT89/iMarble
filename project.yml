@@ -32,7 +32,7 @@ targets:
           - UIInterfaceOrientationPortraitUpsideDown
           - UIInterfaceOrientationLandscapeLeft
           - UIInterfaceOrientationLandscapeRight
-        CFBundleDisplayName: Três Covas
+        CFBundleDisplayName: iMarble
         ITSAppUsesNonExemptEncryption: false
     settings:
       base:
@@ -52,6 +52,16 @@ targets:
     settings:
       base:
         GENERATE_INFOPLIST_FILE: YES
+  iMarbleUITests:
+    type: bundle.ui-testing
+    platform: iOS
+    sources:
+      - path: iMarbleUITests
+    dependencies:
+      - target: iMarble
+    settings:
+      base:
+        GENERATE_INFOPLIST_FILE: YES
 schemes:
   iMarble:
     build:
@@ -60,5 +70,6 @@ schemes:
     test:
       targets:
         - iMarbleTests
+        - iMarbleUITests
     run:
       config: Debug

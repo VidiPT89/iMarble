@@ -1,12 +1,12 @@
 # 🔴 iMarble
 
-> Três Covas — the traditional Portuguese marble game, natively reimagined for iOS with SwiftUI and SpriteKit.
+> The traditional Portuguese marble game, natively reimagined for iOS with SwiftUI and SpriteKit.
 
 [Report Bug](https://github.com/VidiPT89/iMarble/issues) · [Request Feature](https://github.com/VidiPT89/iMarble/issues)
 
 ## ✨ Features
 
-- ✅ Traditional "Três Covas" rules — three holes in a row, drag-to-launch physics, the "palmo" mechanic and marble captures
+- ✅ Traditional three-hole marble rules — drag-to-launch physics, the "palmo" mechanic and marble captures
 - ✅ 2 to 4 players, human vs. AI opponents with three difficulty levels
 - ✅ Realistic marble physics powered by SpriteKit — friction, collisions and hole detection
 - ✅ Smooth, native animations, particle effects and haptic feedback on key moments

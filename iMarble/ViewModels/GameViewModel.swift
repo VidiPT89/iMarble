@@ -58,6 +58,49 @@ final class GameViewModel: ObservableObject, MarbleSceneDelegate {
     private var fieldConfigured = false
     private var lastFieldSize: CGSize = .zero
 
+    /// The traditional field is a single line of holes. Landscape lays that
+    /// line out left-to-right (matching the physical game); portrait turns
+    /// it 90° into a bottom-to-top line so the board actually fills a tall,
+    /// narrow screen instead of staying a thin horizontal strip surrounded
+    /// by empty space.
+    private func isPortraitField(_ size: CGSize) -> Bool {
+        size.height > size.width
+    }
+
+    private func holePosition(number: Int, size: CGSize) -> CGPoint {
+        if isPortraitField(size) {
+            let margin = size.height * 0.12
+            let spacing = (size.height - margin * 2) / 4
+            let y = size.height - margin - spacing * CGFloat(number)
+            return CGPoint(x: size.width / 2, y: y)
+        } else {
+            let margin = size.width * 0.12
+            let spacing = (size.width - margin * 2) / 4
+            let x = margin + spacing * CGFloat(number)
+            return CGPoint(x: x, y: size.height / 2)
+        }
+    }
+
+    private func papaPosition(size: CGSize) -> CGPoint {
+        if isPortraitField(size) {
+            return CGPoint(x: size.width * 0.75, y: size.height / 2)
+        } else {
+            return CGPoint(x: size.width / 2, y: size.height * 0.25)
+        }
+    }
+
+    private func marbleStartPosition(index: Int, playerCount: Int, size: CGSize) -> CGPoint {
+        if isPortraitField(size) {
+            let margin = size.height * 0.12
+            let spreadX = size.width / 2 + CGFloat(index - playerCount / 2) * 40
+            return CGPoint(x: spreadX, y: size.height - margin * 0.5)
+        } else {
+            let margin = size.width * 0.12
+            let spreadY = size.height / 2 + CGFloat(index - playerCount / 2) * 40
+            return CGPoint(x: margin * 0.5, y: spreadY)
+        }
+    }
+
     func configureField(size: CGSize) {
         guard size.width > 0, size.height > 0 else { return }
 
@@ -68,21 +111,16 @@ final class GameViewModel: ObservableObject, MarbleSceneDelegate {
         fieldConfigured = true
         lastFieldSize = size
 
-        let margin: CGFloat = size.width * 0.12
-        let spacing = (size.width - margin * 2) / 4
         for i in 0..<holes.count where holes[i].number > 0 {
-            let x = margin + spacing * CGFloat(holes[i].number)
-            holes[i].position = CodablePoint(x: Double(x), y: Double(size.height / 2))
+            holes[i].position = CodablePoint(holePosition(number: holes[i].number, size: size))
         }
         if let papaIndex = holes.firstIndex(where: { $0.number == 0 }) {
-            holes[papaIndex].position = CodablePoint(x: Double(size.width / 2), y: Double(size.height * 0.25))
+            holes[papaIndex].position = CodablePoint(papaPosition(size: size))
         }
         scene.layoutField(holes: holes, sceneSize: size)
 
         for (index, player) in players.enumerated() {
-            let startX = margin * 0.5
-            let startY = size.height / 2 + CGFloat(index - players.count / 2) * 40
-            marbles[index].position = CodablePoint(x: Double(startX), y: Double(startY))
+            marbles[index].position = CodablePoint(marbleStartPosition(index: index, playerCount: players.count, size: size))
             scene.addMarble(marbles[index], color: SKColor(AppTheme.color(named: player.colorName)))
         }
 
@@ -109,18 +147,28 @@ final class GameViewModel: ObservableObject, MarbleSceneDelegate {
 
         let scaleX = size.width / oldSize.width
         let scaleY = size.height / oldSize.height
+        let oldHolePositions = holes.map { ($0.number, $0.position.cgPoint) }
 
         for i in holes.indices {
-            holes[i].position = CodablePoint(
-                x: holes[i].position.x * Double(scaleX),
-                y: holes[i].position.y * Double(scaleY)
-            )
+            let newPosition = holes[i].number > 0
+                ? holePosition(number: holes[i].number, size: size)
+                : papaPosition(size: size)
+            holes[i].position = CodablePoint(newPosition)
         }
-        for i in marbles.indices {
-            marbles[i].position = CodablePoint(
-                x: marbles[i].position.x * Double(scaleX),
-                y: marbles[i].position.y * Double(scaleY)
-            )
+
+        for i in marbles.indices where !marbles[i].isCaptured {
+            if marbles[i].isInsideHole,
+               let nearestOldHole = oldHolePositions.min(by: {
+                   $0.1.distance(to: marbles[i].position.cgPoint) < $1.1.distance(to: marbles[i].position.cgPoint)
+               }),
+               let matchingHole = holes.first(where: { $0.number == nearestOldHole.0 }) {
+                marbles[i].position = matchingHole.position
+            } else {
+                marbles[i].position = CodablePoint(
+                    x: marbles[i].position.x * Double(scaleX),
+                    y: marbles[i].position.y * Double(scaleY)
+                )
+            }
         }
 
         scene.relayoutField(holes: holes, sceneSize: size)

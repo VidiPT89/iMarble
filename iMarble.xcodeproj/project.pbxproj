@@ -45,6 +45,7 @@
 		CD69BC2351B624D8DBF525E8 /* MarbleScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = A642A46C637B5F703BF8EABB /* MarbleScene.swift */; };
 		D214482B01E883487C5C4163 /* CodablePoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDE2896DBCFC780ED7471E82 /* CodablePoint.swift */; };
 		D58A2145B0EFB0CBF13FF075 /* TutorialView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C1F337868CCC8AA87CCCFAB /* TutorialView.swift */; };
+		DDA523DF8695C0FB500E9B7A /* GameScreenSnapshotTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98420C27B6080C1B44AF50EB /* GameScreenSnapshotTests.swift */; };
 		DFD41328A4C65D02A7B7C115 /* MarbleNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = FEF1679296B688F4D290AE8F /* MarbleNode.swift */; };
 		E04143E92C349C944CABFB82 /* AttackResolver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 442BF8BA538DDE4519861A55 /* AttackResolver.swift */; };
 		E2FFEC95475BC9D8B68C69C3 /* Marble.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3A91802A48A387383565311 /* Marble.swift */; };
@@ -55,6 +56,13 @@
 
 /* Begin PBXContainerItemProxy section */
 		4BF11F3F20463B957E727414 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 2C8D3C036A9EFE95B44454FB /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 516FD99A72E3124A7E9EB385;
+			remoteInfo = iMarble;
+		};
+		6322B30AF659CC58A303FA71 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 2C8D3C036A9EFE95B44454FB /* Project object */;
 			proxyType = 1;
@@ -90,8 +98,10 @@
 		74E4FB85A9A398E04124C05A /* GameRulesTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameRulesTests.swift; sourceTree = "<group>"; };
 		765FD161C33B42B44AB24068 /* RootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootView.swift; sourceTree = "<group>"; };
 		9657B4CD383CB5E501F56445 /* PowerMeterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PowerMeterView.swift; sourceTree = "<group>"; };
+		98420C27B6080C1B44AF50EB /* GameScreenSnapshotTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameScreenSnapshotTests.swift; sourceTree = "<group>"; };
 		A4F021D58EAD27456B69BD81 /* PlayerStatusView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerStatusView.swift; sourceTree = "<group>"; };
 		A642A46C637B5F703BF8EABB /* MarbleScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarbleScene.swift; sourceTree = "<group>"; };
+		A750EBA2C5F22C3636F12DE6 /* iMarbleUITests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = iMarbleUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		AB8FD2125610C23E2A850F91 /* GameBoardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameBoardView.swift; sourceTree = "<group>"; };
 		BDB2C53039E86F22E82F3D01 /* AttackTargetSelectionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttackTargetSelectionTests.swift; sourceTree = "<group>"; };
 		BDE2896DBCFC780ED7471E82 /* CodablePoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodablePoint.swift; sourceTree = "<group>"; };
@@ -154,6 +164,14 @@
 				02B7B56338B6C6AAD4926476 /* VictoryTests.swift */,
 			);
 			path = iMarbleTests;
+			sourceTree = "<group>";
+		};
+		373CDAFECCBF7DDB943779F6 /* iMarbleUITests */ = {
+			isa = PBXGroup;
+			children = (
+				98420C27B6080C1B44AF50EB /* GameScreenSnapshotTests.swift */,
+			);
+			path = iMarbleUITests;
 			sourceTree = "<group>";
 		};
 		486268F39FD83D7402B018A8 /* ViewModels */ = {
@@ -232,6 +250,7 @@
 			children = (
 				095CA4385C578FA8D26C95FD /* iMarble */,
 				2B0E13B445F5B3651E5602FF /* iMarbleTests */,
+				373CDAFECCBF7DDB943779F6 /* iMarbleUITests */,
 				E11618195AD76F377E1D17AF /* Products */,
 			);
 			sourceTree = "<group>";
@@ -259,6 +278,7 @@
 			children = (
 				E2BFAD7B8F30F77BAD7DBF05 /* iMarble.app */,
 				E7E562E966814A939700D09D /* iMarbleTests.xctest */,
+				A750EBA2C5F22C3636F12DE6 /* iMarbleUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -302,6 +322,24 @@
 			productReference = E7E562E966814A939700D09D /* iMarbleTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
+		8C971BBFBDB5DBBA5EC1421B /* iMarbleUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = F07FF33DC0F75C4C59858318 /* Build configuration list for PBXNativeTarget "iMarbleUITests" */;
+			buildPhases = (
+				23C26069BDD1663E7D7D832F /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				11C8DF462A6B37B7DA1B56D4 /* PBXTargetDependency */,
+			);
+			name = iMarbleUITests;
+			packageProductDependencies = (
+			);
+			productName = iMarbleUITests;
+			productReference = A750EBA2C5F22C3636F12DE6 /* iMarbleUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -318,6 +356,11 @@
 					648C20257293738625C7637D = {
 						DevelopmentTeam = "";
 						ProvisioningStyle = Automatic;
+					};
+					8C971BBFBDB5DBBA5EC1421B = {
+						DevelopmentTeam = "";
+						ProvisioningStyle = Automatic;
+						TestTargetID = 516FD99A72E3124A7E9EB385;
 					};
 				};
 			};
@@ -337,6 +380,7 @@
 			targets = (
 				516FD99A72E3124A7E9EB385 /* iMarble */,
 				648C20257293738625C7637D /* iMarbleTests */,
+				8C971BBFBDB5DBBA5EC1421B /* iMarbleUITests */,
 			);
 		};
 /* End PBXProject section */
@@ -353,6 +397,14 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		23C26069BDD1663E7D7D832F /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DDA523DF8695C0FB500E9B7A /* GameScreenSnapshotTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		27B14B5A3F7898D30A2094A4 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -413,6 +465,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		11C8DF462A6B37B7DA1B56D4 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 516FD99A72E3124A7E9EB385 /* iMarble */;
+			targetProxy = 6322B30AF659CC58A303FA71 /* PBXContainerItemProxy */;
+		};
 		A607FBD827DA658A55F78930 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 516FD99A72E3124A7E9EB385 /* iMarble */;
@@ -604,6 +661,40 @@
 			};
 			name = Release;
 		};
+		62FB03A82350C5D2DFEF30CD /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = dev.ividi.iMarbleUITests;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = iMarble;
+			};
+			name = Release;
+		};
+		F5FA1DEE16B00FAA2B1B4DAD /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = dev.ividi.iMarbleUITests;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = iMarble;
+			};
+			name = Debug;
+		};
 		FDE9FD03D823B7D21B0C1778 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -650,6 +741,15 @@
 			buildConfigurations = (
 				3DC518B01AFC3CFC5F96E1BD /* Debug */,
 				566A9F07F553D096546F6C33 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		F07FF33DC0F75C4C59858318 /* Build configuration list for PBXNativeTarget "iMarbleUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F5FA1DEE16B00FAA2B1B4DAD /* Debug */,
+				62FB03A82350C5D2DFEF30CD /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Debug;

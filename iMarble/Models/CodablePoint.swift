@@ -22,3 +22,11 @@ struct CodablePoint: Codable, Equatable, Hashable {
         return (dx * dx + dy * dy).squareRoot()
     }
 }
+
+extension CGPoint {
+    func distance(to other: CGPoint) -> CGFloat {
+        let dx = x - other.x
+        let dy = y - other.y
+        return (dx * dx + dy * dy).squareRoot()
+    }
+}

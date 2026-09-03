@@ -91,7 +91,7 @@ enum LocalizedKey: String {
 
 enum LocalizedStrings {
     static let table: [LocalizedKey: [AppLanguage: String]] = [
-        .appName: [.portuguese: "Três Covas", .english: "Three Pits"],
+        .appName: [.portuguese: "iMarble", .english: "iMarble"],
         .tagline: [.portuguese: "O jogo tradicional do berlinde", .english: "The traditional marble game"],
         .play: [.portuguese: "Jogar", .english: "Play"],
         .rules: [.portuguese: "Regras", .english: "Rules"],
@@ -164,7 +164,7 @@ enum LocalizedStrings {
         .reduceMotion: [.portuguese: "Reduzir movimento", .english: "Reduce motion"],
         .hapticsLabel: [.portuguese: "Vibração", .english: "Haptics"],
         .aboutTitle: [.portuguese: "Sobre o jogo", .english: "About"],
-        .aboutBody: [.portuguese: "Três Covas é uma recriação digital do tradicional jogo português do berlinde, jogado na terra com três covas em linha.", .english: "Three Pits is a digital recreation of the traditional Portuguese marble game, played on dirt ground with three pits in a line."],
+        .aboutBody: [.portuguese: "iMarble é uma recriação digital do tradicional jogo português do berlinde, jogado na terra com três covas em linha.", .english: "iMarble is a digital recreation of the traditional Portuguese marble game, played on dirt ground with three pits in a line."],
         .close: [.portuguese: "Fechar", .english: "Close"],
         .score: [.portuguese: "Pontuação", .english: "Score"],
         .captured: [.portuguese: "Capturados", .english: "Captured"],
