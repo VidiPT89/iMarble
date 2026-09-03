@@ -9,6 +9,7 @@ struct MainMenuView: View {
     @State private var showAbout = false
     @State private var showTutorial = false
     @State private var showOnlineGame = false
+    @State private var showCollection = false
 
     var body: some View {
         ZStack {
@@ -42,8 +43,12 @@ struct MainMenuView: View {
                         Button(localization.string(.settings)) { showSettings = true }
                             .buttonStyle(SecondaryButtonStyle())
                     }
-                    Button(localization.string(.about)) { showAbout = true }
-                        .buttonStyle(SecondaryButtonStyle())
+                    HStack(spacing: 14) {
+                        Button(localization.string(.collectionTitle)) { showCollection = true }
+                            .buttonStyle(SecondaryButtonStyle())
+                        Button(localization.string(.about)) { showAbout = true }
+                            .buttonStyle(SecondaryButtonStyle())
+                    }
                 }
 
                 Spacer()
@@ -82,6 +87,9 @@ struct MainMenuView: View {
         }
         .sheet(isPresented: $showAbout) {
             AboutView()
+        }
+        .sheet(isPresented: $showCollection) {
+            CollectionView()
         }
         .fullScreenCover(isPresented: $showTutorial) {
             TutorialView {
