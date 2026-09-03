@@ -12,6 +12,7 @@ final class GameViewModel: ObservableObject, MarbleSceneDelegate {
     @Published var powerRatio: Double = 0
     @Published var winner: Player?
     @Published var isPaused: Bool = false
+    @Published var onlinePeerDisconnected: Bool = false
     @Published var palmoAvailable: Bool = false
     @Published var canAttack: Bool = false
     @Published var selectedTargetID: UUID?
@@ -28,6 +29,14 @@ final class GameViewModel: ObservableObject, MarbleSceneDelegate {
     private var attackerWasInsideHoleAtLaunch = false
     var hapticsEnabled = true
     var soundEnabled = true
+    var localPlayerID: String?
+    weak var onlineCoordinator: OnlineGameCoordinator?
+    var isApplyingRemoteEvent = false
+
+    private var isLocalPlayersTurn: Bool {
+        guard let localPlayerID else { return true }
+        return currentPlayer.gamePlayerID == localPlayerID
+    }
 
     init(players: [Player], rules: GameRules) {
         self.players = players
@@ -195,6 +204,7 @@ final class GameViewModel: ObservableObject, MarbleSceneDelegate {
 
     func marbleScene(_ scene: MarbleScene, canLaunch marbleID: UUID) -> Bool {
         guard !isPaused else { return false }
+        guard isLocalPlayersTurn else { return false }
         guard phase == .aiming || phase == .attacking else { return false }
         guard let idx = marbles.firstIndex(where: { $0.id == marbleID }) else { return false }
         guard idx == currentMarbleIndex, !marbles[idx].isCaptured else { return false }
@@ -208,7 +218,7 @@ final class GameViewModel: ObservableObject, MarbleSceneDelegate {
     }
 
     func marbleScene(_ scene: MarbleScene, isPalmoTarget marbleID: UUID) -> Bool {
-        guard !isPaused, phase == .choosingPalmo else { return false }
+        guard !isPaused, isLocalPlayersTurn, phase == .choosingPalmo else { return false }
         return marbleID == marbles[currentMarbleIndex].id
     }
 
@@ -218,11 +228,14 @@ final class GameViewModel: ObservableObject, MarbleSceneDelegate {
 
     func marbleScene(_ scene: MarbleScene, didDragPalmo marbleID: UUID, vector: CGVector) {
         guard phase == .choosingPalmo, marbleID == marbles[currentMarbleIndex].id else { return }
+        if !isApplyingRemoteEvent {
+            onlineCoordinator?.broadcastPalmo(marbleID: marbleID, vector: vector)
+        }
         usePalmo(direction: vector)
     }
 
     func marbleScene(_ scene: MarbleScene, isAttackTarget marbleID: UUID) -> Bool {
-        guard !isPaused, phase == .attacking else { return false }
+        guard !isPaused, isLocalPlayersTurn, phase == .attacking else { return false }
         guard let marble = marbles.first(where: { $0.id == marbleID }) else { return false }
         guard marble.ownerID != currentPlayer.id else { return false }
         return AttackResolver.eligibleTargets(marbles: marbles, attackerOwnerID: currentPlayer.id, rules: rules)
@@ -233,9 +246,19 @@ final class GameViewModel: ObservableObject, MarbleSceneDelegate {
         guard phase == .attacking else { return }
         selectedTargetID = marbleID
         currentMessageKey = .pullAndRelease
+        if !isApplyingRemoteEvent {
+            onlineCoordinator?.broadcastSelectTarget(marbleID: marbles[currentMarbleIndex].id, targetID: marbleID)
+        }
     }
 
-    func marbleScene(_ scene: MarbleScene, didLaunch marbleID: UUID) {
+    func applyRemoteTargetSelection(_ marbleID: UUID) {
+        guard phase == .attacking else { return }
+        selectedTargetID = marbleID
+        currentMessageKey = .pullAndRelease
+        scene.clearTargetHighlight()
+    }
+
+    func marbleScene(_ scene: MarbleScene, didLaunch marbleID: UUID, dragVector: CGVector) {
         attackInProgress = (phase == .attacking)
         if let idx = marbles.firstIndex(where: { $0.id == marbleID }) {
             attackerWasInsideHoleAtLaunch = marbles[idx].isInsideHole
@@ -244,6 +267,9 @@ final class GameViewModel: ObservableObject, MarbleSceneDelegate {
         if soundEnabled { SoundManager.shared.play(.launch) }
         phase = .marbleMoving
         scheduleTimeout()
+        if !isApplyingRemoteEvent {
+            onlineCoordinator?.broadcastLaunch(marbleID: marbleID, dragVector: dragVector)
+        }
     }
 
     func marbleScene(_ scene: MarbleScene, didUpdatePower ratio: Double) {
@@ -380,6 +406,9 @@ final class GameViewModel: ObservableObject, MarbleSceneDelegate {
     }
 
     func skipPalmo() {
+        if !isApplyingRemoteEvent {
+            onlineCoordinator?.broadcastSkipPalmo(marbleID: marbles[currentMarbleIndex].id)
+        }
         palmoAvailable = false
         scene.hidePalmoRange()
         if pendingSameTurnAfterPalmo {
@@ -472,6 +501,7 @@ final class GameViewModel: ObservableObject, MarbleSceneDelegate {
     }
 
     private func maybeTakeAITurn() {
+        guard localPlayerID == nil else { return }
         guard phase == .aiming || phase == .attacking else { return }
         let player = currentPlayer
         guard !player.isHuman else { return }

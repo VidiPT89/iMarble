@@ -8,6 +8,7 @@ struct MainMenuView: View {
     @State private var showSettings = false
     @State private var showAbout = false
     @State private var showTutorial = false
+    @State private var showOnlineGame = false
 
     var body: some View {
         ZStack {
@@ -30,6 +31,10 @@ struct MainMenuView: View {
                     Button(localization.string(.play)) { showSetup = true }
                         .buttonStyle(PrimaryButtonStyle())
                         .accessibilityIdentifier("playButton")
+
+                    Button(localization.string(.playOnline)) { showOnlineGame = true }
+                        .buttonStyle(SecondaryButtonStyle())
+                        .accessibilityIdentifier("playOnlineButton")
 
                     HStack(spacing: 14) {
                         Button(localization.string(.rules)) { showRules = true }
@@ -65,6 +70,9 @@ struct MainMenuView: View {
         }
         .fullScreenCover(isPresented: $showSetup) {
             SetupGameView()
+        }
+        .fullScreenCover(isPresented: $showOnlineGame) {
+            OnlineGameContainerView()
         }
         .sheet(isPresented: $showRules) {
             RulesView()

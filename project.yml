@@ -42,6 +42,10 @@ targets:
         GENERATE_INFOPLIST_FILE: YES
         MARKETING_VERSION: "1.0"
         CURRENT_PROJECT_VERSION: "1"
+    entitlements:
+      path: iMarble/App/iMarble.entitlements
+      properties:
+        com.apple.developer.game-center: true
   iMarbleTests:
     type: bundle.unit-test
     platform: iOS
