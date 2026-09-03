@@ -159,6 +159,20 @@ final class GameViewModel: ObservableObject, MarbleSceneDelegate {
         return true
     }
 
+    func marbleScene(_ scene: MarbleScene, isPalmoTarget marbleID: UUID) -> Bool {
+        guard !isPaused, phase == .choosingPalmo else { return false }
+        return marbleID == marbles[currentMarbleIndex].id
+    }
+
+    func marbleScene(_ scene: MarbleScene, palmoRangeFor marbleID: UUID) -> CGFloat {
+        CGFloat(rules.palmoDistance)
+    }
+
+    func marbleScene(_ scene: MarbleScene, didDragPalmo marbleID: UUID, vector: CGVector) {
+        guard phase == .choosingPalmo, marbleID == marbles[currentMarbleIndex].id else { return }
+        usePalmo(direction: vector)
+    }
+
     func marbleScene(_ scene: MarbleScene, isAttackTarget marbleID: UUID) -> Bool {
         guard !isPaused, phase == .attacking else { return false }
         guard let marble = marbles.first(where: { $0.id == marbleID }) else { return false }
@@ -265,7 +279,8 @@ final class GameViewModel: ObservableObject, MarbleSceneDelegate {
                         pendingSameTurnAfterPalmo = true
                         palmoAvailable = true
                         phase = .choosingPalmo
-                        currentMessageKey = .youHavePalmo
+                        currentMessageKey = .dragToPalmo
+                        scene.showPalmoRange(marbleID: marble.id, radius: CGFloat(rules.palmoDistance))
                         return
                     }
                     checkVictoryThenContinue(sameTurn: true)
@@ -285,7 +300,8 @@ final class GameViewModel: ObservableObject, MarbleSceneDelegate {
         if rules.allowsPalmo, !palmoUsedThisAttempt {
             palmoAvailable = true
             phase = .choosingPalmo
-            currentMessageKey = .youHavePalmo
+            currentMessageKey = .dragToPalmo
+            scene.showPalmoRange(marbleID: marbles[currentMarbleIndex].id, radius: CGFloat(rules.palmoDistance))
         } else {
             endTurn()
         }
@@ -294,9 +310,11 @@ final class GameViewModel: ObservableObject, MarbleSceneDelegate {
     func usePalmo(direction: CGVector) {
         guard phase == .choosingPalmo else { return }
         let idx = currentMarbleIndex
-        let length = min(sqrt(direction.dx * direction.dx + direction.dy * direction.dy), CGFloat(rules.palmoDistance))
+        let magnitude = sqrt(direction.dx * direction.dx + direction.dy * direction.dy)
+        let length = min(magnitude, CGFloat(rules.palmoDistance))
+        scene.hidePalmoRange()
         guard length > 0 else { skipPalmo(); return }
-        let normalized = CGVector(dx: direction.dx / length, dy: direction.dy / length)
+        let normalized = CGVector(dx: direction.dx / magnitude, dy: direction.dy / magnitude)
         var newPosition = marbles[idx].position.cgPoint
         newPosition.x += normalized.dx * length
         newPosition.y += normalized.dy * length
@@ -315,6 +333,7 @@ final class GameViewModel: ObservableObject, MarbleSceneDelegate {
 
     func skipPalmo() {
         palmoAvailable = false
+        scene.hidePalmoRange()
         if pendingSameTurnAfterPalmo {
             pendingSameTurnAfterPalmo = false
             checkVictoryThenContinue(sameTurn: true)

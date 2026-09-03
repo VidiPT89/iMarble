@@ -72,6 +72,10 @@ struct GameView: View {
                     .foregroundStyle(AppTheme.burntYellow)
             }
             Spacer()
+            if viewModel.phase == .choosingPalmo {
+                Button(localization.string(.skipPalmo)) { viewModel.skipPalmo() }
+                    .buttonStyle(SecondaryButtonStyle())
+            }
             Button(localization.string(.quickRules)) { showQuickRules = true }
                 .buttonStyle(SecondaryButtonStyle())
             Button(localization.string(.pause)) { viewModel.pause() }

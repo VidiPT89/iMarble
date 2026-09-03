@@ -8,6 +8,9 @@ protocol MarbleSceneDelegate: AnyObject {
     func marbleScene(_ scene: MarbleScene, didUpdatePower ratio: Double)
     func marbleScene(_ scene: MarbleScene, marbleDidStop marbleID: UUID, at position: CGPoint)
     func marbleScene(_ scene: MarbleScene, marblesCollided idA: UUID, idB: UUID)
+    func marbleScene(_ scene: MarbleScene, isPalmoTarget marbleID: UUID) -> Bool
+    func marbleScene(_ scene: MarbleScene, palmoRangeFor marbleID: UUID) -> CGFloat
+    func marbleScene(_ scene: MarbleScene, didDragPalmo marbleID: UUID, vector: CGVector)
 }
 
 final class MarbleScene: SKScene {
@@ -21,6 +24,8 @@ final class MarbleScene: SKScene {
     private var dragStart: CGPoint = .zero
     private var marbleOriginAtDragStart: CGPoint = .zero
     private var anyMoving = false
+    private var isDraggingPalmo = false
+    private var palmoRangeNode: SKShapeNode?
     var reduceMotion = false
 
     override func didMove(to view: SKView) {
@@ -107,6 +112,29 @@ final class MarbleScene: SKScene {
         }
     }
 
+    func showPalmoRange(marbleID: UUID, radius: CGFloat) {
+        guard let node = marbleNodes[marbleID] else { return }
+        palmoRangeNode?.removeFromParent()
+        let ring = SKShapeNode(circleOfRadius: radius)
+        ring.strokeColor = SKColor.systemYellow.withAlphaComponent(0.6)
+        ring.lineWidth = 2
+        ring.lineCap = .round
+        ring.fillColor = .clear
+        ring.position = node.position
+        ring.zPosition = 15
+        if !reduceMotion {
+            ring.setScale(0.85)
+            ring.run(.scale(to: 1.0, duration: 0.2))
+        }
+        addChild(ring)
+        palmoRangeNode = ring
+    }
+
+    func hidePalmoRange() {
+        palmoRangeNode?.removeFromParent()
+        palmoRangeNode = nil
+    }
+
     func playEntrySplash(at position: CGPoint) {
         guard !reduceMotion else { return }
         let container = SKNode()
@@ -153,6 +181,15 @@ final class MarbleScene: SKScene {
             }
         }
         for (id, node) in marbleNodes where node.frame.insetBy(dx: -14, dy: -14).contains(point) {
+            if gameDelegate?.marbleScene(self, isPalmoTarget: id) == true {
+                draggingMarbleID = id
+                isDraggingPalmo = true
+                dragStart = point
+                marbleOriginAtDragStart = node.position
+                return
+            }
+        }
+        for (id, node) in marbleNodes where node.frame.insetBy(dx: -14, dy: -14).contains(point) {
             guard gameDelegate?.marbleScene(self, canLaunch: id) == true else { continue }
             draggingMarbleID = id
             dragStart = point
@@ -171,6 +208,23 @@ final class MarbleScene: SKScene {
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
         guard let touch = touches.first, let id = draggingMarbleID, let node = marbleNodes[id] else { return }
         let point = touch.location(in: self)
+
+        if isDraggingPalmo {
+            let maxRange = gameDelegate?.marbleScene(self, palmoRangeFor: id) ?? 0
+            let move = CGVector(dx: point.x - dragStart.x, dy: point.y - dragStart.y)
+            let length = min(sqrt(move.dx * move.dx + move.dy * move.dy), maxRange)
+            if length > 0 {
+                let normalized = CGVector(dx: move.dx / sqrt(move.dx * move.dx + move.dy * move.dy), dy: move.dy / sqrt(move.dx * move.dx + move.dy * move.dy))
+                node.position = CGPoint(
+                    x: marbleOriginAtDragStart.x + normalized.dx * length,
+                    y: marbleOriginAtDragStart.y + normalized.dy * length
+                )
+            } else {
+                node.position = marbleOriginAtDragStart
+            }
+            return
+        }
+
         let drag = CGVector(dx: dragStart.x - point.x, dy: dragStart.y - point.y)
         let length = sqrt(drag.dx * drag.dx + drag.dy * drag.dy)
         let ratio = min(length / CGFloat(GameRules.maximumDragDistance), 1.0)
@@ -189,9 +243,20 @@ final class MarbleScene: SKScene {
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         guard let touch = touches.first, let id = draggingMarbleID, let node = marbleNodes[id] else {
             draggingMarbleID = nil
+            isDraggingPalmo = false
             return
         }
         let point = touch.location(in: self)
+
+        if isDraggingPalmo {
+            let vector = CGVector(dx: point.x - dragStart.x, dy: point.y - dragStart.y)
+            node.position = marbleOriginAtDragStart
+            draggingMarbleID = nil
+            isDraggingPalmo = false
+            gameDelegate?.marbleScene(self, didDragPalmo: id, vector: vector)
+            return
+        }
+
         let drag = CGVector(dx: dragStart.x - point.x, dy: dragStart.y - point.y)
         let velocity = PhysicsEngine.velocity(fromDrag: drag, rules: GameRules.default)
         node.position = marbleOriginAtDragStart
@@ -205,6 +270,7 @@ final class MarbleScene: SKScene {
 
     override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
         draggingMarbleID = nil
+        isDraggingPalmo = false
         gameDelegate?.marbleScene(self, didUpdatePower: 0)
     }
 

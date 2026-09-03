@@ -36,7 +36,8 @@ enum LocalizedKey: String {
     case pullAndRelease
     case enteredHole
     case missedHole
-    case youHavePalmo
+    case dragToPalmo
+    case skipPalmo
     case marbleProtected
     case missedAttack
     case hitMarble
@@ -125,7 +126,8 @@ enum LocalizedStrings {
         .pullAndRelease: [.portuguese: "Puxa para trás e larga para lançar.", .english: "Pull back and release to launch."],
         .enteredHole: [.portuguese: "Entraste na cova!", .english: "You entered the hole!"],
         .missedHole: [.portuguese: "Falhaste a cova.", .english: "You missed the hole."],
-        .youHavePalmo: [.portuguese: "Tens direito a um palmo.", .english: "You have a hand-span available."],
+        .dragToPalmo: [.portuguese: "Arrasta o berlinde para o aproximar, até um palmo.", .english: "Drag your marble to move it, up to one hand-span."],
+        .skipPalmo: [.portuguese: "Saltar palmo", .english: "Skip hand-span"],
         .marbleProtected: [.portuguese: "Berlinde protegido.", .english: "Marble protected."],
         .missedAttack: [.portuguese: "Falhaste o ataque.", .english: "You missed the attack."],
         .hitMarble: [.portuguese: "Acertaste no berlinde!", .english: "You hit the marble!"],
