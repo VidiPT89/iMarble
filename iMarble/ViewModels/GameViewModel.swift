@@ -124,9 +124,11 @@ final class GameViewModel: ObservableObject, MarbleSceneDelegate {
         }
         scene.layoutField(holes: holes, sceneSize: size)
 
+        let firstHumanIndex = players.firstIndex(where: { $0.isHuman })
         for (index, player) in players.enumerated() {
             marbles[index].position = CodablePoint(marbleStartPosition(index: index, playerCount: players.count, size: size))
-            scene.addMarble(marbles[index], color: SKColor(AppTheme.color(named: player.colorName)))
+            let colorName = index == firstHumanIndex ? ProgressStore.shared.selectedSkin.colorName : player.colorName
+            scene.addMarble(marbles[index], color: SKColor(AppTheme.color(named: colorName)))
         }
 
         phase = .aiming
@@ -408,6 +410,7 @@ final class GameViewModel: ObservableObject, MarbleSceneDelegate {
             phase = .gameOver
             currentMessageKey = .gameOver
             if soundEnabled { SoundManager.shared.play(.victory) }
+            ProgressStore.shared.recordMatchResult(humanWon: winningPlayer.isHuman)
             return
         }
         if sameTurn {
@@ -444,6 +447,7 @@ final class GameViewModel: ObservableObject, MarbleSceneDelegate {
                 winner = winningPlayer
                 phase = .gameOver
                 currentMessageKey = .gameOver
+                ProgressStore.shared.recordMatchResult(humanWon: winningPlayer.isHuman)
                 return
             }
         }

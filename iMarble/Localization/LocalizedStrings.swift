@@ -64,6 +64,7 @@ enum LocalizedKey: String {
     case hapticsLabel
     case aboutTitle
     case aboutBody
+    case aboutHistory
     case close
     case score
     case chooseTarget
@@ -76,6 +77,20 @@ enum LocalizedKey: String {
     case onlineWaitingForPlayers
     case onlineAuthenticationFailed
     case onlinePeerDisconnected
+    case collectionTitle
+    case collectionSkinsSection
+    case collectionAchievementsSection
+    case collectionLockedWithWins
+    case collectionSelected
+    case collectionSelect
+    case skinClassic
+    case skinCatEye
+    case skinOx
+    case skinGrandMarble
+    case achievementFirstWin
+    case achievementFiveWins
+    case achievementWinStreak
+    case achievementFullCollection
 }
 
 enum LocalizedStrings {
@@ -146,6 +161,10 @@ enum LocalizedStrings {
         .hapticsLabel: [.portuguese: "Vibração", .english: "Haptics"],
         .aboutTitle: [.portuguese: "Sobre o jogo", .english: "About"],
         .aboutBody: [.portuguese: "iMarble é uma recriação digital do tradicional jogo português do berlinde, jogado na terra com três covas em linha.", .english: "iMarble is a digital recreation of the traditional Portuguese marble game, played on dirt ground with three pits in a line."],
+        .aboutHistory: [
+            .portuguese: "O berlinde foi, durante gerações, um dos passatempos mais populares nas ruas, pátios de escola e quintais de Portugal — muito antes das consolas e dos telemóveis. Com uma pequena bola de vidro e três covas cavadas na terra, bastava um recreio para se organizar um torneio. Este jogo guarda essa memória: o som seco do berlinde a entrar na cova, a tensão de calcular a força certa, a alegria de completar o percurso primeiro.",
+            .english: "For generations, marbles were one of the most popular pastimes in the streets, schoolyards and backyards of Portugal — long before consoles and phones. With a small glass ball and three pits dug into the ground, a single break was enough to start a tournament. This game keeps that memory alive: the sharp sound of the marble dropping into the pit, the tension of judging the right force, the joy of finishing the course first.",
+        ],
         .close: [.portuguese: "Fechar", .english: "Close"],
         .score: [.portuguese: "Pontuação", .english: "Score"],
         .chooseTarget: [.portuguese: "Percurso completo! Toca num berlinde adversário para o escolheres como alvo.", .english: "Course complete! Tap an opponent's marble to choose it as your target."],
@@ -158,5 +177,19 @@ enum LocalizedStrings {
         .onlineWaitingForPlayers: [.portuguese: "À espera dos jogadores…", .english: "Waiting for players…"],
         .onlineAuthenticationFailed: [.portuguese: "Não foi possível autenticar no Game Center.", .english: "Could not authenticate with Game Center."],
         .onlinePeerDisconnected: [.portuguese: "Um jogador desligou-se. Partida em pausa.", .english: "A player disconnected. Match paused."],
+        .collectionTitle: [.portuguese: "Coleção", .english: "Collection"],
+        .collectionSkinsSection: [.portuguese: "Berlindes", .english: "Marbles"],
+        .collectionAchievementsSection: [.portuguese: "Conquistas", .english: "Achievements"],
+        .collectionLockedWithWins: [.portuguese: "Desbloqueia com %d vitórias", .english: "Unlocks at %d wins"],
+        .collectionSelected: [.portuguese: "Selecionado", .english: "Selected"],
+        .collectionSelect: [.portuguese: "Selecionar", .english: "Select"],
+        .skinClassic: [.portuguese: "Clássico", .english: "Classic"],
+        .skinCatEye: [.portuguese: "Olho de gato", .english: "Cat's eye"],
+        .skinOx: [.portuguese: "Boi", .english: "Ox"],
+        .skinGrandMarble: [.portuguese: "Berlindão", .english: "Grand marble"],
+        .achievementFirstWin: [.portuguese: "Primeira Vitória", .english: "First Victory"],
+        .achievementFiveWins: [.portuguese: "5 Vitórias", .english: "5 Victories"],
+        .achievementWinStreak: [.portuguese: "10 Vitórias Seguidas", .english: "10 Wins in a Row"],
+        .achievementFullCollection: [.portuguese: "Coleção Completa", .english: "Full Collection"],
     ]
 }

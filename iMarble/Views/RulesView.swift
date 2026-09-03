@@ -33,11 +33,16 @@ struct AboutView: View {
         NavigationStack {
             ZStack {
                 AppTheme.backgroundGradient.ignoresSafeArea()
+                ScrollView {
                 VStack(spacing: 16) {
                     Text(localization.string(.aboutBody))
                         .font(AppTheme.Typography.body())
                         .foregroundStyle(AppTheme.cream)
                         .multilineTextAlignment(.center)
+                    Text(localization.string(.aboutHistory))
+                        .font(AppTheme.Typography.caption())
+                        .foregroundStyle(AppTheme.cream.opacity(0.85))
+                        .multilineTextAlignment(.leading)
                     Text(localization.string(.developedBy))
                         .font(AppTheme.Typography.caption())
                         .foregroundStyle(AppTheme.burntYellow)
@@ -46,6 +51,7 @@ struct AboutView: View {
                         .foregroundStyle(AppTheme.burntYellow.opacity(0.8))
                 }
                 .padding()
+                }
             }
             .navigationTitle(localization.string(.aboutTitle))
             .toolbar {

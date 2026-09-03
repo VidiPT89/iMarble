@@ -70,6 +70,9 @@ enum AppTheme {
         case "green": return Color(red: 0.30, green: 0.55, blue: 0.25)
         case "blue": return Color(red: 0.20, green: 0.45, blue: 0.75)
         case "purple": return Color(red: 0.50, green: 0.30, blue: 0.65)
+        case "cateye": return Color(red: 0.20, green: 0.62, blue: 0.55)
+        case "ox": return Color(red: 0.45, green: 0.10, blue: 0.10)
+        case "grandmarble": return Color(red: 0.85, green: 0.70, blue: 0.20)
         default: return orangeVibrant
         }
     }
