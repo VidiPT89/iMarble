@@ -230,7 +230,7 @@ final class GameViewModel: ObservableObject, MarbleSceneDelegate {
     func marbleScene(_ scene: MarbleScene, didSelectTarget marbleID: UUID) {
         guard phase == .attacking else { return }
         selectedTargetID = marbleID
-        currentMessageKey = .pullAndRelease
+        currentMessageKey = .targetSelectedPullToAttack
         if !isApplyingRemoteEvent {
             onlineCoordinator?.broadcastSelectTarget(marbleID: marbles[currentMarbleIndex].id, targetID: marbleID)
         }
@@ -239,7 +239,7 @@ final class GameViewModel: ObservableObject, MarbleSceneDelegate {
     func applyRemoteTargetSelection(_ marbleID: UUID) {
         guard phase == .attacking else { return }
         selectedTargetID = marbleID
-        currentMessageKey = .pullAndRelease
+        currentMessageKey = .targetSelectedPullToAttack
         scene.clearTargetHighlight()
     }
 

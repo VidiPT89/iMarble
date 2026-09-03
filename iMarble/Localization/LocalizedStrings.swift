@@ -67,6 +67,7 @@ enum LocalizedKey: String {
     case close
     case score
     case chooseTarget
+    case targetSelectedPullToAttack
     case players
     case addPlayer
     case removePlayer
@@ -147,7 +148,8 @@ enum LocalizedStrings {
         .aboutBody: [.portuguese: "iMarble é uma recriação digital do tradicional jogo português do berlinde, jogado na terra com três covas em linha.", .english: "iMarble is a digital recreation of the traditional Portuguese marble game, played on dirt ground with three pits in a line."],
         .close: [.portuguese: "Fechar", .english: "Close"],
         .score: [.portuguese: "Pontuação", .english: "Score"],
-        .chooseTarget: [.portuguese: "Escolhe um alvo", .english: "Choose a target"],
+        .chooseTarget: [.portuguese: "Percurso completo! Toca num berlinde adversário para o escolheres como alvo.", .english: "Course complete! Tap an opponent's marble to choose it as your target."],
+        .targetSelectedPullToAttack: [.portuguese: "Alvo escolhido. Puxa o TEU berlinde para trás e larga para atacares.", .english: "Target chosen. Pull back YOUR marble and release to attack."],
         .players: [.portuguese: "Jogadores", .english: "Players"],
         .addPlayer: [.portuguese: "Adicionar jogador", .english: "Add player"],
         .removePlayer: [.portuguese: "Remover jogador", .english: "Remove player"],
