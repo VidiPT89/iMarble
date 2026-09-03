@@ -132,11 +132,25 @@ final class GameViewModel: ObservableObject, MarbleSceneDelegate {
         phase = .aiming
         currentMessageKey = .aimAtFirstHole
         updateObjectiveHighlight()
+        updateReadyToLaunchHighlight()
         maybeTakeAITurn()
     }
 
     private func updateObjectiveHighlight() {
         scene.setObjectiveHole(objectiveHoleNumber())
+    }
+
+    /// Highlights the current player's own marble whenever it's actually
+    /// draggable, so it's never ambiguous which one to pull back — notably
+    /// once an attack target has been selected and there are two
+    /// highlighted marbles on screen (the target in red, yours in green).
+    private func updateReadyToLaunchHighlight() {
+        guard isLocalPlayersTurn, !isPaused else {
+            scene.setReadyToLaunch(nil)
+            return
+        }
+        let canLaunchNow = phase == .aiming || (phase == .attacking && selectedTargetID != nil)
+        scene.setReadyToLaunch(canLaunchNow ? marbles[currentMarbleIndex].id : nil)
     }
 
     /// Repositions holes and marbles proportionally to a new available size,
@@ -230,6 +244,7 @@ final class GameViewModel: ObservableObject, MarbleSceneDelegate {
         guard phase == .attacking else { return }
         selectedTargetID = marbleID
         currentMessageKey = .targetSelectedPullToAttack
+        updateReadyToLaunchHighlight()
         if !isApplyingRemoteEvent {
             onlineCoordinator?.broadcastSelectTarget(marbleID: marbles[currentMarbleIndex].id, targetID: marbleID)
         }
@@ -240,6 +255,7 @@ final class GameViewModel: ObservableObject, MarbleSceneDelegate {
         selectedTargetID = marbleID
         currentMessageKey = .targetSelectedPullToAttack
         scene.clearTargetHighlight()
+        updateReadyToLaunchHighlight()
     }
 
     func marbleScene(_ scene: MarbleScene, didLaunch marbleID: UUID, dragVector: CGVector) {
@@ -250,6 +266,7 @@ final class GameViewModel: ObservableObject, MarbleSceneDelegate {
         }
         if soundEnabled { SoundManager.shared.play(.launch) }
         phase = .marbleMoving
+        scene.setReadyToLaunch(nil)
         scheduleTimeout()
         if !isApplyingRemoteEvent {
             onlineCoordinator?.broadcastLaunch(marbleID: marbleID, dragVector: dragVector)
@@ -398,6 +415,7 @@ final class GameViewModel: ObservableObject, MarbleSceneDelegate {
                 phase = .attacking
                 selectedTargetID = nil
                 currentMessageKey = .chooseTarget
+                updateReadyToLaunchHighlight()
                 maybeTakeAITurn()
             } else if canAttack {
                 // Completed the course, but no opponent marble can be
@@ -405,6 +423,7 @@ final class GameViewModel: ObservableObject, MarbleSceneDelegate {
                 endTurn()
             } else {
                 phase = .aiming
+                updateReadyToLaunchHighlight()
                 maybeTakeAITurn()
             }
         } else {
@@ -431,6 +450,7 @@ final class GameViewModel: ObservableObject, MarbleSceneDelegate {
         phase = .aiming
         currentMessageKey = .yourTurn
         updateObjectiveHighlight()
+        updateReadyToLaunchHighlight()
         maybeTakeAITurn()
     }
 
