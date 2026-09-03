@@ -62,4 +62,50 @@ final class GameRulesTests: XCTestCase {
         let target = Marble(ownerID: UUID(), position: CodablePoint(x: 10, y: 0))
         XCTAssertTrue(AttackResolver.resolveAttack(attacker: attacker, target: target, rules: .default))
     }
+
+    func testAttackResolverRejectsAttackBeforeCourseCompletion() {
+        let attacker = Marble(ownerID: UUID(), position: CodablePoint(x: 0, y: 0))
+        let target = Marble(ownerID: UUID(), position: CodablePoint(x: 10, y: 0))
+        XCTAssertFalse(AttackResolver.resolveAttack(
+            attacker: attacker,
+            attackerCompletedCourse: false,
+            attackerAtHole: true,
+            target: target,
+            rules: .default
+        ))
+    }
+
+    func testAttackResolverRejectsAttackNotFromHole() {
+        let attacker = Marble(ownerID: UUID(), position: CodablePoint(x: 0, y: 0))
+        let target = Marble(ownerID: UUID(), position: CodablePoint(x: 10, y: 0))
+        XCTAssertFalse(AttackResolver.resolveAttack(
+            attacker: attacker,
+            attackerCompletedCourse: true,
+            attackerAtHole: false,
+            target: target,
+            rules: .default
+        ))
+    }
+
+    func testAttackResolverAcceptsAttackFromHoleAfterCourse() {
+        let attacker = Marble(ownerID: UUID(), position: CodablePoint(x: 0, y: 0))
+        let target = Marble(ownerID: UUID(), position: CodablePoint(x: 10, y: 0))
+        XCTAssertTrue(AttackResolver.resolveAttack(
+            attacker: attacker,
+            attackerCompletedCourse: true,
+            attackerAtHole: true,
+            target: target,
+            rules: .default
+        ))
+    }
+
+    func testDefaultPalmoPolicyIsAfterEverySuccess() {
+        XCTAssertEqual(GameRules.default.palmoPolicy, .afterEverySuccess)
+    }
+
+    func testDefaultScoreValuesMatchPointsVariation() {
+        XCTAssertEqual(ScoreRules.enterHole, 2)
+        XCTAssertEqual(ScoreRules.hitOpponent, 2)
+        XCTAssertEqual(ScoreRules.captureMarble, 3)
+    }
 }

@@ -13,6 +13,7 @@
 		1B9E9D8D389D904022C95B13 /* AppTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 624FFE95140D6BCBD0E29C12 /* AppTheme.swift */; };
 		23A64F95287E72131887F2A1 /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 765FD161C33B42B44AB24068 /* RootView.swift */; };
 		2848D2B5518AE4AFB1B26C23 /* RulesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFDF5878A456217714B299D9 /* RulesView.swift */; };
+		2C74D92ED9134FBAA919C207 /* GameViewModelLayoutTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4B5703F737C10043CDCA9D7 /* GameViewModelLayoutTests.swift */; };
 		2DC9FE988FEAAD020B866BA6 /* PowerMeterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9657B4CD383CB5E501F56445 /* PowerMeterView.swift */; };
 		3633F9E28077EC4077CD053E /* ScoreRules.swift in Sources */ = {isa = PBXBuildFile; fileRef = FEB0CFCBDFFD256A0E01BCA3 /* ScoreRules.swift */; };
 		3C2DF7AF1D34D650B2BC73F4 /* GamePhase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50666460A7D13EAAB2BFB652 /* GamePhase.swift */; };
@@ -22,6 +23,7 @@
 		5470C511397CD648DF372AE9 /* Hole.swift in Sources */ = {isa = PBXBuildFile; fileRef = 604F9EAE0274A0C2C20E80BF /* Hole.swift */; };
 		5E4C8DED3E2A518F833DC143 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBAD71D6EE1F02A419D91CFE /* SettingsView.swift */; };
 		658472954F29AFC2E1DC4118 /* GameBoardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB8FD2125610C23E2A850F91 /* GameBoardView.swift */; };
+		6857BA1453B204C608431083 /* AttackTargetSelectionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDB2C53039E86F22E82F3D01 /* AttackTargetSelectionTests.swift */; };
 		6B63DDD4945BF9A381DF4020 /* GameRulesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74E4FB85A9A398E04124C05A /* GameRulesTests.swift */; };
 		6FB1C2CC6939075F8081B9ED /* GameRules.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0174BC8DEDCA47B9A8861F2C /* GameRules.swift */; };
 		70D58424D5E1DFE575857AC0 /* TurnManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23578363DC0C5C88489D9560 /* TurnManager.swift */; };
@@ -89,9 +91,11 @@
 		A4F021D58EAD27456B69BD81 /* PlayerStatusView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerStatusView.swift; sourceTree = "<group>"; };
 		A642A46C637B5F703BF8EABB /* MarbleScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarbleScene.swift; sourceTree = "<group>"; };
 		AB8FD2125610C23E2A850F91 /* GameBoardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameBoardView.swift; sourceTree = "<group>"; };
+		BDB2C53039E86F22E82F3D01 /* AttackTargetSelectionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttackTargetSelectionTests.swift; sourceTree = "<group>"; };
 		BDE2896DBCFC780ED7471E82 /* CodablePoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodablePoint.swift; sourceTree = "<group>"; };
 		BFDF5878A456217714B299D9 /* RulesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RulesView.swift; sourceTree = "<group>"; };
 		CEDA2AF584CA0478890146BB /* SetupGameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetupGameView.swift; sourceTree = "<group>"; };
+		D4B5703F737C10043CDCA9D7 /* GameViewModelLayoutTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameViewModelLayoutTests.swift; sourceTree = "<group>"; };
 		D56BC5C579430B33DAAF2F67 /* LocalizationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizationManager.swift; sourceTree = "<group>"; };
 		E051AD044B3B6AB6BD67432D /* SetupViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetupViewModel.swift; sourceTree = "<group>"; };
 		E2BFAD7B8F30F77BAD7DBF05 /* iMarble.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = iMarble.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -140,7 +144,9 @@
 		2B0E13B445F5B3651E5602FF /* iMarbleTests */ = {
 			isa = PBXGroup;
 			children = (
+				BDB2C53039E86F22E82F3D01 /* AttackTargetSelectionTests.swift */,
 				74E4FB85A9A398E04124C05A /* GameRulesTests.swift */,
+				D4B5703F737C10043CDCA9D7 /* GameViewModelLayoutTests.swift */,
 				2B83A01DE2A55C0CDF345650 /* TurnManagerTests.swift */,
 				02B7B56338B6C6AAD4926476 /* VictoryTests.swift */,
 			);
@@ -392,7 +398,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6857BA1453B204C608431083 /* AttackTargetSelectionTests.swift in Sources */,
 				6B63DDD4945BF9A381DF4020 /* GameRulesTests.swift in Sources */,
+				2C74D92ED9134FBAA919C207 /* GameViewModelLayoutTests.swift in Sources */,
 				4BAC9BCB95D86C2ABDABE318 /* TurnManagerTests.swift in Sources */,
 				8DBAD6CF5B43B327AA87E34C /* VictoryTests.swift in Sources */,
 			);

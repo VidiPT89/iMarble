@@ -7,7 +7,6 @@ struct Marble: Identifiable, Codable, Equatable {
     var isInsideHole: Bool
     var isProtected: Bool
     var isCaptured: Bool
-    var isMoving: Bool
 
     init(
         id: UUID = UUID(),
@@ -15,8 +14,7 @@ struct Marble: Identifiable, Codable, Equatable {
         position: CodablePoint,
         isInsideHole: Bool = false,
         isProtected: Bool = false,
-        isCaptured: Bool = false,
-        isMoving: Bool = false
+        isCaptured: Bool = false
     ) {
         self.id = id
         self.ownerID = ownerID
@@ -24,6 +22,5 @@ struct Marble: Identifiable, Codable, Equatable {
         self.isInsideHole = isInsideHole
         self.isProtected = isProtected
         self.isCaptured = isCaptured
-        self.isMoving = isMoving
     }
 }

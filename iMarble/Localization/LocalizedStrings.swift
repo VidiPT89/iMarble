@@ -38,14 +38,13 @@ enum LocalizedKey: String {
     case missedHole
     case youHavePalmo
     case marbleProtected
-    case canAttackNow
+    case missedAttack
     case hitMarble
     case keptMarble
     case gameOver
     case winnerIs
     case quickRules
     case pause
-    case undo
     case resume
     case restart
     case mainMenu
@@ -128,29 +127,31 @@ enum LocalizedStrings {
         .missedHole: [.portuguese: "Falhaste a cova.", .english: "You missed the hole."],
         .youHavePalmo: [.portuguese: "Tens direito a um palmo.", .english: "You have a hand-span available."],
         .marbleProtected: [.portuguese: "Berlinde protegido.", .english: "Marble protected."],
-        .canAttackNow: [.portuguese: "Agora podes atacar um adversário.", .english: "You may now attack an opponent."],
+        .missedAttack: [.portuguese: "Falhaste o ataque.", .english: "You missed the attack."],
         .hitMarble: [.portuguese: "Acertaste no berlinde!", .english: "You hit the marble!"],
         .keptMarble: [.portuguese: "Ficaste com o berlinde.", .english: "You kept the marble."],
         .gameOver: [.portuguese: "Fim do jogo.", .english: "Game over."],
         .winnerIs: [.portuguese: "O vencedor é %@", .english: "The winner is %@"],
         .quickRules: [.portuguese: "Regras rápidas", .english: "Quick rules"],
         .pause: [.portuguese: "Pausa", .english: "Pause"],
-        .undo: [.portuguese: "Desfazer", .english: "Undo"],
         .resume: [.portuguese: "Continuar", .english: "Resume"],
         .restart: [.portuguese: "Reiniciar", .english: "Restart"],
         .mainMenu: [.portuguese: "Menu principal", .english: "Main menu"],
         .tutorialTitle: [.portuguese: "Como jogar", .english: "How to play"],
-        .tutorialStep1: [.portuguese: "Estas são as três covas.", .english: "These are the three pits."],
-        .tutorialStep2: [.portuguese: "O objetivo é fazer o percurso pela ordem indicada.", .english: "The goal is to complete the course in order."],
+        .tutorialStep1: [.portuguese: "Estas são as três covas: Pira, Meia e Fundo.", .english: "These are the three pits: Pira, Meia and Fundo."],
+        .tutorialStep2: [.portuguese: "Faz o percurso Pira → Meia → Fundo e depois de volta até à Pira.", .english: "Run the course Pira → Meia → Fundo, then back to the Pira."],
         .tutorialStep3: [.portuguese: "Puxa o dedo para trás e larga para lançar o berlinde.", .english: "Pull your finger back and release to launch the marble."],
-        .tutorialStep4: [.portuguese: "Se acertares numa cova, continuas a jogar.", .english: "If you hit a pit, you keep playing."],
-        .tutorialStep5: [.portuguese: "Depois de completares o percurso, podes atacar os berlindes adversários.", .english: "After completing the course, you can attack opponents' marbles."],
-        .tutorialStep6: [.portuguese: "Usa o palmo quando estiver disponível para te aproximares.", .english: "Use the hand-span when available to get closer."],
+        .tutorialStep4: [.portuguese: "Sempre que entrares numa cova, ganhas um palmo e jogas novamente.", .english: "Every time you enter a pit, you earn a hand-span and play again."],
+        .tutorialStep5: [.portuguese: "Só depois de completares o percurso podes atacar, disparando a partir de uma cova.", .english: "Only after completing the course can you attack, launching from a pit."],
+        .tutorialStep6: [.portuguese: "Acertar num adversário confisca o berlinde dele para sempre.", .english: "Hitting an opponent permanently confiscates their marble."],
         .tutorialSkip: [.portuguese: "Saltar", .english: "Skip"],
         .tutorialNext: [.portuguese: "Seguinte", .english: "Next"],
         .tutorialStart: [.portuguese: "Começar", .english: "Start"],
         .rulesTitle: [.portuguese: "Regras do Jogo", .english: "Game Rules"],
-        .rulesBody: [.portuguese: "O campo tem três covas em linha. Cada jogador lança o seu berlinde tentando entrar nas covas pela ordem definida. Ao completar o percurso, pode atacar os berlindes adversários. Vence quem permanecer em jogo ou quem atingir a pontuação-alvo.", .english: "The field has three pits in a line. Each player launches their marble trying to enter the pits in the defined order. After completing the course, they may attack opponents' marbles. The winner is whoever remains in play or reaches the target score."],
+        .rulesBody: [
+            .portuguese: "O campo tem três covas em linha: a Pira (Cova 1), a Meia (Cova 2) e o Fundo (Cova 3). Cada jogador faz o percurso Pira → Meia → Fundo e depois de volta Fundo → Meia → Pira. Sempre que entra numa cova com sucesso, avança 1 palmo e joga novamente. Só depois de completar todo o percurso é que pode \"matar\": atacar berlindes adversários, disparando sempre a partir de uma cova. Acertar confisca o berlinde do adversário para sempre — quem fica sem berlindes é eliminado. Vence quem completar o percurso sem perder o seu berlinde; em caso de empate, vence quem tiver mais berlindes confiscados. No modo por pontos: 2 pontos por cova alcançada, 2 pontos por acertar num adversário e 3 pontos por confiscar um berlinde. Em variações tradicionais existe ainda o \"abafador\", um berlinde maior usado para empurrar berlindes para fora de um círculo.",
+            .english: "The field has three pits in a line: the Pira (Pit 1), the Meia (Pit 2) and the Fundo (Pit 3). Each player runs the course Pira → Meia → Fundo and then back Fundo → Meia → Pira. Every successful hole entry earns a 1 hand-span (palmo) advance and another turn. Only after completing the full course can a player \"matar\" — attack opponents' marbles, always launching from a pit. A hit permanently confiscates the opponent's marble; a player with no marbles left is eliminated. The winner is whoever completes the course without losing their marble; ties are broken by whoever holds the most confiscated marbles. In points mode: 2 points per pit reached, 2 points per hit on an opponent, and 3 points per marble confiscated. Traditional variants also feature the \"abafador\", a larger marble used to knock others out of a circle.",
+        ],
         .settingsTitle: [.portuguese: "Definições", .english: "Settings"],
         .appearance: [.portuguese: "Aparência", .english: "Appearance"],
         .appearanceSystem: [.portuguese: "Sistema", .english: "System"],

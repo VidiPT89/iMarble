@@ -12,6 +12,9 @@ struct GameBoardView: View {
                 .onAppear {
                     viewModel.configureField(size: geometry.size)
                 }
+                .onChange(of: geometry.size) { _, newSize in
+                    viewModel.layoutField(size: newSize)
+                }
         }
     }
 

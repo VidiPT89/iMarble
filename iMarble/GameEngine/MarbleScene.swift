@@ -2,6 +2,8 @@ import SpriteKit
 
 protocol MarbleSceneDelegate: AnyObject {
     func marbleScene(_ scene: MarbleScene, canLaunch marbleID: UUID) -> Bool
+    func marbleScene(_ scene: MarbleScene, isAttackTarget marbleID: UUID) -> Bool
+    func marbleScene(_ scene: MarbleScene, didSelectTarget marbleID: UUID)
     func marbleScene(_ scene: MarbleScene, didLaunch marbleID: UUID)
     func marbleScene(_ scene: MarbleScene, didUpdatePower ratio: Double)
     func marbleScene(_ scene: MarbleScene, marbleDidStop marbleID: UUID, at position: CGPoint)
@@ -13,6 +15,8 @@ final class MarbleScene: SKScene {
 
     private var marbleNodes: [UUID: MarbleNode] = [:]
     private var holeNodes: [Int: SKShapeNode] = [:]
+    private var groundNode: SKShapeNode?
+    private var launchLineNode: SKShapeNode?
     private var draggingMarbleID: UUID?
     private var dragStart: CGPoint = .zero
     private var marbleOriginAtDragStart: CGPoint = .zero
@@ -37,6 +41,7 @@ final class MarbleScene: SKScene {
         ground.position = CGPoint(x: sceneSize.width / 2, y: sceneSize.height / 2)
         ground.zPosition = -10
         addChild(ground)
+        groundNode = ground
 
         let launchLine = SKShapeNode(rectOf: CGSize(width: 2, height: sceneSize.height * 0.7))
         launchLine.fillColor = SKColor.systemYellow.withAlphaComponent(0.5)
@@ -44,6 +49,7 @@ final class MarbleScene: SKScene {
         launchLine.position = CGPoint(x: sceneSize.width * 0.12, y: sceneSize.height / 2)
         launchLine.zPosition = -5
         addChild(launchLine)
+        launchLineNode = launchLine
 
         for hole in holes {
             let node = SKShapeNode(circleOfRadius: CGFloat(hole.radius))
@@ -54,6 +60,23 @@ final class MarbleScene: SKScene {
             node.zPosition = 1
             addChild(node)
             holeNodes[hole.number] = node
+        }
+    }
+
+    /// Repositions existing field elements (ground, launch line, holes) for a
+    /// new scene size without removing marble nodes, preserving in-progress
+    /// game state.
+    func relayoutField(holes: [Hole], sceneSize: CGSize) {
+        size = sceneSize
+
+        groundNode?.path = CGPath(rect: CGRect(x: -sceneSize.width / 2, y: -sceneSize.height / 2, width: sceneSize.width, height: sceneSize.height), transform: nil)
+        groundNode?.position = CGPoint(x: sceneSize.width / 2, y: sceneSize.height / 2)
+
+        launchLineNode?.path = CGPath(rect: CGRect(x: -1, y: -sceneSize.height * 0.35, width: 2, height: sceneSize.height * 0.7), transform: nil)
+        launchLineNode?.position = CGPoint(x: sceneSize.width * 0.12, y: sceneSize.height / 2)
+
+        for hole in holes {
+            holeNodes[hole.number]?.position = hole.position.cgPoint
         }
     }
 
@@ -76,6 +99,12 @@ final class MarbleScene: SKScene {
 
     func setPosition(_ id: UUID, position: CGPoint) {
         marbleNodes[id]?.position = position
+    }
+
+    func clearTargetHighlight() {
+        for node in marbleNodes.values {
+            node.isTargeted = false
+        }
     }
 
     func playEntrySplash(at position: CGPoint) {
@@ -118,12 +147,25 @@ final class MarbleScene: SKScene {
         guard let touch = touches.first else { return }
         let point = touch.location(in: self)
         for (id, node) in marbleNodes where node.frame.insetBy(dx: -14, dy: -14).contains(point) {
+            if gameDelegate?.marbleScene(self, isAttackTarget: id) == true {
+                selectTarget(id)
+                return
+            }
+        }
+        for (id, node) in marbleNodes where node.frame.insetBy(dx: -14, dy: -14).contains(point) {
             guard gameDelegate?.marbleScene(self, canLaunch: id) == true else { continue }
             draggingMarbleID = id
             dragStart = point
             marbleOriginAtDragStart = node.position
             break
         }
+    }
+
+    private func selectTarget(_ id: UUID) {
+        for (nodeID, node) in marbleNodes {
+            node.isTargeted = (nodeID == id)
+        }
+        gameDelegate?.marbleScene(self, didSelectTarget: id)
     }
 
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {

@@ -48,13 +48,18 @@ struct GameView: View {
     }
 
     private var header: some View {
-        HStack {
-            ForEach(viewModel.players) { player in
-                PlayerStatusView(player: player, isActive: player.id == viewModel.currentPlayer.id)
+        HStack(spacing: 8) {
+            ScrollView(.horizontal, showsIndicators: false) {
+                HStack(spacing: 6) {
+                    ForEach(viewModel.players) { player in
+                        PlayerStatusView(player: player, isActive: player.id == viewModel.currentPlayer.id)
+                    }
+                }
             }
-            Spacer()
+            Spacer(minLength: 8)
             PowerMeterView(ratio: viewModel.powerRatio)
-                .frame(width: 100)
+                .frame(width: 90)
+                .fixedSize(horizontal: true, vertical: false)
         }
         .padding(.horizontal, 16)
     }
