@@ -24,20 +24,17 @@ enum CourseType: String, Codable, CaseIterable, Identifiable {
 }
 
 struct GameRules: Codable, Equatable {
-    var numberOfPlayers: Int
     var courseType: CourseType
     var holeSequence: [Int]
     var captureMarbles: Bool
     var extraTurnAfterHole: Bool
     var extraTurnAfterHit: Bool
     var protectedMarblesInsideHoles: Bool
-    var allowConsecutiveAttacks: Bool
     var eliminateOnLastMarbleLost: Bool
     var attackRequiresCourseCompletion: Bool
     var attackRequiresHoleLaunch: Bool
     var victoryMode: VictoryMode
     var targetScore: Int
-    var numberOfRounds: Int
 
     static let maximumDragDistance: Double = 160
     static let powerMultiplier: Double = 3.4
@@ -50,19 +47,16 @@ struct GameRules: Codable, Equatable {
     static let moveTimeoutSeconds: Double = 6
 
     static let `default` = GameRules(
-        numberOfPlayers: 2,
         courseType: .roundTrip,
         holeSequence: CourseType.roundTrip.holeSequence,
         captureMarbles: true,
         extraTurnAfterHole: true,
         extraTurnAfterHit: true,
         protectedMarblesInsideHoles: true,
-        allowConsecutiveAttacks: true,
         eliminateOnLastMarbleLost: true,
         attackRequiresCourseCompletion: true,
         attackRequiresHoleLaunch: true,
         victoryMode: .classic,
-        targetScore: 15,
-        numberOfRounds: 3
+        targetScore: 15
     )
 }

@@ -9,8 +9,6 @@ final class TurnManager {
         self.currentPlayerIndex = 0
     }
 
-    var currentOrderPosition: Int { currentPlayerIndex }
-
     var activePlayerOrderIndex: Int {
         order[currentPlayerIndex % order.count]
     }
@@ -22,11 +20,6 @@ final class TurnManager {
             currentPlayerIndex = (currentPlayerIndex + 1) % order.count
             attempts += 1
         } while attempts <= order.count && !activePlayers[order[currentPlayerIndex]]
-    }
-
-    func setOrder(_ newOrder: [Int]) {
-        order = newOrder
-        currentPlayerIndex = 0
     }
 
     func remainingActiveCount(activePlayers: [Bool]) -> Int {

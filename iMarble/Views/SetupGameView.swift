@@ -62,10 +62,6 @@ struct SetupGameView: View {
                             Stepper("\(localization.string(.victoryTargetScore)): \(setup.targetScore)", value: $setup.targetScore, in: 5...50, step: 5)
                         }
                     }
-
-                    Section {
-                        Toggle(localization.string(.soundLabel), isOn: $setup.soundEnabled)
-                    }
                 }
                 .scrollContentBackground(.hidden)
             }

@@ -5,8 +5,6 @@ final class SetupViewModel: ObservableObject {
     @Published var courseType: CourseType = .roundTrip
     @Published var victoryMode: VictoryMode = .classic
     @Published var targetScore: Int = 15
-    @Published var numberOfRounds: Int = 3
-    @Published var soundEnabled: Bool = true
 
     init() {
         players = [
@@ -35,20 +33,17 @@ final class SetupViewModel: ObservableObject {
 
     func buildRules() -> GameRules {
         GameRules(
-            numberOfPlayers: players.count,
             courseType: courseType,
             holeSequence: courseType.holeSequence,
             captureMarbles: true,
             extraTurnAfterHole: true,
             extraTurnAfterHit: true,
             protectedMarblesInsideHoles: true,
-            allowConsecutiveAttacks: true,
             eliminateOnLastMarbleLost: true,
             attackRequiresCourseCompletion: true,
             attackRequiresHoleLaunch: true,
             victoryMode: victoryMode,
-            targetScore: targetScore,
-            numberOfRounds: numberOfRounds
+            targetScore: targetScore
         )
     }
 }

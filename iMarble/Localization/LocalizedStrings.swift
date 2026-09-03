@@ -28,7 +28,6 @@ enum LocalizedKey: String {
     case yourTurn
     case aimAtFirstHole
     case aimAtHole
-    case pullAndRelease
     case enteredHole
     case missedHole
     case missedAttack
@@ -107,7 +106,6 @@ enum LocalizedStrings {
         .yourTurn: [.portuguese: "É a tua vez.", .english: "It's your turn."],
         .aimAtFirstHole: [.portuguese: "Aponta para a primeira cova.", .english: "Aim at the first hole."],
         .aimAtHole: [.portuguese: "Entra na cova %d", .english: "Enter hole %d"],
-        .pullAndRelease: [.portuguese: "Puxa para trás e larga para lançar.", .english: "Pull back and release to launch."],
         .enteredHole: [.portuguese: "Entraste na cova!", .english: "You entered the hole!"],
         .missedHole: [.portuguese: "Falhaste a cova.", .english: "You missed the hole."],
         .missedAttack: [.portuguese: "Falhaste o ataque.", .english: "You missed the attack."],
