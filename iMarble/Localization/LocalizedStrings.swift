@@ -9,9 +9,7 @@ enum LocalizedKey: String {
     case about
     case developedBy
     case startGame
-    case numberOfPlayers
     case playerName
-    case humanOrComputer
     case human
     case computer
     case aiDifficulty
@@ -22,8 +20,6 @@ enum LocalizedKey: String {
     case victoryClassic
     case victoryPoints
     case palmoLabel
-    case palmoOn
-    case palmoOff
     case courseLabel
     case courseOneWay
     case courseRoundTrip
@@ -38,7 +34,6 @@ enum LocalizedKey: String {
     case missedHole
     case dragToPalmo
     case skipPalmo
-    case marbleProtected
     case missedAttack
     case hitMarble
     case keptMarble
@@ -74,21 +69,12 @@ enum LocalizedKey: String {
     case aboutBody
     case close
     case score
-    case captured
-    case power
     case chooseTarget
-    case confirmPalmo
-    case palmoExplanation
-    case objective
-    case newRound
     case players
     case addPlayer
     case removePlayer
-    case fieldTooSmallWarning
     case victoryTargetScore
-    case victoryRounds
     case playOnline
-    case onlineConnecting
     case onlineWaitingForPlayers
     case onlineAuthenticationFailed
     case onlinePeerDisconnected
@@ -104,9 +90,7 @@ enum LocalizedStrings {
         .about: [.portuguese: "Sobre o jogo", .english: "About"],
         .developedBy: [.portuguese: "Desenvolvido por David Arsénio Martins", .english: "Developed by David Arsénio Martins"],
         .startGame: [.portuguese: "Começar jogo", .english: "Start game"],
-        .numberOfPlayers: [.portuguese: "Número de jogadores", .english: "Number of players"],
         .playerName: [.portuguese: "Nome do jogador", .english: "Player name"],
-        .humanOrComputer: [.portuguese: "Tipo", .english: "Type"],
         .human: [.portuguese: "Humano", .english: "Human"],
         .computer: [.portuguese: "Computador", .english: "Computer"],
         .aiDifficulty: [.portuguese: "Dificuldade da IA", .english: "AI difficulty"],
@@ -117,8 +101,6 @@ enum LocalizedStrings {
         .victoryClassic: [.portuguese: "Clássico", .english: "Classic"],
         .victoryPoints: [.portuguese: "Pontos", .english: "Points"],
         .palmoLabel: [.portuguese: "Palmo", .english: "Hand-span"],
-        .palmoOn: [.portuguese: "Ligado", .english: "On"],
-        .palmoOff: [.portuguese: "Desligado", .english: "Off"],
         .courseLabel: [.portuguese: "Percurso", .english: "Course"],
         .courseOneWay: [.portuguese: "Apenas ida", .english: "One way"],
         .courseRoundTrip: [.portuguese: "Ida e volta", .english: "Round trip"],
@@ -133,7 +115,6 @@ enum LocalizedStrings {
         .missedHole: [.portuguese: "Falhaste a cova.", .english: "You missed the hole."],
         .dragToPalmo: [.portuguese: "Arrasta o berlinde na direção que quiseres, até um palmo.", .english: "Drag your marble in any direction, up to one hand-span."],
         .skipPalmo: [.portuguese: "Saltar palmo", .english: "Skip hand-span"],
-        .marbleProtected: [.portuguese: "Berlinde protegido.", .english: "Marble protected."],
         .missedAttack: [.portuguese: "Falhaste o ataque.", .english: "You missed the attack."],
         .hitMarble: [.portuguese: "Acertaste no berlinde!", .english: "You hit the marble!"],
         .keptMarble: [.portuguese: "Ficaste com o berlinde.", .english: "You kept the marble."],
@@ -172,21 +153,12 @@ enum LocalizedStrings {
         .aboutBody: [.portuguese: "iMarble é uma recriação digital do tradicional jogo português do berlinde, jogado na terra com três covas em linha.", .english: "iMarble is a digital recreation of the traditional Portuguese marble game, played on dirt ground with three pits in a line."],
         .close: [.portuguese: "Fechar", .english: "Close"],
         .score: [.portuguese: "Pontuação", .english: "Score"],
-        .captured: [.portuguese: "Capturados", .english: "Captured"],
-        .power: [.portuguese: "Força", .english: "Power"],
         .chooseTarget: [.portuguese: "Escolhe um alvo", .english: "Choose a target"],
-        .confirmPalmo: [.portuguese: "Confirmar palmo", .english: "Confirm hand-span"],
-        .palmoExplanation: [.portuguese: "O palmo permite aproximar o berlinde da cova antes de lançar novamente.", .english: "The hand-span lets you move the marble closer to the pit before launching again."],
-        .objective: [.portuguese: "Objetivo", .english: "Objective"],
-        .newRound: [.portuguese: "Nova ronda", .english: "New round"],
         .players: [.portuguese: "Jogadores", .english: "Players"],
         .addPlayer: [.portuguese: "Adicionar jogador", .english: "Add player"],
         .removePlayer: [.portuguese: "Remover jogador", .english: "Remove player"],
-        .fieldTooSmallWarning: [.portuguese: "Roda o dispositivo para o modo horizontal.", .english: "Rotate your device to landscape mode."],
         .victoryTargetScore: [.portuguese: "Pontuação-alvo", .english: "Target score"],
-        .victoryRounds: [.portuguese: "Número de rondas", .english: "Number of rounds"],
         .playOnline: [.portuguese: "Jogar online", .english: "Play online"],
-        .onlineConnecting: [.portuguese: "A ligar ao Game Center…", .english: "Connecting to Game Center…"],
         .onlineWaitingForPlayers: [.portuguese: "À espera dos jogadores…", .english: "Waiting for players…"],
         .onlineAuthenticationFailed: [.portuguese: "Não foi possível autenticar no Game Center.", .english: "Could not authenticate with Game Center."],
         .onlinePeerDisconnected: [.portuguese: "Um jogador desligou-se. Partida em pausa.", .english: "A player disconnected. Match paused."],

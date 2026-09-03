@@ -135,7 +135,12 @@ final class GameViewModel: ObservableObject, MarbleSceneDelegate {
 
         phase = .aiming
         currentMessageKey = .aimAtFirstHole
+        updateObjectiveHighlight()
         maybeTakeAITurn()
+    }
+
+    private func updateObjectiveHighlight() {
+        scene.setObjectiveHole(objectiveHoleNumber())
     }
 
     /// Repositions holes and marbles proportionally to a new available size,
@@ -348,6 +353,7 @@ final class GameViewModel: ObservableObject, MarbleSceneDelegate {
                     phase = .aiming
                     currentMessageKey = .yourTurn
                 }
+                updateObjectiveHighlight()
                 if rules.extraTurnAfterHole {
                     if rules.allowsPalmo, rules.palmoPolicy == .afterEverySuccess, !palmoUsedThisAttempt {
                         pendingSameTurnAfterPalmo = true
@@ -509,6 +515,7 @@ final class GameViewModel: ObservableObject, MarbleSceneDelegate {
         }
         phase = .aiming
         currentMessageKey = .yourTurn
+        updateObjectiveHighlight()
         maybeTakeAITurn()
     }
 
