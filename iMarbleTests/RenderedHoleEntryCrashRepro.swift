@@ -28,6 +28,6 @@ final class RenderedHoleEntryCrashRepro: XCTestCase {
 
         RunLoop.main.run(until: Date().addingTimeInterval(0.5))
 
-        XCTAssertEqual(viewModel.phase, .choosingPalmo)
+        XCTAssertEqual(viewModel.phase, .aiming)
     }
 }

@@ -52,10 +52,6 @@ struct SetupGameView: View {
                         }
                     }
 
-                    Section(localization.string(.palmoLabel)) {
-                        Toggle(localization.string(.palmoLabel), isOn: $setup.allowsPalmo)
-                    }
-
                     Section(localization.string(.victoryModeLabel)) {
                         Picker(localization.string(.victoryModeLabel), selection: $setup.victoryMode) {
                             Text(localization.string(.victoryClassic)).tag(VictoryMode.classic)

@@ -3,8 +3,6 @@ import Foundation
 final class SetupViewModel: ObservableObject {
     @Published var players: [Player]
     @Published var courseType: CourseType = .roundTrip
-    @Published var allowsPalmo: Bool = true
-    @Published var palmoPolicy: PalmoPolicy = .afterEverySuccess
     @Published var victoryMode: VictoryMode = .classic
     @Published var targetScore: Int = 15
     @Published var numberOfRounds: Int = 3
@@ -40,9 +38,6 @@ final class SetupViewModel: ObservableObject {
             numberOfPlayers: players.count,
             courseType: courseType,
             holeSequence: courseType.holeSequence,
-            allowsPalmo: allowsPalmo,
-            palmoPolicy: palmoPolicy,
-            palmoDistance: 60,
             captureMarbles: true,
             extraTurnAfterHole: true,
             extraTurnAfterHit: true,
