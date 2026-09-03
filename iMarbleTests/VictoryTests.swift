@@ -45,35 +45,24 @@ final class VictoryTests: XCTestCase {
         XCTAssertNil(engine.checkVictory(players: players))
     }
 
-    func testClassicVictoryDoesNotEndJustBecauseOnePlayerFinishedFirst() {
-        // Completing the course alone is not enough to win: the traditional
-        // rules require also eliminating every other player's marble first.
+    func testClassicVictoryEndsAsSoonAsAnyPlayerCompletesTheCourse() {
+        // Classic mode: first to complete the full course wins immediately,
+        // no need to eliminate anyone else's marbles.
         let engine = GameEngine(rules: .default)
         let players = [
             Player(name: "A", colorName: "orange", isHuman: true, hasCompletedCourse: true),
             Player(name: "B", colorName: "yellow", isHuman: false, hasCompletedCourse: false),
         ]
-        XCTAssertNil(engine.checkVictory(players: players))
+        XCTAssertEqual(engine.checkVictory(players: players)?.name, "A")
     }
 
-    func testClassicVictoryRequiresTheSoleRemainingPlayerToHaveFinished() {
+    func testClassicVictoryReturnsNilWhenNoOneHasCompletedTheCourse() {
         let engine = GameEngine(rules: .default)
         let players = [
             Player(name: "A", colorName: "orange", isHuman: true, hasCompletedCourse: false),
-            Player(name: "B", colorName: "yellow", isHuman: false, isEliminated: true, hasCompletedCourse: false),
+            Player(name: "B", colorName: "yellow", isHuman: false, hasCompletedCourse: false),
         ]
-        // A is the only one left standing but never finished the course,
-        // so the game must not declare a winner yet.
         XCTAssertNil(engine.checkVictory(players: players))
-    }
-
-    func testClassicVictoryWhenTheSoleRemainingPlayerHasCompletedTheCourse() {
-        let engine = GameEngine(rules: .default)
-        let players = [
-            Player(name: "A", colorName: "orange", isHuman: true, hasCompletedCourse: true),
-            Player(name: "B", colorName: "yellow", isHuman: false, isEliminated: true, hasCompletedCourse: false),
-        ]
-        XCTAssertEqual(engine.checkVictory(players: players)?.name, "A")
     }
 
     func testProcessAttackPermanentlyCapturesMarbleAndEliminatesOwner() {

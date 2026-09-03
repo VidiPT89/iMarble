@@ -347,7 +347,7 @@ final class GameViewModel: ObservableObject, MarbleSceneDelegate {
                     phase = .attacking
                 } else {
                     phase = .aiming
-                    currentMessageKey = .yourTurn
+                    currentMessageKey = turnMessage(for: player)
                 }
                 updateObjectiveHighlight()
                 if rules.extraTurnAfterHole {
@@ -448,10 +448,14 @@ final class GameViewModel: ObservableObject, MarbleSceneDelegate {
             }
         }
         phase = .aiming
-        currentMessageKey = .yourTurn
+        currentMessageKey = turnMessage(for: currentPlayer)
         updateObjectiveHighlight()
         updateReadyToLaunchHighlight()
         maybeTakeAITurn()
+    }
+
+    private func turnMessage(for player: Player) -> LocalizedKey {
+        player.isHuman ? .yourTurn : .opponentTurn
     }
 
     private func maybeTakeAITurn() {
