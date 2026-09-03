@@ -57,15 +57,14 @@ final class GameEngine {
     func checkVictory(players: [Player]) -> Player? {
         switch rules.victoryMode {
         case .classic:
-            let finishers = players.filter { $0.hasCompletedCourse && !$0.isEliminated }
-            if finishers.count == 1 {
-                return finishers.first
-            }
-            if finishers.count > 1 {
-                return finishers.max { $0.capturedMarbleCount < $1.capturedMarbleCount }
-            }
+            // Classic mode requires both completing the course and
+            // eliminating every other player's marble, not just being the
+            // first to finish the course while opponents are still in play.
             let remaining = players.filter { !$0.isEliminated }
-            return remaining.count == 1 ? remaining.first : nil
+            guard remaining.count == 1, let winner = remaining.first, winner.hasCompletedCourse else {
+                return nil
+            }
+            return winner
         case .points:
             return players.first { $0.score >= rules.targetScore }
         }
