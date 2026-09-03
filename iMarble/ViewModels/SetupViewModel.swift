@@ -2,6 +2,7 @@ import Foundation
 
 final class SetupViewModel: ObservableObject {
     @Published var players: [Player]
+    @Published var gameMode: GameMode = .covas
     @Published var courseType: CourseType = .roundTrip
     @Published var victoryMode: VictoryMode = .classic
     @Published var targetScore: Int = 15
@@ -45,5 +46,9 @@ final class SetupViewModel: ObservableObject {
             victoryMode: victoryMode,
             targetScore: targetScore
         )
+    }
+
+    func buildMoundRules() -> MoundRules {
+        .default
     }
 }

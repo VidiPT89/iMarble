@@ -96,6 +96,14 @@ enum LocalizedKey: String {
     case terrainSchoolyard
     case terrainBackyard
     case terrainPlaza
+    case gameModeLabel
+    case gameModeCovas
+    case gameModeMound
+    case moundAim
+    case moundShotInFlight
+    case moundBurned
+    case moundCaptured
+    case moundMissed
 }
 
 enum LocalizedStrings {
@@ -201,5 +209,13 @@ enum LocalizedStrings {
         .terrainSchoolyard: [.portuguese: "Pátio de escola", .english: "Schoolyard"],
         .terrainBackyard: [.portuguese: "Quintal", .english: "Backyard"],
         .terrainPlaza: [.portuguese: "Praça de aldeia", .english: "Village square"],
+        .gameModeLabel: [.portuguese: "Modo de jogo", .english: "Game mode"],
+        .gameModeCovas: [.portuguese: "Três covas", .english: "Three pits"],
+        .gameModeMound: [.portuguese: "Monte do Tesouro", .english: "Treasure Mound"],
+        .moundAim: [.portuguese: "Lança o teu boi para expulsar berlindes do círculo.", .english: "Launch your shooter to knock marbles out of the circle."],
+        .moundShotInFlight: [.portuguese: "A resolver o lançamento…", .english: "Resolving the shot…"],
+        .moundBurned: [.portuguese: "Queimaste-te! O teu berlinde ficou dentro do círculo.", .english: "You burned! Your shooter stayed inside the circle."],
+        .moundCaptured: [.portuguese: "Expulsaste berlindes do círculo!", .english: "You knocked marbles out of the circle!"],
+        .moundMissed: [.portuguese: "Não expulsaste nenhum berlinde.", .english: "You didn't knock any marbles out."],
     ]
 }
