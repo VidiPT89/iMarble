@@ -59,8 +59,12 @@ enum AIPlayer {
         }
         let power = min(max(forceRatio + forceError, 0.15), 1.0) * GameRules.maximumDragDistance
 
-        let dragDx = -cos(angle) * power
-        let dragDy = -sin(angle) * power
+        // `dragVector` is consumed directly as the launch direction (see
+        // PhysicsEngine.velocity(fromDrag:) and MarbleScene.touchesEnded,
+        // which pass `dragStart - point` — already the travel direction,
+        // not a pull-back vector), so it must point toward the target.
+        let dragDx = cos(angle) * power
+        let dragDy = sin(angle) * power
         return CGVector(dx: dragDx, dy: dragDy)
     }
 }
