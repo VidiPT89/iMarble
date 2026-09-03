@@ -19,6 +19,7 @@ struct Player: Identifiable, Codable, Equatable {
     var progressIndex: Int
     var hasCompletedCourse: Bool
     var capturedMarbleCount: Int
+    var gamePlayerID: String?
 
     init(
         id: UUID = UUID(),
@@ -30,7 +31,8 @@ struct Player: Identifiable, Codable, Equatable {
         aiDifficulty: AIDifficulty = .normal,
         progressIndex: Int = 0,
         hasCompletedCourse: Bool = false,
-        capturedMarbleCount: Int = 0
+        capturedMarbleCount: Int = 0,
+        gamePlayerID: String? = nil
     ) {
         self.id = id
         self.name = name
@@ -42,5 +44,6 @@ struct Player: Identifiable, Codable, Equatable {
         self.progressIndex = progressIndex
         self.hasCompletedCourse = hasCompletedCourse
         self.capturedMarbleCount = capturedMarbleCount
+        self.gamePlayerID = gamePlayerID
     }
 }

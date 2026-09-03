@@ -87,6 +87,11 @@ enum LocalizedKey: String {
     case fieldTooSmallWarning
     case victoryTargetScore
     case victoryRounds
+    case playOnline
+    case onlineConnecting
+    case onlineWaitingForPlayers
+    case onlineAuthenticationFailed
+    case onlinePeerDisconnected
 }
 
 enum LocalizedStrings {
@@ -180,5 +185,10 @@ enum LocalizedStrings {
         .fieldTooSmallWarning: [.portuguese: "Roda o dispositivo para o modo horizontal.", .english: "Rotate your device to landscape mode."],
         .victoryTargetScore: [.portuguese: "Pontuação-alvo", .english: "Target score"],
         .victoryRounds: [.portuguese: "Número de rondas", .english: "Number of rounds"],
+        .playOnline: [.portuguese: "Jogar online", .english: "Play online"],
+        .onlineConnecting: [.portuguese: "A ligar ao Game Center…", .english: "Connecting to Game Center…"],
+        .onlineWaitingForPlayers: [.portuguese: "À espera dos jogadores…", .english: "Waiting for players…"],
+        .onlineAuthenticationFailed: [.portuguese: "Não foi possível autenticar no Game Center.", .english: "Could not authenticate with Game Center."],
+        .onlinePeerDisconnected: [.portuguese: "Um jogador desligou-se. Partida em pausa.", .english: "A player disconnected. Match paused."],
     ]
 }

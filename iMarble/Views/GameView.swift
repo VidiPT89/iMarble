@@ -91,6 +91,11 @@ struct GameView: View {
                 Text(localization.string(.pause))
                     .font(AppTheme.Typography.headline())
                     .foregroundStyle(AppTheme.cream)
+                if viewModel.onlinePeerDisconnected {
+                    Text(localization.string(.onlinePeerDisconnected))
+                        .font(AppTheme.Typography.caption())
+                        .foregroundStyle(AppTheme.cream.opacity(0.8))
+                }
                 Button(localization.string(.resume)) { viewModel.resume() }
                     .buttonStyle(PrimaryButtonStyle())
                 Button(localization.string(.restart)) { viewModel.restart() }

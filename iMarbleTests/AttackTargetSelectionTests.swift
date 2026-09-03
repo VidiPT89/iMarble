@@ -48,7 +48,7 @@ final class AttackTargetSelectionTests: XCTestCase {
         XCTAssertEqual(viewModel.selectedTargetID, targetID)
         XCTAssertTrue(viewModel.marbleScene(viewModel.scene, canLaunch: attackerID))
 
-        viewModel.marbleScene(viewModel.scene, didLaunch: attackerID)
+        viewModel.marbleScene(viewModel.scene, didLaunch: attackerID, dragVector: CGVector(dx: 10, dy: 0))
         XCTAssertEqual(viewModel.phase, .marbleMoving)
 
         guard let targetIdx = viewModel.marbles.firstIndex(where: { $0.id == targetID }) else {
@@ -70,7 +70,7 @@ final class AttackTargetSelectionTests: XCTestCase {
         viewModel.marbles[targetIdx].position = CodablePoint(x: 350, y: 250)
 
         viewModel.marbleScene(viewModel.scene, didSelectTarget: targetID)
-        viewModel.marbleScene(viewModel.scene, didLaunch: attackerID)
+        viewModel.marbleScene(viewModel.scene, didLaunch: attackerID, dragVector: CGVector(dx: 10, dy: 0))
         viewModel.marbleScene(viewModel.scene, marbleDidStop: attackerID, at: CGPoint(x: 10, y: 10))
 
         XCTAssertFalse(viewModel.marbles[targetIdx].isCaptured)

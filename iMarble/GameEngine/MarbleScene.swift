@@ -4,7 +4,7 @@ protocol MarbleSceneDelegate: AnyObject {
     func marbleScene(_ scene: MarbleScene, canLaunch marbleID: UUID) -> Bool
     func marbleScene(_ scene: MarbleScene, isAttackTarget marbleID: UUID) -> Bool
     func marbleScene(_ scene: MarbleScene, didSelectTarget marbleID: UUID)
-    func marbleScene(_ scene: MarbleScene, didLaunch marbleID: UUID)
+    func marbleScene(_ scene: MarbleScene, didLaunch marbleID: UUID, dragVector: CGVector)
     func marbleScene(_ scene: MarbleScene, didUpdatePower ratio: Double)
     func marbleScene(_ scene: MarbleScene, marbleDidStop marbleID: UUID, at position: CGPoint)
     func marbleScene(_ scene: MarbleScene, marblesCollided idA: UUID, idB: UUID)
@@ -277,7 +277,7 @@ final class MarbleScene: SKScene {
         draggingMarbleID = nil
         gameDelegate?.marbleScene(self, didUpdatePower: 0)
         if velocity.dx != 0 || velocity.dy != 0 {
-            gameDelegate?.marbleScene(self, didLaunch: id)
+            gameDelegate?.marbleScene(self, didLaunch: id, dragVector: drag)
         }
     }
 
@@ -290,7 +290,7 @@ final class MarbleScene: SKScene {
     func launch(marbleID: UUID, dragVector: CGVector) {
         guard let node = marbleNodes[marbleID] else { return }
         node.velocity = PhysicsEngine.velocity(fromDrag: dragVector, rules: GameRules.default)
-        gameDelegate?.marbleScene(self, didLaunch: marbleID)
+        gameDelegate?.marbleScene(self, didLaunch: marbleID, dragVector: dragVector)
     }
 
     override func update(_ currentTime: TimeInterval) {
