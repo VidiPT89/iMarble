@@ -381,6 +381,10 @@ final class GameViewModel: ObservableObject, MarbleSceneDelegate {
         checkVictoryThenContinue(sameTurn: false)
     }
 
+    private func hasEligibleAttackTargets(for player: Player) -> Bool {
+        !AttackResolver.eligibleTargets(marbles: marbles, attackerOwnerID: player.id, rules: rules).isEmpty
+    }
+
     private func checkVictoryThenContinue(sameTurn: Bool) {
         if let winningPlayer = engine.checkVictory(players: players) {
             winner = winningPlayer
@@ -390,14 +394,19 @@ final class GameViewModel: ObservableObject, MarbleSceneDelegate {
             return
         }
         if sameTurn {
-            if canAttack {
+            if canAttack, hasEligibleAttackTargets(for: currentPlayer) {
                 phase = .attacking
                 selectedTargetID = nil
                 currentMessageKey = .chooseTarget
+                maybeTakeAITurn()
+            } else if canAttack {
+                // Completed the course, but no opponent marble can be
+                // attacked right now (e.g. all still protected in a hole).
+                endTurn()
             } else {
                 phase = .aiming
+                maybeTakeAITurn()
             }
-            maybeTakeAITurn()
         } else {
             endTurn()
         }
