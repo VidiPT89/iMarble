@@ -18,8 +18,10 @@
 		2E7733FCF789FF615AAB5282 /* GameMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A7B405D6AEBA0B9D21CDF70 /* GameMode.swift */; };
 		3106672D0D9DB5670954F6C2 /* RenderedHoleEntryCrashRepro.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F95CC733954708F6B74A5D7 /* RenderedHoleEntryCrashRepro.swift */; };
 		3633F9E28077EC4077CD053E /* ScoreRules.swift in Sources */ = {isa = PBXBuildFile; fileRef = FEB0CFCBDFFD256A0E01BCA3 /* ScoreRules.swift */; };
+		37B2D8FF217C972D0F5D6548 /* ChaseEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C6E924EF8051E70B9D9DD90 /* ChaseEngine.swift */; };
 		3B2EEE4BBEEA8157103B4996 /* PhysicsCollisionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22070515FD48FAF5822B509D /* PhysicsCollisionTests.swift */; };
 		3C2DF7AF1D34D650B2BC73F4 /* GamePhase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50666460A7D13EAAB2BFB652 /* GamePhase.swift */; };
+		41984BB82350D54850EEE8B7 /* ChaseEngineTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89689FCE10B50F0980475399 /* ChaseEngineTests.swift */; };
 		477B9DB4A794AEBE83A5D23B /* GameEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 684B92325415F3893F68AFA4 /* GameEngine.swift */; };
 		4B4809FEB3345F18A6B068EB /* PlayerStatusView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4F021D58EAD27456B69BD81 /* PlayerStatusView.swift */; };
 		4BAC9BCB95D86C2ABDABE318 /* TurnManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B83A01DE2A55C0CDF345650 /* TurnManagerTests.swift */; };
@@ -60,8 +62,10 @@
 		C4DFB034776717411A5D028C /* LocalizedStrings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F92CD06E5B378B13D9F4699 /* LocalizedStrings.swift */; };
 		CC012AF9F32656F6463698A1 /* GameMessageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66F7254ABADA64F9A5045AB0 /* GameMessageView.swift */; };
 		CD69BC2351B624D8DBF525E8 /* MarbleScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = A642A46C637B5F703BF8EABB /* MarbleScene.swift */; };
+		D078272B1CF864E6232F0774 /* ChaseGameViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC9665867E29A8CFE1D4B4C3 /* ChaseGameViewModel.swift */; };
 		D0FF5A964CDA577303CA491A /* ProgressStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DE29EF782B12145CE7A9E3E /* ProgressStore.swift */; };
 		D214482B01E883487C5C4163 /* CodablePoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDE2896DBCFC780ED7471E82 /* CodablePoint.swift */; };
+		D395E946A95B29329B26C878 /* ChaseBoardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88C6A2FB4A8479CE0DF45327 /* ChaseBoardView.swift */; };
 		D58A2145B0EFB0CBF13FF075 /* TutorialView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C1F337868CCC8AA87CCCFAB /* TutorialView.swift */; };
 		DDA523DF8695C0FB500E9B7A /* GameScreenSnapshotTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98420C27B6080C1B44AF50EB /* GameScreenSnapshotTests.swift */; };
 		DFD41328A4C65D02A7B7C115 /* MarbleNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = FEF1679296B688F4D290AE8F /* MarbleNode.swift */; };
@@ -69,8 +73,10 @@
 		E2FFEC95475BC9D8B68C69C3 /* Marble.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3A91802A48A387383565311 /* Marble.swift */; };
 		E53EF4037A44E4A0F6BCB4C2 /* SetupViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E051AD044B3B6AB6BD67432D /* SetupViewModel.swift */; };
 		E9E67C274E95DE31FBE316CF /* HapticsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000D8FAD3BE37E518813280C /* HapticsManager.swift */; };
+		EDD573709D3B5FBFC04AFE88 /* ChaseGameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 501D90CC5A8AF9881E538D0C /* ChaseGameView.swift */; };
 		F68F28BF983B35F487415CA5 /* OnlineMultiplayerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A85763074FDEDC0C23DF9650 /* OnlineMultiplayerTests.swift */; };
 		FAA4A7DF6FD8C09B5A1EC80B /* iMarbleApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A29CA57AF41BA0E5697C8DE /* iMarbleApp.swift */; };
+		FF5E918BF61A773A2BAD6772 /* ChaseScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BEA3EA69D46D47897DAF256 /* ChaseScene.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -102,11 +108,14 @@
 		22070515FD48FAF5822B509D /* PhysicsCollisionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhysicsCollisionTests.swift; sourceTree = "<group>"; };
 		23578363DC0C5C88489D9560 /* TurnManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TurnManager.swift; sourceTree = "<group>"; };
 		2B83A01DE2A55C0CDF345650 /* TurnManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TurnManagerTests.swift; sourceTree = "<group>"; };
+		2BEA3EA69D46D47897DAF256 /* ChaseScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChaseScene.swift; sourceTree = "<group>"; };
 		2C1F337868CCC8AA87CCCFAB /* TutorialView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialView.swift; sourceTree = "<group>"; };
 		3896431A525340687928AA75 /* OnlineGameCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnlineGameCoordinator.swift; sourceTree = "<group>"; };
 		3BE76A079504E356E436EA55 /* SettingsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewModel.swift; sourceTree = "<group>"; };
 		3F92CD06E5B378B13D9F4699 /* LocalizedStrings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizedStrings.swift; sourceTree = "<group>"; };
 		442BF8BA538DDE4519861A55 /* AttackResolver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttackResolver.swift; sourceTree = "<group>"; };
+		4C6E924EF8051E70B9D9DD90 /* ChaseEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChaseEngine.swift; sourceTree = "<group>"; };
+		501D90CC5A8AF9881E538D0C /* ChaseGameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChaseGameView.swift; sourceTree = "<group>"; };
 		50666460A7D13EAAB2BFB652 /* GamePhase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GamePhase.swift; sourceTree = "<group>"; };
 		50E9D4066964F7965EE73C58 /* HoleResolver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HoleResolver.swift; sourceTree = "<group>"; };
 		545F0C900EF0F01CD9115931 /* OnlineGameContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnlineGameContainerView.swift; sourceTree = "<group>"; };
@@ -127,6 +136,8 @@
 		765FD161C33B42B44AB24068 /* RootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootView.swift; sourceTree = "<group>"; };
 		7DE29EF782B12145CE7A9E3E /* ProgressStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressStore.swift; sourceTree = "<group>"; };
 		83F7F455C1B5E2549FC1FABE /* NetworkGameEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkGameEvent.swift; sourceTree = "<group>"; };
+		88C6A2FB4A8479CE0DF45327 /* ChaseBoardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChaseBoardView.swift; sourceTree = "<group>"; };
+		89689FCE10B50F0980475399 /* ChaseEngineTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChaseEngineTests.swift; sourceTree = "<group>"; };
 		91FEB5285DA95F7C13C2EAB6 /* MoundBoardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoundBoardView.swift; sourceTree = "<group>"; };
 		9657B4CD383CB5E501F56445 /* PowerMeterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PowerMeterView.swift; sourceTree = "<group>"; };
 		98420C27B6080C1B44AF50EB /* GameScreenSnapshotTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameScreenSnapshotTests.swift; sourceTree = "<group>"; };
@@ -152,6 +163,7 @@
 		E4A3D32798F133EA215A0A8F /* MarbleSkin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarbleSkin.swift; sourceTree = "<group>"; };
 		E7E562E966814A939700D09D /* iMarbleTests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = iMarbleTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		EB3A2192CD498710E75CEF31 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		EC9665867E29A8CFE1D4B4C3 /* ChaseGameViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChaseGameViewModel.swift; sourceTree = "<group>"; };
 		EEB5BAA38BCB598477309DFF /* SoundManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoundManager.swift; sourceTree = "<group>"; };
 		EF7BFFF30DEFC1C0FD1FAC2B /* MainMenuView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainMenuView.swift; sourceTree = "<group>"; };
 		F3A91802A48A387383565311 /* Marble.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Marble.swift; sourceTree = "<group>"; };
@@ -202,6 +214,7 @@
 				638C0837C5A30262A34C247A /* AIPlayerTests.swift */,
 				B5A10FEE27994F5F0041E57A /* AttackDeadlockTests.swift */,
 				BDB2C53039E86F22E82F3D01 /* AttackTargetSelectionTests.swift */,
+				89689FCE10B50F0980475399 /* ChaseEngineTests.swift */,
 				74E4FB85A9A398E04124C05A /* GameRulesTests.swift */,
 				D4B5703F737C10043CDCA9D7 /* GameViewModelLayoutTests.swift */,
 				70EC69F772A426DE965A9DD4 /* MoundEngineTests.swift */,
@@ -225,6 +238,7 @@
 		486268F39FD83D7402B018A8 /* ViewModels */ = {
 			isa = PBXGroup;
 			children = (
+				EC9665867E29A8CFE1D4B4C3 /* ChaseGameViewModel.swift */,
 				6D9365BCC4E8070792062594 /* GameViewModel.swift */,
 				CF735658B69E8447577976E0 /* MoundGameViewModel.swift */,
 				7DE29EF782B12145CE7A9E3E /* ProgressStore.swift */,
@@ -264,6 +278,8 @@
 		54A900E713F3DB408DCF4182 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				88C6A2FB4A8479CE0DF45327 /* ChaseBoardView.swift */,
+				501D90CC5A8AF9881E538D0C /* ChaseGameView.swift */,
 				99B91C30C6D1E3B3DCCFCC60 /* CollectionView.swift */,
 				AB8FD2125610C23E2A850F91 /* GameBoardView.swift */,
 				0A0BB2AC2062A6BA02D47B88 /* GameOverView.swift */,
@@ -325,6 +341,8 @@
 			children = (
 				F5768D283BDE090375321881 /* AIPlayer.swift */,
 				442BF8BA538DDE4519861A55 /* AttackResolver.swift */,
+				4C6E924EF8051E70B9D9DD90 /* ChaseEngine.swift */,
+				2BEA3EA69D46D47897DAF256 /* ChaseScene.swift */,
 				684B92325415F3893F68AFA4 /* GameEngine.swift */,
 				000D8FAD3BE37E518813280C /* HapticsManager.swift */,
 				50E9D4066964F7965EE73C58 /* HoleResolver.swift */,
@@ -479,6 +497,11 @@
 				945EF874B6AD6B1D48F3F77E /* AIPlayer.swift in Sources */,
 				1B9E9D8D389D904022C95B13 /* AppTheme.swift in Sources */,
 				E04143E92C349C944CABFB82 /* AttackResolver.swift in Sources */,
+				D395E946A95B29329B26C878 /* ChaseBoardView.swift in Sources */,
+				37B2D8FF217C972D0F5D6548 /* ChaseEngine.swift in Sources */,
+				EDD573709D3B5FBFC04AFE88 /* ChaseGameView.swift in Sources */,
+				D078272B1CF864E6232F0774 /* ChaseGameViewModel.swift in Sources */,
+				FF5E918BF61A773A2BAD6772 /* ChaseScene.swift in Sources */,
 				D214482B01E883487C5C4163 /* CodablePoint.swift in Sources */,
 				A5888389FE3F2A2D85EC017F /* CollectionView.swift in Sources */,
 				658472954F29AFC2E1DC4118 /* GameBoardView.swift in Sources */,
@@ -537,6 +560,7 @@
 				7855D955D6ACCDD6794829AF /* AIPlayerTests.swift in Sources */,
 				79145B6E1D1AA2B3EF7F4CCB /* AttackDeadlockTests.swift in Sources */,
 				6857BA1453B204C608431083 /* AttackTargetSelectionTests.swift in Sources */,
+				41984BB82350D54850EEE8B7 /* ChaseEngineTests.swift in Sources */,
 				6B63DDD4945BF9A381DF4020 /* GameRulesTests.swift in Sources */,
 				2C74D92ED9134FBAA919C207 /* GameViewModelLayoutTests.swift in Sources */,
 				8EB70B258419A641BF6C043B /* MoundEngineTests.swift in Sources */,

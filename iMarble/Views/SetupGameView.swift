@@ -16,6 +16,7 @@ struct SetupGameView: View {
                         Picker(localization.string(.gameModeLabel), selection: $setup.gameMode) {
                             Text(localization.string(.gameModeCovas)).tag(GameMode.covas)
                             Text(localization.string(.gameModeMound)).tag(GameMode.mound)
+                            Text(localization.string(.gameModeChase)).tag(GameMode.chase)
                         }
                         .pickerStyle(.segmented)
                     }
@@ -43,12 +44,14 @@ struct SetupGameView: View {
                                 }
                             }
                         }
-                        HStack {
-                            Button(localization.string(.addPlayer)) { setup.addPlayer() }
-                                .disabled(setup.players.count >= 4)
-                            Spacer()
-                            Button(localization.string(.removePlayer)) { setup.removePlayer() }
-                                .disabled(setup.players.count <= 2)
+                        if setup.gameMode != .chase {
+                            HStack {
+                                Button(localization.string(.addPlayer)) { setup.addPlayer() }
+                                    .disabled(setup.players.count >= 4)
+                                Spacer()
+                                Button(localization.string(.removePlayer)) { setup.removePlayer() }
+                                    .disabled(setup.players.count <= 2)
+                            }
                         }
                     }
 
@@ -86,9 +89,12 @@ struct SetupGameView: View {
                 }
             }
             .fullScreenCover(isPresented: $startGame) {
-                if setup.gameMode == .mound {
+                switch setup.gameMode {
+                case .mound:
                     MoundGameView(viewModel: MoundGameViewModel(players: setup.players, rules: setup.buildMoundRules()))
-                } else {
+                case .chase:
+                    ChaseGameView(viewModel: ChaseGameViewModel(players: setup.players, rules: setup.buildChaseRules()))
+                case .covas:
                     GameView(viewModel: GameViewModel(players: setup.players, rules: setup.buildRules()))
                 }
             }

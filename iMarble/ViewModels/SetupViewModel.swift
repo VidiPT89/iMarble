@@ -2,7 +2,13 @@ import Foundation
 
 final class SetupViewModel: ObservableObject {
     @Published var players: [Player]
-    @Published var gameMode: GameMode = .covas
+    @Published var gameMode: GameMode = .covas {
+        didSet {
+            if gameMode == .chase {
+                while players.count > 2 { players.removeLast() }
+            }
+        }
+    }
     @Published var courseType: CourseType = .roundTrip
     @Published var victoryMode: VictoryMode = .classic
     @Published var targetScore: Int = 15
@@ -49,6 +55,10 @@ final class SetupViewModel: ObservableObject {
     }
 
     func buildMoundRules() -> MoundRules {
+        .default
+    }
+
+    func buildChaseRules() -> ChaseRules {
         .default
     }
 }

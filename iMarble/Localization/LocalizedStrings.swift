@@ -99,11 +99,17 @@ enum LocalizedKey: String {
     case gameModeLabel
     case gameModeCovas
     case gameModeMound
+    case gameModeChase
     case moundAim
     case moundShotInFlight
     case moundBurned
     case moundCaptured
     case moundMissed
+    case chaseFleeAim
+    case chaseChaseAim
+    case chaseShotInFlight
+    case chaseHit
+    case chaseMissed
 }
 
 enum LocalizedStrings {
@@ -160,8 +166,8 @@ enum LocalizedStrings {
         .tutorialStart: [.portuguese: "Começar", .english: "Start"],
         .rulesTitle: [.portuguese: "Regras do Jogo", .english: "Game Rules"],
         .rulesBody: [
-            .portuguese: "O campo tem três covas em linha: a Pira (Cova 1), a Meia (Cova 2) e o Fundo (Cova 3). Cada jogador faz o percurso Pira → Meia → Fundo e depois de volta Fundo → Meia → Pira. Sempre que entra numa cova com sucesso, joga novamente. No modo clássico, vence quem completar todo o percurso primeiro. No modo por pontos, depois de completar o percurso um jogador pode ainda \"matar\": atacar berlindes adversários, disparando sempre a partir de uma cova — acertar confisca o berlinde do adversário para sempre. Pontuação: 2 pontos por cova alcançada, 2 pontos por acertar num adversário e 3 pontos por confiscar um berlinde; vence quem atingir primeiro a pontuação-alvo. Em variações tradicionais existe ainda o \"abafador\", um berlinde maior usado para empurrar berlindes para fora de um círculo.",
-            .english: "The field has three pits in a line: the Pira (Pit 1), the Meia (Pit 2) and the Fundo (Pit 3). Each player runs the course Pira → Meia → Fundo and then back Fundo → Meia → Pira. Every successful hole entry earns another turn. In classic mode, whoever completes the full course first wins. In points mode, after completing the course a player can still \"matar\" — attack opponents' marbles, always launching from a pit — a hit permanently confiscates the opponent's marble. Scoring: 2 points per pit reached, 2 points per hit on an opponent, and 3 points per marble confiscated; the winner is whoever reaches the target score first. Traditional variants also feature the \"abafador\", a larger marble used to knock others out of a circle.",
+            .portuguese: "O campo tem três covas em linha: a Pira (Cova 1), a Meia (Cova 2) e o Fundo (Cova 3). Cada jogador faz o percurso Pira → Meia → Fundo e depois de volta Fundo → Meia → Pira. Sempre que entra numa cova com sucesso, joga novamente. No modo clássico, vence quem completar todo o percurso primeiro. No modo por pontos, depois de completar o percurso um jogador pode ainda \"matar\": atacar berlindes adversários, disparando sempre a partir de uma cova — acertar confisca o berlinde do adversário para sempre. Pontuação: 2 pontos por cova alcançada, 2 pontos por acertar num adversário e 3 pontos por confiscar um berlinde; vence quem atingir primeiro a pontuação-alvo.\n\nNo modo Monte do Tesouro, os berlindes de todos os jogadores começam num monte dentro de um círculo; à vez, cada jogador lança um berlinde maior a partir de fora, tentando expulsar berlindes do círculo — quem os expulsa, fica com eles. Se o teu berlinde ficar dentro do círculo, \"queimas-te\" e perdes o turno seguinte. Vence quem tiver mais berlindes capturados quando o monte esvaziar.\n\nNo modo Perseguição (2 jogadores), um foge lançando o seu berlinde para a frente; o outro tenta acertar-lhe. Se acertar, ganha um ponto; se falhar, passa a ser ele o perseguido na jogada seguinte. Vence quem atingir primeiro a pontuação-alvo.",
+            .english: "The field has three pits in a line: the Pira (Pit 1), the Meia (Pit 2) and the Fundo (Pit 3). Each player runs the course Pira → Meia → Fundo and then back Fundo → Meia → Pira. Every successful hole entry earns another turn. In classic mode, whoever completes the full course first wins. In points mode, after completing the course a player can still \"matar\" — attack opponents' marbles, always launching from a pit — a hit permanently confiscates the opponent's marble. Scoring: 2 points per pit reached, 2 points per hit on an opponent, and 3 points per marble confiscated; the winner is whoever reaches the target score first.\n\nIn Treasure Mound mode, every player's marbles start in a pile inside a circle; in turn, each player launches a larger shooter marble from outside, trying to knock marbles out of the circle — whoever knocks one out keeps it. If your own marble stays inside the circle, you \"burn\" and lose your next turn. Whoever has captured the most marbles once the pile is empty wins.\n\nIn Chase mode (2 players), one player flees by launching their marble forward; the other tries to hit it. A hit scores a point; a miss makes you the one being chased next round. The winner is whoever reaches the target score first.",
         ],
         .settingsTitle: [.portuguese: "Definições", .english: "Settings"],
         .appearance: [.portuguese: "Aparência", .english: "Appearance"],
@@ -217,5 +223,11 @@ enum LocalizedStrings {
         .moundBurned: [.portuguese: "Queimaste-te! O teu berlinde ficou dentro do círculo.", .english: "You burned! Your shooter stayed inside the circle."],
         .moundCaptured: [.portuguese: "Expulsaste berlindes do círculo!", .english: "You knocked marbles out of the circle!"],
         .moundMissed: [.portuguese: "Não expulsaste nenhum berlinde.", .english: "You didn't knock any marbles out."],
+        .gameModeChase: [.portuguese: "Perseguição", .english: "Chase"],
+        .chaseFleeAim: [.portuguese: "Lança o teu berlinde para fugir.", .english: "Launch your marble to flee."],
+        .chaseChaseAim: [.portuguese: "Persegue e acerta no berlinde adversário.", .english: "Chase and hit the opponent's marble."],
+        .chaseShotInFlight: [.portuguese: "A resolver o lançamento…", .english: "Resolving the shot…"],
+        .chaseHit: [.portuguese: "Acertaste! Ganhas um ponto.", .english: "You hit it! You score a point."],
+        .chaseMissed: [.portuguese: "Falhaste — agora és perseguido.", .english: "You missed — now you're the one being chased."],
     ]
 }

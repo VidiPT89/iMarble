@@ -139,6 +139,47 @@ final class GameScreenSnapshotTests: XCTestCase {
         }
     }
 
+    func testChaseModePlaysFleeAndChaseShots() throws {
+        let app = XCUIApplication()
+        app.launch()
+
+        let skipButton = app.buttons["tutorialSkip"]
+        if skipButton.waitForExistence(timeout: 5) {
+            skipButton.tap()
+        }
+
+        let playButton = app.buttons["playButton"]
+        XCTAssertTrue(playButton.waitForExistence(timeout: 5))
+        playButton.tap()
+
+        let chaseSegment = app.buttons["Perseguição"].exists ? app.buttons["Perseguição"] : app.buttons["Chase"]
+        XCTAssertTrue(chaseSegment.waitForExistence(timeout: 5))
+        chaseSegment.tap()
+
+        let startButton = app.buttons["startGameButton"]
+        XCTAssertTrue(startButton.waitForExistence(timeout: 5))
+        startButton.tap()
+
+        let board = app.otherElements["chaseBoard"]
+        XCTAssertTrue(board.waitForExistence(timeout: 8))
+        Thread.sleep(forTimeInterval: 0.5)
+        attachScreenshot(named: "chase-0-start")
+
+        let fleeStart = board.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.9))
+        let fleeEnd = board.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.98))
+        fleeStart.press(forDuration: 0.1, thenDragTo: fleeEnd, withVelocity: .fast, thenHoldForDuration: 0.1)
+        Thread.sleep(forTimeInterval: 2.5)
+        attachScreenshot(named: "chase-1-after-flee")
+
+        let chaseStart = board.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.9))
+        let chaseEnd = board.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.98))
+        chaseStart.press(forDuration: 0.1, thenDragTo: chaseEnd, withVelocity: .fast, thenHoldForDuration: 0.1)
+        Thread.sleep(forTimeInterval: 2.5)
+        attachScreenshot(named: "chase-2-after-chase")
+
+        XCTAssertTrue(app.state == .runningForeground)
+    }
+
     private func attachScreenshot(named name: String) {
         let attachment = XCTAttachment(screenshot: XCUIScreen.main.screenshot())
         attachment.name = name
