@@ -26,6 +26,8 @@ final class MarbleScene: SKScene {
     private var anyMoving = false
     private var isDraggingPalmo = false
     private var palmoRangeNode: SKShapeNode?
+    private var aimArrowNode: SKShapeNode?
+    private var aimDotNodes: [SKShapeNode] = []
     var reduceMotion = false
 
     private static func launchLineSize(for sceneSize: CGSize) -> CGSize {
@@ -148,6 +150,84 @@ final class MarbleScene: SKScene {
         palmoRangeNode = nil
     }
 
+    /// Shows a dashed aim line from the marble in the direction it will fly,
+    /// growing and shifting color (yellow → red) with the launch power ratio.
+    func updateAimIndicator(origin: CGPoint, direction: CGVector, ratio: CGFloat) {
+        let clampedRatio = min(max(ratio, 0), 1)
+        let minLength: CGFloat = 34
+        let maxLength: CGFloat = 130
+        let length = minLength + (maxLength - minLength) * clampedRatio
+        let angle = atan2(direction.dy, direction.dx)
+        let color = aimColor(for: clampedRatio)
+
+        let dotCount = 6
+        if aimDotNodes.count != dotCount || aimDotNodes.contains(where: { $0.parent == nil }) {
+            aimDotNodes.forEach { $0.removeFromParent() }
+            aimDotNodes = (0..<dotCount).map { _ in
+                let dot = SKShapeNode(circleOfRadius: 3)
+                dot.strokeColor = .clear
+                dot.zPosition = 18
+                addChild(dot)
+                return dot
+            }
+        }
+        for (index, dot) in aimDotNodes.enumerated() {
+            let t = CGFloat(index + 1) / CGFloat(dotCount)
+            let distance = length * t
+            dot.position = CGPoint(x: origin.x + direction.dx * distance, y: origin.y + direction.dy * distance)
+            dot.fillColor = color
+            dot.alpha = 0.35 + 0.5 * t
+        }
+
+        let tip = CGPoint(x: origin.x + direction.dx * length, y: origin.y + direction.dy * length)
+        let arrowSize: CGFloat = 9
+        let arrowPath = CGMutablePath()
+        arrowPath.move(to: CGPoint(x: arrowSize, y: 0))
+        arrowPath.addLine(to: CGPoint(x: -arrowSize * 0.6, y: arrowSize * 0.7))
+        arrowPath.addLine(to: CGPoint(x: -arrowSize * 0.6, y: -arrowSize * 0.7))
+        arrowPath.closeSubpath()
+
+        if aimArrowNode == nil || aimArrowNode?.parent == nil {
+            aimArrowNode?.removeFromParent()
+            let arrow = SKShapeNode()
+            arrow.strokeColor = .clear
+            arrow.zPosition = 19
+            addChild(arrow)
+            aimArrowNode = arrow
+        }
+        aimArrowNode?.path = arrowPath
+        aimArrowNode?.fillColor = color
+        aimArrowNode?.position = tip
+        aimArrowNode?.zRotation = angle
+    }
+
+    private func aimColor(for ratio: CGFloat) -> SKColor {
+        if ratio < 0.5 {
+            let t = ratio / 0.5
+            return SKColor(
+                red: 1.0,
+                green: 0.85 - 0.25 * t,
+                blue: 0.15 - 0.1 * t,
+                alpha: 1.0
+            )
+        } else {
+            let t = (ratio - 0.5) / 0.5
+            return SKColor(
+                red: 1.0,
+                green: 0.6 - 0.6 * t,
+                blue: 0.05,
+                alpha: 1.0
+            )
+        }
+    }
+
+    func hideAimIndicator() {
+        aimDotNodes.forEach { $0.removeFromParent() }
+        aimDotNodes.removeAll()
+        aimArrowNode?.removeFromParent()
+        aimArrowNode = nil
+    }
+
     func playEntrySplash(at position: CGPoint) {
         guard !reduceMotion else { return }
         let container = SKNode()
@@ -250,6 +330,9 @@ final class MarbleScene: SKScene {
                 x: marbleOriginAtDragStart.x - normalized.dx * pullBack,
                 y: marbleOriginAtDragStart.y - normalized.dy * pullBack
             )
+            updateAimIndicator(origin: marbleOriginAtDragStart, direction: normalized, ratio: ratio)
+        } else {
+            hideAimIndicator()
         }
     }
 
@@ -276,6 +359,7 @@ final class MarbleScene: SKScene {
         node.velocity = velocity
         draggingMarbleID = nil
         gameDelegate?.marbleScene(self, didUpdatePower: 0)
+        hideAimIndicator()
         if velocity.dx != 0 || velocity.dy != 0 {
             gameDelegate?.marbleScene(self, didLaunch: id, dragVector: drag)
         }
@@ -285,6 +369,7 @@ final class MarbleScene: SKScene {
         draggingMarbleID = nil
         isDraggingPalmo = false
         gameDelegate?.marbleScene(self, didUpdatePower: 0)
+        hideAimIndicator()
     }
 
     func launch(marbleID: UUID, dragVector: CGVector) {
