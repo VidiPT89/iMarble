@@ -50,6 +50,17 @@
                ReferencedContainer = "container:iMarble.xcodeproj">
             </BuildableReference>
          </TestableReference>
+         <TestableReference
+            skipped = "NO"
+            parallelizable = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "8C971BBFBDB5DBBA5EC1421B"
+               BuildableName = "iMarbleUITests.xctest"
+               BlueprintName = "iMarbleUITests"
+               ReferencedContainer = "container:iMarble.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
       </Testables>
       <CommandLineArguments>
       </CommandLineArguments>

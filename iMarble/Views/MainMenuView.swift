@@ -29,6 +29,7 @@ struct MainMenuView: View {
                 VStack(spacing: 14) {
                     Button(localization.string(.play)) { showSetup = true }
                         .buttonStyle(PrimaryButtonStyle())
+                        .accessibilityIdentifier("playButton")
 
                     HStack(spacing: 14) {
                         Button(localization.string(.rules)) { showRules = true }

@@ -48,6 +48,7 @@ struct TutorialView: View {
                 HStack {
                     Button(localization.string(.tutorialSkip)) { onFinished() }
                         .buttonStyle(SecondaryButtonStyle())
+                        .accessibilityIdentifier("tutorialSkip")
                     Spacer()
                     Button(stepIndex == steps.count - 1 ? localization.string(.tutorialStart) : localization.string(.tutorialNext)) {
                         if stepIndex == steps.count - 1 {

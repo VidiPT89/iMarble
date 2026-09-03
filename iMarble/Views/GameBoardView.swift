@@ -9,6 +9,7 @@ struct GameBoardView: View {
             SpriteView(scene: sceneSized(to: geometry.size), options: [.allowsTransparency])
                 .background(AppTheme.groundGradient)
                 .clipShape(RoundedRectangle(cornerRadius: AppTheme.cornerRadius, style: .continuous))
+                .accessibilityIdentifier("gameBoard")
                 .onAppear {
                     viewModel.configureField(size: geometry.size)
                 }

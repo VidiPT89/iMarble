@@ -28,6 +28,18 @@ final class MarbleScene: SKScene {
     private var palmoRangeNode: SKShapeNode?
     var reduceMotion = false
 
+    private static func launchLineSize(for sceneSize: CGSize) -> CGSize {
+        sceneSize.height > sceneSize.width
+            ? CGSize(width: sceneSize.width * 0.7, height: 2)
+            : CGSize(width: 2, height: sceneSize.height * 0.7)
+    }
+
+    private static func launchLinePosition(for sceneSize: CGSize) -> CGPoint {
+        sceneSize.height > sceneSize.width
+            ? CGPoint(x: sceneSize.width / 2, y: sceneSize.height * 0.88)
+            : CGPoint(x: sceneSize.width * 0.12, y: sceneSize.height / 2)
+    }
+
     override func didMove(to view: SKView) {
         backgroundColor = SKColor(red: 0.16, green: 0.10, blue: 0.05, alpha: 1.0)
         physicsWorld.gravity = .zero
@@ -48,10 +60,10 @@ final class MarbleScene: SKScene {
         addChild(ground)
         groundNode = ground
 
-        let launchLine = SKShapeNode(rectOf: CGSize(width: 2, height: sceneSize.height * 0.7))
+        let launchLine = SKShapeNode(rectOf: Self.launchLineSize(for: sceneSize))
         launchLine.fillColor = SKColor.systemYellow.withAlphaComponent(0.5)
         launchLine.strokeColor = .clear
-        launchLine.position = CGPoint(x: sceneSize.width * 0.12, y: sceneSize.height / 2)
+        launchLine.position = Self.launchLinePosition(for: sceneSize)
         launchLine.zPosition = -5
         addChild(launchLine)
         launchLineNode = launchLine
@@ -77,8 +89,9 @@ final class MarbleScene: SKScene {
         groundNode?.path = CGPath(rect: CGRect(x: -sceneSize.width / 2, y: -sceneSize.height / 2, width: sceneSize.width, height: sceneSize.height), transform: nil)
         groundNode?.position = CGPoint(x: sceneSize.width / 2, y: sceneSize.height / 2)
 
-        launchLineNode?.path = CGPath(rect: CGRect(x: -1, y: -sceneSize.height * 0.35, width: 2, height: sceneSize.height * 0.7), transform: nil)
-        launchLineNode?.position = CGPoint(x: sceneSize.width * 0.12, y: sceneSize.height / 2)
+        let lineSize = Self.launchLineSize(for: sceneSize)
+        launchLineNode?.path = CGPath(rect: CGRect(x: -lineSize.width / 2, y: -lineSize.height / 2, width: lineSize.width, height: lineSize.height), transform: nil)
+        launchLineNode?.position = Self.launchLinePosition(for: sceneSize)
 
         for hole in holes {
             holeNodes[hole.number]?.position = hole.position.cgPoint

@@ -80,6 +80,7 @@ struct SetupGameView: View {
                 }
                 ToolbarItem(placement: .confirmationAction) {
                     Button(localization.string(.startGame)) { startGame = true }
+                        .accessibilityIdentifier("startGameButton")
                 }
             }
             .fullScreenCover(isPresented: $startGame) {
