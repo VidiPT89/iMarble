@@ -7,16 +7,6 @@ enum VictoryMode: String, Codable, CaseIterable, Identifiable {
     var id: String { rawValue }
 }
 
-enum PalmoPolicy: String, Codable, CaseIterable, Identifiable {
-    case none
-    case afterEverySuccess
-    case oncePerAttempt
-    case onlyWhenClose
-    case free
-
-    var id: String { rawValue }
-}
-
 enum CourseType: String, Codable, CaseIterable, Identifiable {
     case oneWay
     case roundTrip
@@ -37,9 +27,6 @@ struct GameRules: Codable, Equatable {
     var numberOfPlayers: Int
     var courseType: CourseType
     var holeSequence: [Int]
-    var allowsPalmo: Bool
-    var palmoPolicy: PalmoPolicy
-    var palmoDistance: Double
     var captureMarbles: Bool
     var extraTurnAfterHole: Bool
     var extraTurnAfterHit: Bool
@@ -66,9 +53,6 @@ struct GameRules: Codable, Equatable {
         numberOfPlayers: 2,
         courseType: .roundTrip,
         holeSequence: CourseType.roundTrip.holeSequence,
-        allowsPalmo: true,
-        palmoPolicy: .afterEverySuccess,
-        palmoDistance: 60,
         captureMarbles: true,
         extraTurnAfterHole: true,
         extraTurnAfterHit: true,

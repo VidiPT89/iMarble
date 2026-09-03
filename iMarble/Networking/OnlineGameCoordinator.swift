@@ -62,14 +62,6 @@ final class OnlineGameCoordinator: NSObject, ObservableObject, GKMatchDelegate {
         send(.launch(marbleID: marbleID, dragVector: NetworkVector(dragVector)))
     }
 
-    func broadcastPalmo(marbleID: UUID, vector: CGVector) {
-        send(.palmo(marbleID: marbleID, vector: NetworkVector(vector)))
-    }
-
-    func broadcastSkipPalmo(marbleID: UUID) {
-        send(.skipPalmo(marbleID: marbleID))
-    }
-
     func broadcastSelectTarget(marbleID: UUID, targetID: UUID) {
         send(.selectAttackTarget(marbleID: marbleID, targetID: targetID))
     }
@@ -83,14 +75,6 @@ final class OnlineGameCoordinator: NSObject, ObservableObject, GKMatchDelegate {
         case let .launch(marbleID, dragVector):
             viewModel.isApplyingRemoteEvent = true
             viewModel.scene.launch(marbleID: marbleID, dragVector: dragVector.cgVector)
-            viewModel.isApplyingRemoteEvent = false
-        case let .palmo(_, vector):
-            viewModel.isApplyingRemoteEvent = true
-            viewModel.usePalmo(direction: vector.cgVector)
-            viewModel.isApplyingRemoteEvent = false
-        case .skipPalmo:
-            viewModel.isApplyingRemoteEvent = true
-            viewModel.skipPalmo()
             viewModel.isApplyingRemoteEvent = false
         case let .selectAttackTarget(_, targetID):
             viewModel.isApplyingRemoteEvent = true

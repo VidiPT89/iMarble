@@ -21,12 +21,10 @@ final class OnlineMultiplayerTests: XCTestCase {
         XCTAssertEqual(event, decoded)
     }
 
-    func testNetworkGameEventRoundTripsPalmoSkipAndTarget() throws {
+    func testNetworkGameEventRoundTripsTargetAndDisconnect() throws {
         let marbleID = UUID()
         let targetID = UUID()
         let events: [NetworkGameEvent] = [
-            .palmo(marbleID: marbleID, vector: NetworkVector(dx: 3, dy: 4)),
-            .skipPalmo(marbleID: marbleID),
             .selectAttackTarget(marbleID: marbleID, targetID: targetID),
             .peerDisconnected(playerID: "p1"),
         ]

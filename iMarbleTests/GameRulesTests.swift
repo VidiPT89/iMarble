@@ -99,10 +99,6 @@ final class GameRulesTests: XCTestCase {
         ))
     }
 
-    func testDefaultPalmoPolicyIsAfterEverySuccess() {
-        XCTAssertEqual(GameRules.default.palmoPolicy, .afterEverySuccess)
-    }
-
     func testDefaultScoreValuesMatchPointsVariation() {
         XCTAssertEqual(ScoreRules.enterHole, 2)
         XCTAssertEqual(ScoreRules.hitOpponent, 2)

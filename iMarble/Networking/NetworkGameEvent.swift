@@ -21,17 +21,15 @@ struct NetworkVector: Codable, Equatable {
 enum NetworkGameEvent: Codable, Equatable {
     case matchSetup(players: [Player], rules: GameRules, hostPlayerID: String)
     case launch(marbleID: UUID, dragVector: NetworkVector)
-    case palmo(marbleID: UUID, vector: NetworkVector)
-    case skipPalmo(marbleID: UUID)
     case selectAttackTarget(marbleID: UUID, targetID: UUID)
     case peerDisconnected(playerID: String)
 
     private enum CodingKeys: String, CodingKey {
-        case type, players, rules, hostPlayerID, marbleID, dragVector, vector, targetID, playerID
+        case type, players, rules, hostPlayerID, marbleID, dragVector, targetID, playerID
     }
 
     private enum Kind: String, Codable {
-        case matchSetup, launch, palmo, skipPalmo, selectAttackTarget, peerDisconnected
+        case matchSetup, launch, selectAttackTarget, peerDisconnected
     }
 
     init(from decoder: Decoder) throws {
@@ -49,13 +47,6 @@ enum NetworkGameEvent: Codable, Equatable {
                 marbleID: try container.decode(UUID.self, forKey: .marbleID),
                 dragVector: try container.decode(NetworkVector.self, forKey: .dragVector)
             )
-        case .palmo:
-            self = .palmo(
-                marbleID: try container.decode(UUID.self, forKey: .marbleID),
-                vector: try container.decode(NetworkVector.self, forKey: .vector)
-            )
-        case .skipPalmo:
-            self = .skipPalmo(marbleID: try container.decode(UUID.self, forKey: .marbleID))
         case .selectAttackTarget:
             self = .selectAttackTarget(
                 marbleID: try container.decode(UUID.self, forKey: .marbleID),
@@ -78,13 +69,6 @@ enum NetworkGameEvent: Codable, Equatable {
             try container.encode(Kind.launch, forKey: .type)
             try container.encode(marbleID, forKey: .marbleID)
             try container.encode(dragVector, forKey: .dragVector)
-        case let .palmo(marbleID, vector):
-            try container.encode(Kind.palmo, forKey: .type)
-            try container.encode(marbleID, forKey: .marbleID)
-            try container.encode(vector, forKey: .vector)
-        case let .skipPalmo(marbleID):
-            try container.encode(Kind.skipPalmo, forKey: .type)
-            try container.encode(marbleID, forKey: .marbleID)
         case let .selectAttackTarget(marbleID, targetID):
             try container.encode(Kind.selectAttackTarget, forKey: .type)
             try container.encode(marbleID, forKey: .marbleID)

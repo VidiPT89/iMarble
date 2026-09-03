@@ -13,7 +13,6 @@ final class GameViewModel: ObservableObject, MarbleSceneDelegate {
     @Published var winner: Player?
     @Published var isPaused: Bool = false
     @Published var onlinePeerDisconnected: Bool = false
-    @Published var palmoAvailable: Bool = false
     @Published var canAttack: Bool = false
     @Published var selectedTargetID: UUID?
 
@@ -22,8 +21,6 @@ final class GameViewModel: ObservableObject, MarbleSceneDelegate {
     private let engine: GameEngine
     private var turnManager: TurnManager
     private var activeMarbleIndexByPlayer: [UUID: Int] = [:]
-    private var palmoUsedThisAttempt = false
-    private var pendingSameTurnAfterPalmo = false
     private var moveTimeoutWorkItem: DispatchWorkItem?
     private var attackInProgress = false
     private var attackerWasInsideHoleAtLaunch = false
@@ -222,23 +219,6 @@ final class GameViewModel: ObservableObject, MarbleSceneDelegate {
         return true
     }
 
-    func marbleScene(_ scene: MarbleScene, isPalmoTarget marbleID: UUID) -> Bool {
-        guard !isPaused, isLocalPlayersTurn, phase == .choosingPalmo else { return false }
-        return marbleID == marbles[currentMarbleIndex].id
-    }
-
-    func marbleScene(_ scene: MarbleScene, palmoRangeFor marbleID: UUID) -> CGFloat {
-        CGFloat(rules.palmoDistance)
-    }
-
-    func marbleScene(_ scene: MarbleScene, didDragPalmo marbleID: UUID, vector: CGVector) {
-        guard phase == .choosingPalmo, marbleID == marbles[currentMarbleIndex].id else { return }
-        if !isApplyingRemoteEvent {
-            onlineCoordinator?.broadcastPalmo(marbleID: marbleID, vector: vector)
-        }
-        usePalmo(direction: vector)
-    }
-
     func marbleScene(_ scene: MarbleScene, isAttackTarget marbleID: UUID) -> Bool {
         guard !isPaused, isLocalPlayersTurn, phase == .attacking else { return false }
         guard let marble = marbles.first(where: { $0.id == marbleID }) else { return false }
@@ -355,86 +335,16 @@ final class GameViewModel: ObservableObject, MarbleSceneDelegate {
                 }
                 updateObjectiveHighlight()
                 if rules.extraTurnAfterHole {
-                    if rules.allowsPalmo, rules.palmoPolicy == .afterEverySuccess, !palmoUsedThisAttempt {
-                        pendingSameTurnAfterPalmo = true
-                        palmoAvailable = true
-                        phase = .choosingPalmo
-                        currentMessageKey = .dragToPalmo
-                        scene.showPalmoRange(marbleID: marble.id, radius: CGFloat(rules.palmoDistance))
-                        return
-                    }
                     checkVictoryThenContinue(sameTurn: true)
                     return
                 }
             } else {
                 currentMessageKey = .missedHole
-                pendingSameTurnAfterPalmo = false
-                offerPalmoOrEndTurn()
+                endTurn()
                 return
             }
         }
         checkVictoryThenContinue(sameTurn: false)
-    }
-
-    /// Whether a missed shot grants a palmo, per the configured policy.
-    /// `.afterEverySuccess` only grants a palmo when a hole is entered
-    /// (handled separately in `resolveMove`), never on a miss.
-    private func missGrantsPalmo() -> Bool {
-        switch rules.palmoPolicy {
-        case .oncePerAttempt, .onlyWhenClose, .free:
-            return true
-        case .afterEverySuccess, .none:
-            return false
-        }
-    }
-
-    private func offerPalmoOrEndTurn() {
-        if rules.allowsPalmo, !palmoUsedThisAttempt, missGrantsPalmo() {
-            palmoAvailable = true
-            phase = .choosingPalmo
-            currentMessageKey = .dragToPalmo
-            scene.showPalmoRange(marbleID: marbles[currentMarbleIndex].id, radius: CGFloat(rules.palmoDistance))
-        } else {
-            endTurn()
-        }
-    }
-
-    func usePalmo(direction: CGVector) {
-        guard phase == .choosingPalmo else { return }
-        let idx = currentMarbleIndex
-        let magnitude = sqrt(direction.dx * direction.dx + direction.dy * direction.dy)
-        let length = min(magnitude, CGFloat(rules.palmoDistance))
-        scene.hidePalmoRange()
-        guard length > 0 else { skipPalmo(); return }
-        let normalized = CGVector(dx: direction.dx / magnitude, dy: direction.dy / magnitude)
-        var newPosition = marbles[idx].position.cgPoint
-        newPosition.x += normalized.dx * length
-        newPosition.y += normalized.dy * length
-        marbles[idx].position = CodablePoint(newPosition)
-        scene.setPosition(marbles[idx].id, position: newPosition)
-        palmoUsedThisAttempt = true
-        palmoAvailable = false
-        if pendingSameTurnAfterPalmo {
-            pendingSameTurnAfterPalmo = false
-            checkVictoryThenContinue(sameTurn: true)
-        } else {
-            phase = .aiming
-            currentMessageKey = .pullAndRelease
-        }
-    }
-
-    func skipPalmo() {
-        if !isApplyingRemoteEvent {
-            onlineCoordinator?.broadcastSkipPalmo(marbleID: marbles[currentMarbleIndex].id)
-        }
-        palmoAvailable = false
-        scene.hidePalmoRange()
-        if pendingSameTurnAfterPalmo {
-            pendingSameTurnAfterPalmo = false
-            checkVictoryThenContinue(sameTurn: true)
-        } else {
-            endTurn()
-        }
     }
 
     func attemptAttack(targetMarbleID: UUID) {
@@ -481,7 +391,6 @@ final class GameViewModel: ObservableObject, MarbleSceneDelegate {
             return
         }
         if sameTurn {
-            palmoUsedThisAttempt = false
             if canAttack {
                 phase = .attacking
                 selectedTargetID = nil
@@ -500,8 +409,6 @@ final class GameViewModel: ObservableObject, MarbleSceneDelegate {
         canAttack = false
         selectedTargetID = nil
         scene.clearTargetHighlight()
-        palmoUsedThisAttempt = false
-        pendingSameTurnAfterPalmo = false
         var activeFlags = players.map { !$0.isEliminated }
         turnManager.advance(activePlayers: activeFlags)
         activeFlags = players.map { !$0.isEliminated }
