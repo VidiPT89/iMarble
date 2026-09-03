@@ -103,6 +103,42 @@ final class GameScreenSnapshotTests: XCTestCase {
         }
     }
 
+    func testMoundModePlaysAndCapturesMarbles() throws {
+        let app = XCUIApplication()
+        app.launch()
+
+        let skipButton = app.buttons["tutorialSkip"]
+        if skipButton.waitForExistence(timeout: 5) {
+            skipButton.tap()
+        }
+
+        let playButton = app.buttons["playButton"]
+        XCTAssertTrue(playButton.waitForExistence(timeout: 5))
+        playButton.tap()
+
+        let moundSegment = app.buttons["Monte do Tesouro"].exists ? app.buttons["Monte do Tesouro"] : app.buttons["Treasure Mound"]
+        XCTAssertTrue(moundSegment.waitForExistence(timeout: 5))
+        moundSegment.tap()
+
+        let startButton = app.buttons["startGameButton"]
+        XCTAssertTrue(startButton.waitForExistence(timeout: 5))
+        startButton.tap()
+
+        let board = app.otherElements["moundBoard"]
+        XCTAssertTrue(board.waitForExistence(timeout: 8))
+        Thread.sleep(forTimeInterval: 0.5)
+        attachScreenshot(named: "mound-0-start")
+
+        for index in 0..<3 {
+            let start = board.coordinate(withNormalizedOffset: CGVector(dx: 0.95, dy: 0.5))
+            let end = board.coordinate(withNormalizedOffset: CGVector(dx: 1.0, dy: 0.5))
+            start.press(forDuration: 0.1, thenDragTo: end, withVelocity: .fast, thenHoldForDuration: 0.1)
+            Thread.sleep(forTimeInterval: 2.5)
+            attachScreenshot(named: "mound-\(index + 1)-after-shot")
+            XCTAssertTrue(app.state == .runningForeground, "app should still be running after shot \(index + 1)")
+        }
+    }
+
     private func attachScreenshot(named name: String) {
         let attachment = XCTAttachment(screenshot: XCUIScreen.main.screenshot())
         attachment.name = name

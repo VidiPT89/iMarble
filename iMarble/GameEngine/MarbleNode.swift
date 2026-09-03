@@ -3,6 +3,7 @@ import UIKit
 
 final class MarbleNode: SKShapeNode {
     let marbleID: UUID
+    let radius: CGFloat
     var velocity: CGVector = .zero
     var isProtected: Bool = false {
         didSet { updateProtectionRing() }
@@ -22,6 +23,7 @@ final class MarbleNode: SKShapeNode {
 
     init(marbleID: UUID, radius: CGFloat, color: SKColor) {
         self.marbleID = marbleID
+        self.radius = radius
         self.ringNode = SKShapeNode(circleOfRadius: radius + 4)
         self.targetRingNode = SKShapeNode(circleOfRadius: radius + 7)
         self.readyRingNode = SKShapeNode(circleOfRadius: radius + 10)

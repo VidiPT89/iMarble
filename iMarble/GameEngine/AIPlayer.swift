@@ -33,7 +33,7 @@ enum AIPlayer {
         }
     }
 
-    private static func aimVector(from: CodablePoint, to: CodablePoint, difficulty: AIDifficulty) -> CGVector {
+    static func aimVector(from: CodablePoint, to: CodablePoint, difficulty: AIDifficulty) -> CGVector {
         let dx = to.x - from.x
         let dy = to.y - from.y
         let distance = sqrt(dx * dx + dy * dy)

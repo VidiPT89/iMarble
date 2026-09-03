@@ -33,6 +33,26 @@ enum PhysicsEngine {
         p.y = min(max(p.y, bounds.minY + radius), bounds.maxY - radius)
         return p
     }
+
+    /// Equal-mass elastic collision: swaps the velocity component along the
+    /// normal connecting the two positions, leaving the tangential
+    /// component untouched. Returns the inputs unchanged if the marbles are
+    /// already separating or exactly coincident.
+    static func resolveCollision(velocityA: CGVector, velocityB: CGVector, positionA: CGPoint, positionB: CGPoint) -> (CGVector, CGVector) {
+        let dx = positionB.x - positionA.x
+        let dy = positionB.y - positionA.y
+        let distance = sqrt(dx * dx + dy * dy)
+        guard distance > 0 else { return (velocityA, velocityB) }
+        let nx = dx / distance
+        let ny = dy / distance
+        let relVx = velocityA.dx - velocityB.dx
+        let relVy = velocityA.dy - velocityB.dy
+        let speedAlongNormal = relVx * nx + relVy * ny
+        guard speedAlongNormal > 0 else { return (velocityA, velocityB) }
+        let newA = CGVector(dx: velocityA.dx - speedAlongNormal * nx, dy: velocityA.dy - speedAlongNormal * ny)
+        let newB = CGVector(dx: velocityB.dx + speedAlongNormal * nx, dy: velocityB.dy + speedAlongNormal * ny)
+        return (newA, newB)
+    }
 }
 
 private extension GameRules {

@@ -12,6 +12,14 @@ struct SetupGameView: View {
             ZStack {
                 AppTheme.backgroundGradient.ignoresSafeArea()
                 Form {
+                    Section(localization.string(.gameModeLabel)) {
+                        Picker(localization.string(.gameModeLabel), selection: $setup.gameMode) {
+                            Text(localization.string(.gameModeCovas)).tag(GameMode.covas)
+                            Text(localization.string(.gameModeMound)).tag(GameMode.mound)
+                        }
+                        .pickerStyle(.segmented)
+                    }
+
                     Section(localization.string(.players)) {
                         ForEach($setup.players) { $player in
                             HStack {
@@ -44,22 +52,24 @@ struct SetupGameView: View {
                         }
                     }
 
-                    Section(localization.string(.courseLabel)) {
-                        Picker(localization.string(.courseLabel), selection: $setup.courseType) {
-                            Text(localization.string(.courseOneWay)).tag(CourseType.oneWay)
-                            Text(localization.string(.courseRoundTrip)).tag(CourseType.roundTrip)
-                            Text(localization.string(.courseRoundTripPapa)).tag(CourseType.roundTripWithPapa)
+                    if setup.gameMode == .covas {
+                        Section(localization.string(.courseLabel)) {
+                            Picker(localization.string(.courseLabel), selection: $setup.courseType) {
+                                Text(localization.string(.courseOneWay)).tag(CourseType.oneWay)
+                                Text(localization.string(.courseRoundTrip)).tag(CourseType.roundTrip)
+                                Text(localization.string(.courseRoundTripPapa)).tag(CourseType.roundTripWithPapa)
+                            }
                         }
-                    }
 
-                    Section(localization.string(.victoryModeLabel)) {
-                        Picker(localization.string(.victoryModeLabel), selection: $setup.victoryMode) {
-                            Text(localization.string(.victoryClassic)).tag(VictoryMode.classic)
-                            Text(localization.string(.victoryPoints)).tag(VictoryMode.points)
-                        }
-                        .pickerStyle(.segmented)
-                        if setup.victoryMode == .points {
-                            Stepper("\(localization.string(.victoryTargetScore)): \(setup.targetScore)", value: $setup.targetScore, in: 5...50, step: 5)
+                        Section(localization.string(.victoryModeLabel)) {
+                            Picker(localization.string(.victoryModeLabel), selection: $setup.victoryMode) {
+                                Text(localization.string(.victoryClassic)).tag(VictoryMode.classic)
+                                Text(localization.string(.victoryPoints)).tag(VictoryMode.points)
+                            }
+                            .pickerStyle(.segmented)
+                            if setup.victoryMode == .points {
+                                Stepper("\(localization.string(.victoryTargetScore)): \(setup.targetScore)", value: $setup.targetScore, in: 5...50, step: 5)
+                            }
                         }
                     }
                 }
@@ -76,7 +86,11 @@ struct SetupGameView: View {
                 }
             }
             .fullScreenCover(isPresented: $startGame) {
-                GameView(viewModel: GameViewModel(players: setup.players, rules: setup.buildRules()))
+                if setup.gameMode == .mound {
+                    MoundGameView(viewModel: MoundGameViewModel(players: setup.players, rules: setup.buildMoundRules()))
+                } else {
+                    GameView(viewModel: GameViewModel(players: setup.players, rules: setup.buildRules()))
+                }
             }
         }
     }
