@@ -62,4 +62,42 @@ final class PalmoGestureTests: XCTestCase {
         viewModel.marbleScene(viewModel.scene, didDragPalmo: marbleID, vector: .zero)
         XCTAssertFalse(viewModel.palmoAvailable)
     }
+
+    func testMissingAHoleDoesNotOfferPalmoUnderAfterEverySuccessPolicy() {
+        let players = [
+            Player(name: "A", colorName: "orange", isHuman: true),
+            Player(name: "B", colorName: "yellow", isHuman: true),
+        ]
+        var rules = GameRules.default
+        rules.palmoPolicy = .afterEverySuccess
+        let viewModel = GameViewModel(players: players, rules: rules)
+        viewModel.configureField(size: CGSize(width: 400, height: 300))
+
+        let marbleID = viewModel.marbles[0].id
+        viewModel.phase = .marbleMoving
+        let farFromAnyHole = CGPoint(x: -1000, y: -1000)
+        viewModel.marbleScene(viewModel.scene, marbleDidStop: marbleID, at: farFromAnyHole)
+
+        XCTAssertNotEqual(viewModel.phase, .choosingPalmo)
+        XCTAssertFalse(viewModel.palmoAvailable)
+    }
+
+    func testMissingAHoleOffersPalmoUnderOncePerAttemptPolicy() {
+        let players = [
+            Player(name: "A", colorName: "orange", isHuman: true),
+            Player(name: "B", colorName: "yellow", isHuman: true),
+        ]
+        var rules = GameRules.default
+        rules.palmoPolicy = .oncePerAttempt
+        let viewModel = GameViewModel(players: players, rules: rules)
+        viewModel.configureField(size: CGSize(width: 400, height: 300))
+
+        let marbleID = viewModel.marbles[0].id
+        viewModel.phase = .marbleMoving
+        let farFromAnyHole = CGPoint(x: -1000, y: -1000)
+        viewModel.marbleScene(viewModel.scene, marbleDidStop: marbleID, at: farFromAnyHole)
+
+        XCTAssertEqual(viewModel.phase, .choosingPalmo)
+        XCTAssertTrue(viewModel.palmoAvailable)
+    }
 }
