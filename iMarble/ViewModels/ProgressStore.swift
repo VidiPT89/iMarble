@@ -13,16 +13,21 @@ final class ProgressStore: ObservableObject {
     @Published var selectedSkinID: String {
         didSet { UserDefaults.standard.set(selectedSkinID, forKey: Self.skinKey) }
     }
+    @Published var selectedTerrainID: String {
+        didSet { UserDefaults.standard.set(selectedTerrainID, forKey: Self.terrainKey) }
+    }
 
     private static let winsKey = "progress.totalWins"
     private static let streakKey = "progress.winStreak"
     private static let skinKey = "progress.selectedSkinID"
+    private static let terrainKey = "progress.selectedTerrainID"
 
     init() {
         let defaults = UserDefaults.standard
         totalWins = defaults.integer(forKey: Self.winsKey)
         winStreak = defaults.integer(forKey: Self.streakKey)
         selectedSkinID = defaults.string(forKey: Self.skinKey) ?? MarbleSkin.all[0].id
+        selectedTerrainID = defaults.string(forKey: Self.terrainKey) ?? Terrain.all[0].id
     }
 
     /// Called once per finished match; `humanWon` is true when the local
@@ -40,7 +45,15 @@ final class ProgressStore: ObservableObject {
         MarbleSkin.all.first { $0.id == selectedSkinID } ?? MarbleSkin.all[0]
     }
 
+    var selectedTerrain: Terrain {
+        Terrain.all.first { $0.id == selectedTerrainID } ?? Terrain.all[0]
+    }
+
     func isUnlocked(_ skin: MarbleSkin) -> Bool {
         MarbleSkin.isUnlocked(skin, totalWins: totalWins)
+    }
+
+    func isUnlocked(_ terrain: Terrain) -> Bool {
+        Terrain.isUnlocked(terrain, totalWins: totalWins)
     }
 }

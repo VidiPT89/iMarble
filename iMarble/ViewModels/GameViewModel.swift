@@ -122,7 +122,7 @@ final class GameViewModel: ObservableObject, MarbleSceneDelegate {
         if let papaIndex = holes.firstIndex(where: { $0.number == 0 }) {
             holes[papaIndex].position = CodablePoint(papaPosition(size: size))
         }
-        scene.layoutField(holes: holes, sceneSize: size)
+        scene.layoutField(holes: holes, sceneSize: size, terrainID: ProgressStore.shared.selectedTerrainID)
 
         let firstHumanIndex = players.firstIndex(where: { $0.isHuman })
         for (index, player) in players.enumerated() {
