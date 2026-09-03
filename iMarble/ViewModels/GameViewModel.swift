@@ -370,8 +370,20 @@ final class GameViewModel: ObservableObject, MarbleSceneDelegate {
         checkVictoryThenContinue(sameTurn: false)
     }
 
+    /// Whether a missed shot grants a palmo, per the configured policy.
+    /// `.afterEverySuccess` only grants a palmo when a hole is entered
+    /// (handled separately in `resolveMove`), never on a miss.
+    private func missGrantsPalmo() -> Bool {
+        switch rules.palmoPolicy {
+        case .oncePerAttempt, .onlyWhenClose, .free:
+            return true
+        case .afterEverySuccess, .none:
+            return false
+        }
+    }
+
     private func offerPalmoOrEndTurn() {
-        if rules.allowsPalmo, !palmoUsedThisAttempt {
+        if rules.allowsPalmo, !palmoUsedThisAttempt, missGrantsPalmo() {
             palmoAvailable = true
             phase = .choosingPalmo
             currentMessageKey = .dragToPalmo
