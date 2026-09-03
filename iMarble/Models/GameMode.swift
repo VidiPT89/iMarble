@@ -4,6 +4,7 @@ enum GameMode: String, Codable, CaseIterable, Identifiable {
     case covas
     case mound
     case chase
+    case tournament
 
     var id: String { rawValue }
 }

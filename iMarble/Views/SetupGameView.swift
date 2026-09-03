@@ -17,6 +17,7 @@ struct SetupGameView: View {
                             Text(localization.string(.gameModeCovas)).tag(GameMode.covas)
                             Text(localization.string(.gameModeMound)).tag(GameMode.mound)
                             Text(localization.string(.gameModeChase)).tag(GameMode.chase)
+                            Text(localization.string(.gameModeTournament)).tag(GameMode.tournament)
                         }
                         .pickerStyle(.segmented)
                     }
@@ -44,7 +45,7 @@ struct SetupGameView: View {
                                 }
                             }
                         }
-                        if setup.gameMode != .chase {
+                        if setup.gameMode != .chase, setup.gameMode != .tournament {
                             HStack {
                                 Button(localization.string(.addPlayer)) { setup.addPlayer() }
                                     .disabled(setup.players.count >= 4)
@@ -96,6 +97,8 @@ struct SetupGameView: View {
                     ChaseGameView(viewModel: ChaseGameViewModel(players: setup.players, rules: setup.buildChaseRules()))
                 case .covas:
                     GameView(viewModel: GameViewModel(players: setup.players, rules: setup.buildRules()))
+                case .tournament:
+                    TournamentGameView(coordinator: TournamentCoordinator(players: setup.players))
                 }
             }
         }
