@@ -79,6 +79,7 @@ enum LocalizedKey: String {
     case onlinePeerDisconnected
     case collectionTitle
     case collectionSkinsSection
+    case collectionTerrainsSection
     case collectionAchievementsSection
     case collectionLockedWithWins
     case collectionSelected
@@ -91,6 +92,10 @@ enum LocalizedKey: String {
     case achievementFiveWins
     case achievementWinStreak
     case achievementFullCollection
+    case terrainDirt
+    case terrainSchoolyard
+    case terrainBackyard
+    case terrainPlaza
 }
 
 enum LocalizedStrings {
@@ -179,6 +184,7 @@ enum LocalizedStrings {
         .onlinePeerDisconnected: [.portuguese: "Um jogador desligou-se. Partida em pausa.", .english: "A player disconnected. Match paused."],
         .collectionTitle: [.portuguese: "Coleção", .english: "Collection"],
         .collectionSkinsSection: [.portuguese: "Berlindes", .english: "Marbles"],
+        .collectionTerrainsSection: [.portuguese: "Terrenos", .english: "Terrains"],
         .collectionAchievementsSection: [.portuguese: "Conquistas", .english: "Achievements"],
         .collectionLockedWithWins: [.portuguese: "Desbloqueia com %d vitórias", .english: "Unlocks at %d wins"],
         .collectionSelected: [.portuguese: "Selecionado", .english: "Selected"],
@@ -191,5 +197,9 @@ enum LocalizedStrings {
         .achievementFiveWins: [.portuguese: "5 Vitórias", .english: "5 Victories"],
         .achievementWinStreak: [.portuguese: "10 Vitórias Seguidas", .english: "10 Wins in a Row"],
         .achievementFullCollection: [.portuguese: "Coleção Completa", .english: "Full Collection"],
+        .terrainDirt: [.portuguese: "Terra batida", .english: "Dirt ground"],
+        .terrainSchoolyard: [.portuguese: "Pátio de escola", .english: "Schoolyard"],
+        .terrainBackyard: [.portuguese: "Quintal", .english: "Backyard"],
+        .terrainPlaza: [.portuguese: "Praça de aldeia", .english: "Village square"],
     ]
 }

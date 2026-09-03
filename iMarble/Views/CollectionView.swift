@@ -23,6 +23,17 @@ struct CollectionView: View {
                             }
                         }
 
+                        Text(localization.string(.collectionTerrainsSection))
+                            .font(AppTheme.Typography.headline())
+                            .foregroundStyle(AppTheme.burntYellow)
+                            .padding(.top, 8)
+
+                        LazyVGrid(columns: columns, spacing: 18) {
+                            ForEach(Terrain.all) { terrain in
+                                terrainCell(terrain)
+                            }
+                        }
+
                         Text(localization.string(.collectionAchievementsSection))
                             .font(AppTheme.Typography.headline())
                             .foregroundStyle(AppTheme.burntYellow)
@@ -81,6 +92,45 @@ struct CollectionView: View {
         .onTapGesture {
             guard unlocked else { return }
             progress.selectedSkinID = skin.id
+        }
+    }
+
+    private func terrainCell(_ terrain: Terrain) -> some View {
+        let unlocked = progress.isUnlocked(terrain)
+        let selected = progress.selectedTerrainID == terrain.id
+        let color = Color(red: terrain.baseColor.red, green: terrain.baseColor.green, blue: terrain.baseColor.blue)
+        return VStack(spacing: 6) {
+            ZStack {
+                RoundedRectangle(cornerRadius: 10)
+                    .fill(color)
+                    .frame(width: 56, height: 56)
+                    .opacity(unlocked ? 1 : 0.25)
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 10).stroke(selected ? AppTheme.burntYellow : .clear, lineWidth: 3)
+                    )
+                if !unlocked {
+                    Image(systemName: "lock.fill")
+                        .foregroundStyle(AppTheme.cream)
+                }
+            }
+            Text(localization.string(terrain.nameKey))
+                .font(AppTheme.Typography.caption())
+                .foregroundStyle(AppTheme.cream)
+                .multilineTextAlignment(.center)
+            if unlocked {
+                Text(selected ? localization.string(.collectionSelected) : localization.string(.collectionSelect))
+                    .font(.caption2)
+                    .foregroundStyle(selected ? AppTheme.burntYellow : AppTheme.cream.opacity(0.7))
+            } else {
+                Text(String(format: localization.string(.collectionLockedWithWins), terrain.winsRequired))
+                    .font(.caption2)
+                    .foregroundStyle(AppTheme.cream.opacity(0.6))
+                    .multilineTextAlignment(.center)
+            }
+        }
+        .onTapGesture {
+            guard unlocked else { return }
+            progress.selectedTerrainID = terrain.id
         }
     }
 

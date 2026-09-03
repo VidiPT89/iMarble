@@ -52,13 +52,16 @@ final class MarbleScene: SKScene {
         isUserInteractionEnabled = true
     }
 
-    func layoutField(holes: [Hole], sceneSize: CGSize) {
+    private var terrainID: String = "dirt"
+
+    func layoutField(holes: [Hole], sceneSize: CGSize, terrainID: String = "dirt") {
         removeAllChildren()
         marbleNodes.removeAll()
         holeNodes.removeAll()
         size = sceneSize
+        self.terrainID = terrainID
 
-        let ground = SKSpriteNode(texture: Self.groundTexture())
+        let ground = SKSpriteNode(texture: Self.groundTexture(terrainID: terrainID))
         ground.size = sceneSize
         ground.position = CGPoint(x: sceneSize.width / 2, y: sceneSize.height / 2)
         ground.zPosition = -10
@@ -408,17 +411,18 @@ final class MarbleScene: SKScene {
         }
     }
 
-    private static var cachedGroundTexture: SKTexture?
+    private static var cachedGroundTextures: [String: SKTexture] = [:]
     private static var cachedHoleTextures: [CGFloat: SKTexture] = [:]
 
-    private static func groundTexture() -> SKTexture {
-        if let cached = cachedGroundTexture { return cached }
+    private static func groundTexture(terrainID: String) -> SKTexture {
+        if let cached = cachedGroundTextures[terrainID] { return cached }
+        let terrain = Terrain.all.first { $0.id == terrainID } ?? Terrain.all[0]
         let size = CGSize(width: 256, height: 256)
         let renderer = UIGraphicsImageRenderer(size: size)
         let image = renderer.image { context in
             let cg = context.cgContext
             let rect = CGRect(origin: .zero, size: size)
-            let base = UIColor(red: 0.22, green: 0.14, blue: 0.06, alpha: 1)
+            let base = UIColor(red: terrain.baseColor.red, green: terrain.baseColor.green, blue: terrain.baseColor.blue, alpha: 1)
             base.setFill()
             cg.fill(rect)
 
@@ -446,15 +450,15 @@ final class MarbleScene: SKScene {
                 let lighten = Bool.random(using: &generator)
                 let alpha = CGFloat.random(in: 0.08...0.2, using: &generator)
                 let color = lighten
-                    ? UIColor(red: 0.34, green: 0.23, blue: 0.11, alpha: alpha)
-                    : UIColor(red: 0.12, green: 0.07, blue: 0.03, alpha: alpha)
+                    ? UIColor(red: terrain.speckColor.red, green: terrain.speckColor.green, blue: terrain.speckColor.blue, alpha: alpha)
+                    : UIColor(red: terrain.baseColor.red * 0.5, green: terrain.baseColor.green * 0.5, blue: terrain.baseColor.blue * 0.5, alpha: alpha)
                 color.setFill()
                 cg.fillEllipse(in: CGRect(x: x, y: y, width: speckSize, height: speckSize))
             }
         }
         let texture = SKTexture(image: image)
         texture.filteringMode = .linear
-        cachedGroundTexture = texture
+        cachedGroundTextures[terrainID] = texture
         return texture
     }
 
