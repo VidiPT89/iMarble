@@ -45,6 +45,52 @@ final class VictoryTests: XCTestCase {
         XCTAssertNil(engine.checkVictory(players: players))
     }
 
+    func testClassicVictoryWhenPlayerCompletesCourseWithoutLosingMarble() {
+        let engine = GameEngine(rules: .default)
+        let players = [
+            Player(name: "A", colorName: "orange", isHuman: true, hasCompletedCourse: true),
+            Player(name: "B", colorName: "yellow", isHuman: false, hasCompletedCourse: false),
+        ]
+        XCTAssertEqual(engine.checkVictory(players: players)?.name, "A")
+    }
+
+    func testClassicVictoryTiebreaksByCapturedMarblesWhenMultipleFinish() {
+        let engine = GameEngine(rules: .default)
+        let players = [
+            Player(name: "A", colorName: "orange", isHuman: true, hasCompletedCourse: true, capturedMarbleCount: 1),
+            Player(name: "B", colorName: "yellow", isHuman: false, hasCompletedCourse: true, capturedMarbleCount: 2),
+        ]
+        XCTAssertEqual(engine.checkVictory(players: players)?.name, "B")
+    }
+
+    func testProcessAttackPermanentlyCapturesMarbleAndEliminatesOwner() {
+        let engine = GameEngine(rules: .default)
+        var attacker = Player(name: "A", colorName: "orange", isHuman: true, hasCompletedCourse: true)
+        let attackerMarble = Marble(ownerID: attacker.id, position: CodablePoint(x: 0, y: 0), isInsideHole: true)
+        var targetOwner = Player(name: "B", colorName: "yellow", isHuman: false)
+        var target = Marble(ownerID: targetOwner.id, position: CodablePoint(x: 5, y: 0))
+
+        let success = engine.processAttack(attacker: &attacker, attackerMarble: attackerMarble, target: &target, targetOwner: &targetOwner)
+
+        XCTAssertTrue(success)
+        XCTAssertTrue(target.isCaptured)
+        XCTAssertEqual(attacker.capturedMarbleCount, 1)
+        XCTAssertTrue(targetOwner.isEliminated)
+    }
+
+    func testProcessAttackRejectedWhenAttackerHasNotCompletedCourse() {
+        let engine = GameEngine(rules: .default)
+        var attacker = Player(name: "A", colorName: "orange", isHuman: true, hasCompletedCourse: false)
+        let attackerMarble = Marble(ownerID: attacker.id, position: CodablePoint(x: 0, y: 0), isInsideHole: true)
+        var targetOwner = Player(name: "B", colorName: "yellow", isHuman: false)
+        var target = Marble(ownerID: targetOwner.id, position: CodablePoint(x: 5, y: 0))
+
+        let success = engine.processAttack(attacker: &attacker, attackerMarble: attackerMarble, target: &target, targetOwner: &targetOwner)
+
+        XCTAssertFalse(success)
+        XCTAssertFalse(target.isCaptured)
+    }
+
     func testProcessHoleEntryUpdatesProgressAndScore() {
         let engine = GameEngine(rules: .default)
         var player = Player(name: "A", colorName: "orange", isHuman: true)

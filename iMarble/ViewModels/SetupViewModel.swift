@@ -4,7 +4,7 @@ final class SetupViewModel: ObservableObject {
     @Published var players: [Player]
     @Published var courseType: CourseType = .roundTrip
     @Published var allowsPalmo: Bool = true
-    @Published var palmoPolicy: PalmoPolicy = .oncePerAttempt
+    @Published var palmoPolicy: PalmoPolicy = .afterEverySuccess
     @Published var victoryMode: VictoryMode = .classic
     @Published var targetScore: Int = 15
     @Published var numberOfRounds: Int = 3
@@ -49,6 +49,8 @@ final class SetupViewModel: ObservableObject {
             protectedMarblesInsideHoles: true,
             allowConsecutiveAttacks: true,
             eliminateOnLastMarbleLost: true,
+            attackRequiresCourseCompletion: true,
+            attackRequiresHoleLaunch: true,
             victoryMode: victoryMode,
             targetScore: targetScore,
             numberOfRounds: numberOfRounds

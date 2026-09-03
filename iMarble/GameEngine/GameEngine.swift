@@ -33,7 +33,13 @@ final class GameEngine {
     }
 
     func processAttack(attacker: inout Player, attackerMarble: Marble, target: inout Marble, targetOwner: inout Player) -> Bool {
-        guard AttackResolver.resolveAttack(attacker: attackerMarble, target: target, rules: rules) else {
+        guard AttackResolver.resolveAttack(
+            attacker: attackerMarble,
+            attackerCompletedCourse: attacker.hasCompletedCourse,
+            attackerAtHole: attackerMarble.isInsideHole,
+            target: target,
+            rules: rules
+        ) else {
             return false
         }
         attacker.score += ScoreRules.hitOpponent
@@ -51,6 +57,13 @@ final class GameEngine {
     func checkVictory(players: [Player]) -> Player? {
         switch rules.victoryMode {
         case .classic:
+            let finishers = players.filter { $0.hasCompletedCourse && !$0.isEliminated }
+            if finishers.count == 1 {
+                return finishers.first
+            }
+            if finishers.count > 1 {
+                return finishers.max { $0.capturedMarbleCount < $1.capturedMarbleCount }
+            }
             let remaining = players.filter { !$0.isEliminated }
             return remaining.count == 1 ? remaining.first : nil
         case .points:

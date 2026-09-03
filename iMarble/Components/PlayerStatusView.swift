@@ -18,8 +18,9 @@ struct PlayerStatusView: View {
                     .foregroundStyle(AppTheme.burntYellow)
             }
         }
-        .padding(.horizontal, 10)
+        .padding(.horizontal, 8)
         .padding(.vertical, 6)
+        .fixedSize()
         .background(
             RoundedRectangle(cornerRadius: 12)
                 .fill(isActive ? AppTheme.orange.opacity(0.25) : Color.black.opacity(0.25))

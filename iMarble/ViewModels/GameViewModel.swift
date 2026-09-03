@@ -14,6 +14,7 @@ final class GameViewModel: ObservableObject, MarbleSceneDelegate {
     @Published var isPaused: Bool = false
     @Published var palmoAvailable: Bool = false
     @Published var canAttack: Bool = false
+    @Published var selectedTargetID: UUID?
 
     let rules: GameRules
     let scene: MarbleScene
@@ -21,7 +22,10 @@ final class GameViewModel: ObservableObject, MarbleSceneDelegate {
     private var turnManager: TurnManager
     private var activeMarbleIndexByPlayer: [UUID: Int] = [:]
     private var palmoUsedThisAttempt = false
+    private var pendingSameTurnAfterPalmo = false
     private var moveTimeoutWorkItem: DispatchWorkItem?
+    private var attackInProgress = false
+    private var attackerWasInsideHoleAtLaunch = false
     var hapticsEnabled = true
     var soundEnabled = true
 
@@ -51,7 +55,19 @@ final class GameViewModel: ObservableObject, MarbleSceneDelegate {
         scene.gameDelegate = self
     }
 
+    private var fieldConfigured = false
+    private var lastFieldSize: CGSize = .zero
+
     func configureField(size: CGSize) {
+        guard size.width > 0, size.height > 0 else { return }
+
+        if fieldConfigured {
+            layoutField(size: size)
+            return
+        }
+        fieldConfigured = true
+        lastFieldSize = size
+
         let margin: CGFloat = size.width * 0.12
         let spacing = (size.width - margin * 2) / 4
         for i in 0..<holes.count where holes[i].number > 0 {
@@ -75,6 +91,46 @@ final class GameViewModel: ObservableObject, MarbleSceneDelegate {
         maybeTakeAITurn()
     }
 
+    /// Repositions holes and marbles proportionally to a new available size,
+    /// without touching game state (phase, turn, scores). Safe to call on
+    /// every size change (rotation, size-class change) mid-game.
+    func layoutField(size: CGSize) {
+        guard fieldConfigured else {
+            configureField(size: size)
+            return
+        }
+        guard size.width > 0, size.height > 0 else { return }
+        let oldSize = lastFieldSize
+        guard oldSize.width > 0, oldSize.height > 0 else {
+            lastFieldSize = size
+            return
+        }
+        guard oldSize != size else { return }
+
+        let scaleX = size.width / oldSize.width
+        let scaleY = size.height / oldSize.height
+
+        for i in holes.indices {
+            holes[i].position = CodablePoint(
+                x: holes[i].position.x * Double(scaleX),
+                y: holes[i].position.y * Double(scaleY)
+            )
+        }
+        for i in marbles.indices {
+            marbles[i].position = CodablePoint(
+                x: marbles[i].position.x * Double(scaleX),
+                y: marbles[i].position.y * Double(scaleY)
+            )
+        }
+
+        scene.relayoutField(holes: holes, sceneSize: size)
+        for marble in marbles where !marble.isCaptured {
+            scene.setPosition(marble.id, position: marble.position.cgPoint)
+        }
+
+        lastFieldSize = size
+    }
+
     var currentPlayer: Player {
         players[turnManager.activePlayerOrderIndex]
     }
@@ -93,10 +149,37 @@ final class GameViewModel: ObservableObject, MarbleSceneDelegate {
         guard !isPaused else { return false }
         guard phase == .aiming || phase == .attacking else { return false }
         guard let idx = marbles.firstIndex(where: { $0.id == marbleID }) else { return false }
-        return idx == currentMarbleIndex && !marbles[idx].isCaptured
+        guard idx == currentMarbleIndex, !marbles[idx].isCaptured else { return false }
+        if phase == .attacking {
+            guard selectedTargetID != nil else { return false }
+            if rules.attackRequiresHoleLaunch {
+                return marbles[idx].isInsideHole
+            }
+        }
+        return true
+    }
+
+    func marbleScene(_ scene: MarbleScene, isAttackTarget marbleID: UUID) -> Bool {
+        guard !isPaused, phase == .attacking else { return false }
+        guard let marble = marbles.first(where: { $0.id == marbleID }) else { return false }
+        guard marble.ownerID != currentPlayer.id else { return false }
+        return AttackResolver.eligibleTargets(marbles: marbles, attackerOwnerID: currentPlayer.id, rules: rules)
+            .contains { $0.id == marbleID }
+    }
+
+    func marbleScene(_ scene: MarbleScene, didSelectTarget marbleID: UUID) {
+        guard phase == .attacking else { return }
+        selectedTargetID = marbleID
+        currentMessageKey = .pullAndRelease
     }
 
     func marbleScene(_ scene: MarbleScene, didLaunch marbleID: UUID) {
+        attackInProgress = (phase == .attacking)
+        if let idx = marbles.firstIndex(where: { $0.id == marbleID }) {
+            attackerWasInsideHoleAtLaunch = marbles[idx].isInsideHole
+            marbles[idx].isInsideHole = false
+        }
+        if soundEnabled { SoundManager.shared.play(.launch) }
         phase = .marbleMoving
         scheduleTimeout()
     }
@@ -116,6 +199,7 @@ final class GameViewModel: ObservableObject, MarbleSceneDelegate {
         if hapticsEnabled {
             HapticsManager.shared.impact(.light)
         }
+        if soundEnabled { SoundManager.shared.play(.collision) }
     }
 
     private func scheduleTimeout() {
@@ -131,10 +215,28 @@ final class GameViewModel: ObservableObject, MarbleSceneDelegate {
     }
 
     private func resolveMove() {
-        phase = .resolvingHole
         let idx = currentMarbleIndex
 
-        if phase == .resolvingHole, players[idx].hasCompletedCourse == false || rules.courseType == .roundTripWithPapa {
+        if attackInProgress {
+            attackInProgress = false
+            phase = .attacking
+            marbles[idx].isInsideHole = attackerWasInsideHoleAtLaunch
+            let targetID = selectedTargetID ?? pendingAttackTargetID
+            selectedTargetID = nil
+            pendingAttackTargetID = nil
+            scene.clearTargetHighlight()
+            if let targetID {
+                attemptAttack(targetMarbleID: targetID)
+            } else {
+                currentMessageKey = .missedAttack
+                checkVictoryThenContinue(sameTurn: false)
+            }
+            return
+        }
+
+        phase = .resolvingHole
+
+        if players[idx].hasCompletedCourse == false || rules.courseType == .roundTripWithPapa {
             var player = players[idx]
             var marble = marbles[idx]
             let entered = engine.processHoleEntry(player: &player, marble: &marble, holes: holes)
@@ -146,22 +248,32 @@ final class GameViewModel: ObservableObject, MarbleSceneDelegate {
                 scene.setProtected(marble.id, protected: marble.isProtected)
                 scene.playEntrySplash(at: marble.position.cgPoint)
                 if hapticsEnabled { HapticsManager.shared.impact(.medium) }
+                if soundEnabled { SoundManager.shared.play(.holeEntered) }
                 currentMessageKey = .enteredHole
 
                 if player.hasCompletedCourse {
                     canAttack = true
-                    currentMessageKey = .canAttackNow
+                    selectedTargetID = nil
+                    currentMessageKey = .chooseTarget
                     phase = .attacking
                 } else {
                     phase = .aiming
                     currentMessageKey = .yourTurn
                 }
                 if rules.extraTurnAfterHole {
+                    if rules.allowsPalmo, rules.palmoPolicy == .afterEverySuccess, !palmoUsedThisAttempt {
+                        pendingSameTurnAfterPalmo = true
+                        palmoAvailable = true
+                        phase = .choosingPalmo
+                        currentMessageKey = .youHavePalmo
+                        return
+                    }
                     checkVictoryThenContinue(sameTurn: true)
                     return
                 }
             } else {
                 currentMessageKey = .missedHole
+                pendingSameTurnAfterPalmo = false
                 offerPalmoOrEndTurn()
                 return
             }
@@ -192,13 +304,23 @@ final class GameViewModel: ObservableObject, MarbleSceneDelegate {
         scene.setPosition(marbles[idx].id, position: newPosition)
         palmoUsedThisAttempt = true
         palmoAvailable = false
-        phase = .aiming
-        currentMessageKey = .pullAndRelease
+        if pendingSameTurnAfterPalmo {
+            pendingSameTurnAfterPalmo = false
+            checkVictoryThenContinue(sameTurn: true)
+        } else {
+            phase = .aiming
+            currentMessageKey = .pullAndRelease
+        }
     }
 
     func skipPalmo() {
         palmoAvailable = false
-        endTurn()
+        if pendingSameTurnAfterPalmo {
+            pendingSameTurnAfterPalmo = false
+            checkVictoryThenContinue(sameTurn: true)
+        } else {
+            endTurn()
+        }
     }
 
     func attemptAttack(targetMarbleID: UUID) {
@@ -221,6 +343,7 @@ final class GameViewModel: ObservableObject, MarbleSceneDelegate {
             currentMessageKey = .hitMarble
             scene.pulseHit(at: target.position.cgPoint)
             if hapticsEnabled { HapticsManager.shared.impact(.heavy) }
+            if soundEnabled { SoundManager.shared.play(.hit) }
             if rules.captureMarbles {
                 currentMessageKey = .keptMarble
                 scene.removeMarble(target.id)
@@ -229,6 +352,8 @@ final class GameViewModel: ObservableObject, MarbleSceneDelegate {
                 checkVictoryThenContinue(sameTurn: true)
                 return
             }
+        } else {
+            currentMessageKey = .missedAttack
         }
         checkVictoryThenContinue(sameTurn: false)
     }
@@ -238,11 +363,18 @@ final class GameViewModel: ObservableObject, MarbleSceneDelegate {
             winner = winningPlayer
             phase = .gameOver
             currentMessageKey = .gameOver
+            if soundEnabled { SoundManager.shared.play(.victory) }
             return
         }
         if sameTurn {
             palmoUsedThisAttempt = false
-            phase = canAttack ? .attacking : .aiming
+            if canAttack {
+                phase = .attacking
+                selectedTargetID = nil
+                currentMessageKey = .chooseTarget
+            } else {
+                phase = .aiming
+            }
             maybeTakeAITurn()
         } else {
             endTurn()
@@ -252,7 +384,10 @@ final class GameViewModel: ObservableObject, MarbleSceneDelegate {
     private func endTurn() {
         phase = .turnEnded
         canAttack = false
+        selectedTargetID = nil
+        scene.clearTargetHighlight()
         palmoUsedThisAttempt = false
+        pendingSameTurnAfterPalmo = false
         var activeFlags = players.map { !$0.isEliminated }
         turnManager.advance(activePlayers: activeFlags)
         activeFlags = players.map { !$0.isEliminated }

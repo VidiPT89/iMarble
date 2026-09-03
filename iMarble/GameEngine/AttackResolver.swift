@@ -1,7 +1,15 @@
 import Foundation
 
 enum AttackResolver {
-    static func resolveAttack(attacker: Marble, target: Marble, rules: GameRules) -> Bool {
+    static func resolveAttack(
+        attacker: Marble,
+        attackerCompletedCourse: Bool = true,
+        attackerAtHole: Bool = true,
+        target: Marble,
+        rules: GameRules
+    ) -> Bool {
+        guard !rules.attackRequiresCourseCompletion || attackerCompletedCourse else { return false }
+        guard !rules.attackRequiresHoleLaunch || attackerAtHole else { return false }
         guard attacker.ownerID != target.ownerID else { return false }
         guard !target.isInsideHole || !rules.protectedMarblesInsideHoles else { return false }
         guard !target.isProtected else { return false }

@@ -6,12 +6,17 @@ final class MarbleNode: SKShapeNode {
     var isProtected: Bool = false {
         didSet { updateProtectionRing() }
     }
+    var isTargeted: Bool = false {
+        didSet { targetRingNode.isHidden = !isTargeted }
+    }
 
     private let ringNode: SKShapeNode
+    private let targetRingNode: SKShapeNode
 
     init(marbleID: UUID, radius: CGFloat, color: SKColor) {
         self.marbleID = marbleID
         self.ringNode = SKShapeNode(circleOfRadius: radius + 4)
+        self.targetRingNode = SKShapeNode(circleOfRadius: radius + 7)
         super.init()
         self.path = CGPath(ellipseIn: CGRect(x: -radius, y: -radius, width: radius * 2, height: radius * 2), transform: nil)
         self.fillColor = color
@@ -26,6 +31,13 @@ final class MarbleNode: SKShapeNode {
         ringNode.isHidden = true
         ringNode.zPosition = 9
         addChild(ringNode)
+
+        targetRingNode.strokeColor = SKColor.systemRed
+        targetRingNode.lineWidth = 2.5
+        targetRingNode.fillColor = .clear
+        targetRingNode.isHidden = true
+        targetRingNode.zPosition = 11
+        addChild(targetRingNode)
 
         let shadow = SKShapeNode(circleOfRadius: radius)
         shadow.fillColor = SKColor.black.withAlphaComponent(0.35)

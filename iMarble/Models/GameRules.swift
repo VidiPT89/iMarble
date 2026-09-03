@@ -9,6 +9,7 @@ enum VictoryMode: String, Codable, CaseIterable, Identifiable {
 
 enum PalmoPolicy: String, Codable, CaseIterable, Identifiable {
     case none
+    case afterEverySuccess
     case oncePerAttempt
     case onlyWhenClose
     case free
@@ -45,6 +46,8 @@ struct GameRules: Codable, Equatable {
     var protectedMarblesInsideHoles: Bool
     var allowConsecutiveAttacks: Bool
     var eliminateOnLastMarbleLost: Bool
+    var attackRequiresCourseCompletion: Bool
+    var attackRequiresHoleLaunch: Bool
     var victoryMode: VictoryMode
     var targetScore: Int
     var numberOfRounds: Int
@@ -57,7 +60,6 @@ struct GameRules: Codable, Equatable {
     static let marbleRadius: Double = 14
     static let holeRadius: Double = 20
     static let attackHitDistance: Double = 26
-    static let approximationHitDistance: Double = 40
     static let moveTimeoutSeconds: Double = 6
 
     static let `default` = GameRules(
@@ -65,7 +67,7 @@ struct GameRules: Codable, Equatable {
         courseType: .roundTrip,
         holeSequence: CourseType.roundTrip.holeSequence,
         allowsPalmo: true,
-        palmoPolicy: .oncePerAttempt,
+        palmoPolicy: .afterEverySuccess,
         palmoDistance: 60,
         captureMarbles: true,
         extraTurnAfterHole: true,
@@ -73,6 +75,8 @@ struct GameRules: Codable, Equatable {
         protectedMarblesInsideHoles: true,
         allowConsecutiveAttacks: true,
         eliminateOnLastMarbleLost: true,
+        attackRequiresCourseCompletion: true,
+        attackRequiresHoleLaunch: true,
         victoryMode: .classic,
         targetScore: 15,
         numberOfRounds: 3
