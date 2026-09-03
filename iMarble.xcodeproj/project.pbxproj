@@ -32,6 +32,7 @@
 		70D58424D5E1DFE575857AC0 /* TurnManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23578363DC0C5C88489D9560 /* TurnManager.swift */; };
 		74B7356C3D9C3346C0CF2B71 /* SetupGameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEDA2AF584CA0478890146BB /* SetupGameView.swift */; };
 		76086D72E190F4B0D18D856F /* OnlineGameContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 545F0C900EF0F01CD9115931 /* OnlineGameContainerView.swift */; };
+		7855D955D6ACCDD6794829AF /* AIPlayerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 638C0837C5A30262A34C247A /* AIPlayerTests.swift */; };
 		82BD6302806221158A149C22 /* HoleResolver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50E9D4066964F7965EE73C58 /* HoleResolver.swift */; };
 		8AC3311303B8382BDD4036F7 /* GameOverView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A0BB2AC2062A6BA02D47B88 /* GameOverView.swift */; };
 		8DBAD6CF5B43B327AA87E34C /* VictoryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02B7B56338B6C6AAD4926476 /* VictoryTests.swift */; };
@@ -39,6 +40,7 @@
 		945EF874B6AD6B1D48F3F77E /* AIPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5768D283BDE090375321881 /* AIPlayer.swift */; };
 		A1D04EC89C448FFC9039D7E2 /* NetworkGameEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83F7F455C1B5E2549FC1FABE /* NetworkGameEvent.swift */; };
 		A5AD9E8BA1CD0616DDCAF0F7 /* PhysicsEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7EBE3A40726B37A1CCF1797 /* PhysicsEngine.swift */; };
+		A7D19DEBEC30B2635192C7D8 /* PalmoFullCycleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68EF9FA27643B5A73CF91980 /* PalmoFullCycleTests.swift */; };
 		B6E4E3861EFC1A8628FA4C6D /* SoundManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEB5BAA38BCB598477309DFF /* SoundManager.swift */; };
 		BE0A1297A309E972BBE6339B /* MainMenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF7BFFF30DEFC1C0FD1FAC2B /* MainMenuView.swift */; };
 		C23D05AE01E3152D1AC6D167 /* SplashView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D894E51D51A1729EB12F52C /* SplashView.swift */; };
@@ -98,8 +100,10 @@
 		5F75F951690F1450F7C9177F /* Player.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Player.swift; sourceTree = "<group>"; };
 		604F9EAE0274A0C2C20E80BF /* Hole.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Hole.swift; sourceTree = "<group>"; };
 		624FFE95140D6BCBD0E29C12 /* AppTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppTheme.swift; sourceTree = "<group>"; };
+		638C0837C5A30262A34C247A /* AIPlayerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AIPlayerTests.swift; sourceTree = "<group>"; };
 		66F7254ABADA64F9A5045AB0 /* GameMessageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameMessageView.swift; sourceTree = "<group>"; };
 		684B92325415F3893F68AFA4 /* GameEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameEngine.swift; sourceTree = "<group>"; };
+		68EF9FA27643B5A73CF91980 /* PalmoFullCycleTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PalmoFullCycleTests.swift; sourceTree = "<group>"; };
 		6D894E51D51A1729EB12F52C /* SplashView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashView.swift; sourceTree = "<group>"; };
 		6D9365BCC4E8070792062594 /* GameViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameViewModel.swift; sourceTree = "<group>"; };
 		707122C81808C2E1628DC5D5 /* PalmoGestureTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PalmoGestureTests.swift; sourceTree = "<group>"; };
@@ -168,10 +172,12 @@
 		2B0E13B445F5B3651E5602FF /* iMarbleTests */ = {
 			isa = PBXGroup;
 			children = (
+				638C0837C5A30262A34C247A /* AIPlayerTests.swift */,
 				BDB2C53039E86F22E82F3D01 /* AttackTargetSelectionTests.swift */,
 				74E4FB85A9A398E04124C05A /* GameRulesTests.swift */,
 				D4B5703F737C10043CDCA9D7 /* GameViewModelLayoutTests.swift */,
 				A85763074FDEDC0C23DF9650 /* OnlineMultiplayerTests.swift */,
+				68EF9FA27643B5A73CF91980 /* PalmoFullCycleTests.swift */,
 				707122C81808C2E1628DC5D5 /* PalmoGestureTests.swift */,
 				2B83A01DE2A55C0CDF345650 /* TurnManagerTests.swift */,
 				02B7B56338B6C6AAD4926476 /* VictoryTests.swift */,
@@ -482,10 +488,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7855D955D6ACCDD6794829AF /* AIPlayerTests.swift in Sources */,
 				6857BA1453B204C608431083 /* AttackTargetSelectionTests.swift in Sources */,
 				6B63DDD4945BF9A381DF4020 /* GameRulesTests.swift in Sources */,
 				2C74D92ED9134FBAA919C207 /* GameViewModelLayoutTests.swift in Sources */,
 				F68F28BF983B35F487415CA5 /* OnlineMultiplayerTests.swift in Sources */,
+				A7D19DEBEC30B2635192C7D8 /* PalmoFullCycleTests.swift in Sources */,
 				5AA1599CDA9ADAF2C44094B2 /* PalmoGestureTests.swift in Sources */,
 				4BAC9BCB95D86C2ABDABE318 /* TurnManagerTests.swift in Sources */,
 				8DBAD6CF5B43B327AA87E34C /* VictoryTests.swift in Sources */,
