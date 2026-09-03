@@ -26,6 +26,7 @@ enum LocalizedKey: String {
     case soundLabel
     case setupTitle
     case yourTurn
+    case opponentTurn
     case aimAtFirstHole
     case aimAtHole
     case enteredHole
@@ -104,6 +105,7 @@ enum LocalizedStrings {
         .soundLabel: [.portuguese: "Som", .english: "Sound"],
         .setupTitle: [.portuguese: "Configurar Partida", .english: "Game Setup"],
         .yourTurn: [.portuguese: "É a tua vez.", .english: "It's your turn."],
+        .opponentTurn: [.portuguese: "Vez do adversário.", .english: "Opponent's turn."],
         .aimAtFirstHole: [.portuguese: "Aponta para a primeira cova.", .english: "Aim at the first hole."],
         .aimAtHole: [.portuguese: "Entra na cova %d", .english: "Enter hole %d"],
         .enteredHole: [.portuguese: "Entraste na cova!", .english: "You entered the hole!"],
@@ -123,15 +125,15 @@ enum LocalizedStrings {
         .tutorialStep2: [.portuguese: "Faz o percurso Pira → Meia → Fundo e depois de volta até à Pira.", .english: "Run the course Pira → Meia → Fundo, then back to the Pira."],
         .tutorialStep3: [.portuguese: "Puxa o dedo para trás e larga para lançar o berlinde. Uma seta mostra a direção e muda de cor consoante a força.", .english: "Pull your finger back and release to launch the marble. An arrow shows the direction and changes color with the power."],
         .tutorialStep4: [.portuguese: "Sempre que entrares numa cova, jogas novamente.", .english: "Every time you enter a pit, you play again."],
-        .tutorialStep5: [.portuguese: "Só depois de completares o percurso podes atacar, disparando a partir de uma cova.", .english: "Only after completing the course can you attack, launching from a pit."],
-        .tutorialStep6: [.portuguese: "Acertar num adversário confisca o berlinde dele para sempre — ganhas quando todos os adversários ficarem sem berlinde.", .english: "Hitting an opponent permanently confiscates their marble — you win once every opponent has none left."],
+        .tutorialStep5: [.portuguese: "Quem completar o percurso primeiro, ganha o jogo.", .english: "Whoever completes the course first wins the game."],
+        .tutorialStep6: [.portuguese: "No modo por pontos, também podes atacar berlindes adversários depois de completares o percurso, disparando a partir de uma cova.", .english: "In points mode, you can also attack opponents' marbles after completing the course, launching from a pit."],
         .tutorialSkip: [.portuguese: "Saltar", .english: "Skip"],
         .tutorialNext: [.portuguese: "Seguinte", .english: "Next"],
         .tutorialStart: [.portuguese: "Começar", .english: "Start"],
         .rulesTitle: [.portuguese: "Regras do Jogo", .english: "Game Rules"],
         .rulesBody: [
-            .portuguese: "O campo tem três covas em linha: a Pira (Cova 1), a Meia (Cova 2) e o Fundo (Cova 3). Cada jogador faz o percurso Pira → Meia → Fundo e depois de volta Fundo → Meia → Pira. Sempre que entra numa cova com sucesso, joga novamente. Só depois de completar todo o percurso é que pode \"matar\": atacar berlindes adversários, disparando sempre a partir de uma cova. Acertar confisca o berlinde do adversário para sempre — quem fica sem berlindes é eliminado. Vence quem completar o percurso E eliminar os berlindes de todos os adversários. No modo por pontos: 2 pontos por cova alcançada, 2 pontos por acertar num adversário e 3 pontos por confiscar um berlinde. Em variações tradicionais existe ainda o \"abafador\", um berlinde maior usado para empurrar berlindes para fora de um círculo.",
-            .english: "The field has three pits in a line: the Pira (Pit 1), the Meia (Pit 2) and the Fundo (Pit 3). Each player runs the course Pira → Meia → Fundo and then back Fundo → Meia → Pira. Every successful hole entry earns another turn. Only after completing the full course can a player \"matar\" — attack opponents' marbles, always launching from a pit. A hit permanently confiscates the opponent's marble; a player with no marbles left is eliminated. The winner is whoever completes the course AND eliminates every opponent's marble. In points mode: 2 points per pit reached, 2 points per hit on an opponent, and 3 points per marble confiscated. Traditional variants also feature the \"abafador\", a larger marble used to knock others out of a circle.",
+            .portuguese: "O campo tem três covas em linha: a Pira (Cova 1), a Meia (Cova 2) e o Fundo (Cova 3). Cada jogador faz o percurso Pira → Meia → Fundo e depois de volta Fundo → Meia → Pira. Sempre que entra numa cova com sucesso, joga novamente. No modo clássico, vence quem completar todo o percurso primeiro. No modo por pontos, depois de completar o percurso um jogador pode ainda \"matar\": atacar berlindes adversários, disparando sempre a partir de uma cova — acertar confisca o berlinde do adversário para sempre. Pontuação: 2 pontos por cova alcançada, 2 pontos por acertar num adversário e 3 pontos por confiscar um berlinde; vence quem atingir primeiro a pontuação-alvo. Em variações tradicionais existe ainda o \"abafador\", um berlinde maior usado para empurrar berlindes para fora de um círculo.",
+            .english: "The field has three pits in a line: the Pira (Pit 1), the Meia (Pit 2) and the Fundo (Pit 3). Each player runs the course Pira → Meia → Fundo and then back Fundo → Meia → Pira. Every successful hole entry earns another turn. In classic mode, whoever completes the full course first wins. In points mode, after completing the course a player can still \"matar\" — attack opponents' marbles, always launching from a pit — a hit permanently confiscates the opponent's marble. Scoring: 2 points per pit reached, 2 points per hit on an opponent, and 3 points per marble confiscated; the winner is whoever reaches the target score first. Traditional variants also feature the \"abafador\", a larger marble used to knock others out of a circle.",
         ],
         .settingsTitle: [.portuguese: "Definições", .english: "Settings"],
         .appearance: [.portuguese: "Aparência", .english: "Appearance"],
