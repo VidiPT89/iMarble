@@ -6,11 +6,14 @@
 
 ## ✨ Features
 
-- ✅ Traditional three-hole marble rules — drag-to-launch physics, the "palmo" mechanic and marble captures
-- ✅ 2 to 4 players, human vs. AI opponents with three difficulty levels
+- ✅ Four game modes: three-hole course ("Covas"), Monte do Tesouro, Perseguição, and Torneio (all three in sequence)
+- ✅ Traditional drag-to-launch physics, marble captures, and complete-the-course-first victory
+- ✅ 2 to 4 players (2-player only for Perseguição/Torneio), human vs. AI opponents with three difficulty levels
 - ✅ Realistic marble physics powered by SpriteKit — friction, collisions and hole detection
-- ✅ Smooth, native animations, particle effects and haptic feedback on key moments
+- ✅ Smooth, native animations, particle effects, sound and haptic feedback on key moments
+- ✅ Unlockable marble skins and terrains, plus achievements, tracked as you win matches
 - ✅ Classic mode and points mode, both fully configurable before each match
+- ✅ Online multiplayer via Game Center (three-hole course mode)
 - ✅ Runtime language switch — Português (PT-PT) and English, independent of system locale
 - ✅ Dark mode, Light mode, and System mode
 - ✅ Custom color identity inspired by [ividi.dev](https://ividi.dev/) — burnt orange, amber and black
@@ -44,10 +47,12 @@ Select the `iMarble` scheme and run on a simulator or device.
 
 ## 📖 Usage
 
-Launch the app, set up a match from the main menu (number of players, AI difficulty, classic or
-points mode, palmo on/off), then drag your marble backwards like a slingshot and release to
-launch it toward the next hole. Complete the full sequence of holes to unlock attacks on your
-opponents' marbles. Switch language and appearance at any time from Settings.
+Launch the app, pick a game mode and set up a match from the main menu (number of players, AI
+difficulty, classic or points mode), then drag your marble backwards like a slingshot and release
+to launch it. In the three-hole course, complete the full sequence of holes to win (classic mode)
+or to unlock attacks on your opponents' marbles (points mode). Switch language and appearance at
+any time from Settings, and check the Collection screen for unlockable skins, terrains and
+achievements.
 
 ## 🧪 Testing
 
@@ -57,7 +62,8 @@ Build and run the `iMarble` scheme in Xcode (`⌘R`), or verify the project comp
 xcodebuild -project iMarble.xcodeproj -scheme iMarble -destination 'generic/platform=iOS Simulator' build
 ```
 
-Unit tests cover the core game rules, turn management and victory conditions.
+Unit tests cover the core game rules, turn management and victory conditions for all four modes.
+UI tests (`iMarbleUITests`) exercise real gameplay flows end to end.
 
 ## 📄 License
 
