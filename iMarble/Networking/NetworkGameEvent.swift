@@ -19,17 +19,24 @@ struct NetworkVector: Codable, Equatable {
 }
 
 enum NetworkGameEvent: Codable, Equatable {
-    case matchSetup(players: [Player], rules: GameRules, hostPlayerID: String)
+    case matchSetup(players: [Player], rules: GameRules, mode: GameMode, hostPlayerID: String)
     case launch(marbleID: UUID, dragVector: NetworkVector)
     case selectAttackTarget(marbleID: UUID, targetID: UUID)
+    /// Mound/Chase each ever have exactly one launchable marble at a time,
+    /// and that marble's id is generated fresh, independently, on every
+    /// device each turn — so unlike `.launch`, these carry no id and are
+    /// applied to whichever marble the local view model already knows is
+    /// launchable, keeping both devices in sync via turn state alone.
+    case moundLaunch(dragVector: NetworkVector)
+    case chaseLaunch(dragVector: NetworkVector)
     case peerDisconnected(playerID: String)
 
     private enum CodingKeys: String, CodingKey {
-        case type, players, rules, hostPlayerID, marbleID, dragVector, targetID, playerID
+        case type, players, rules, mode, hostPlayerID, marbleID, dragVector, targetID, playerID
     }
 
     private enum Kind: String, Codable {
-        case matchSetup, launch, selectAttackTarget, peerDisconnected
+        case matchSetup, launch, selectAttackTarget, moundLaunch, chaseLaunch, peerDisconnected
     }
 
     init(from decoder: Decoder) throws {
@@ -40,6 +47,7 @@ enum NetworkGameEvent: Codable, Equatable {
             self = .matchSetup(
                 players: try container.decode([Player].self, forKey: .players),
                 rules: try container.decode(GameRules.self, forKey: .rules),
+                mode: try container.decodeIfPresent(GameMode.self, forKey: .mode) ?? .covas,
                 hostPlayerID: try container.decode(String.self, forKey: .hostPlayerID)
             )
         case .launch:
@@ -52,6 +60,10 @@ enum NetworkGameEvent: Codable, Equatable {
                 marbleID: try container.decode(UUID.self, forKey: .marbleID),
                 targetID: try container.decode(UUID.self, forKey: .targetID)
             )
+        case .moundLaunch:
+            self = .moundLaunch(dragVector: try container.decode(NetworkVector.self, forKey: .dragVector))
+        case .chaseLaunch:
+            self = .chaseLaunch(dragVector: try container.decode(NetworkVector.self, forKey: .dragVector))
         case .peerDisconnected:
             self = .peerDisconnected(playerID: try container.decode(String.self, forKey: .playerID))
         }
@@ -60,10 +72,11 @@ enum NetworkGameEvent: Codable, Equatable {
     func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         switch self {
-        case let .matchSetup(players, rules, hostPlayerID):
+        case let .matchSetup(players, rules, mode, hostPlayerID):
             try container.encode(Kind.matchSetup, forKey: .type)
             try container.encode(players, forKey: .players)
             try container.encode(rules, forKey: .rules)
+            try container.encode(mode, forKey: .mode)
             try container.encode(hostPlayerID, forKey: .hostPlayerID)
         case let .launch(marbleID, dragVector):
             try container.encode(Kind.launch, forKey: .type)
@@ -73,6 +86,12 @@ enum NetworkGameEvent: Codable, Equatable {
             try container.encode(Kind.selectAttackTarget, forKey: .type)
             try container.encode(marbleID, forKey: .marbleID)
             try container.encode(targetID, forKey: .targetID)
+        case let .moundLaunch(dragVector):
+            try container.encode(Kind.moundLaunch, forKey: .type)
+            try container.encode(dragVector, forKey: .dragVector)
+        case let .chaseLaunch(dragVector):
+            try container.encode(Kind.chaseLaunch, forKey: .type)
+            try container.encode(dragVector, forKey: .dragVector)
         case let .peerDisconnected(playerID):
             try container.encode(Kind.peerDisconnected, forKey: .type)
             try container.encode(playerID, forKey: .playerID)

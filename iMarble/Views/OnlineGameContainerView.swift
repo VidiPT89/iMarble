@@ -51,8 +51,15 @@ struct OnlineGameContainerView: View {
 
     @State private var coordinator: OnlineGameCoordinator?
     @State private var onlineViewModel: GameViewModel?
+    @State private var onlineMoundViewModel: MoundGameViewModel?
+    @State private var onlineChaseViewModel: ChaseGameViewModel?
     @State private var showMatchmaker = false
     @State private var showAuthFailure = false
+    @State private var selectedMode: GameMode = .covas
+
+    /// Torneio sequences three independent matches and has no single-match
+    /// shape this coordinator can represent, so it never reaches the picker.
+    private let onlineModes: [GameMode] = [.covas, .mound, .chase]
 
     var body: some View {
         ZStack {
@@ -60,6 +67,12 @@ struct OnlineGameContainerView: View {
 
             if let onlineViewModel {
                 GameView(viewModel: onlineViewModel)
+            } else if let onlineMoundViewModel {
+                MoundGameView(viewModel: onlineMoundViewModel)
+            } else if let onlineChaseViewModel {
+                ChaseGameView(viewModel: onlineChaseViewModel)
+            } else if coordinator == nil {
+                modePicker
             } else {
                 VStack(spacing: 20) {
                     ProgressView()
@@ -70,7 +83,6 @@ struct OnlineGameContainerView: View {
                 }
             }
         }
-        .onAppear(perform: startFlow)
         .sheet(isPresented: $showMatchmaker) {
             GameKitMatchmakerView(
                 onMatchFound: handleMatchFound,
@@ -82,8 +94,27 @@ struct OnlineGameContainerView: View {
         }
     }
 
+    private var modePicker: some View {
+        VStack(spacing: 20) {
+            Text(localization.string(.gameModeLabel))
+                .font(AppTheme.Typography.headline())
+                .foregroundStyle(AppTheme.burntYellow)
+            Picker(localization.string(.gameModeLabel), selection: $selectedMode) {
+                Text(localization.string(.gameModeCovas)).tag(GameMode.covas)
+                Text(localization.string(.gameModeMound)).tag(GameMode.mound)
+                Text(localization.string(.gameModeChase)).tag(GameMode.chase)
+            }
+            .pickerStyle(.segmented)
+            .padding(.horizontal, 24)
+            Button(localization.string(.play)) { startFlow() }
+                .buttonStyle(PrimaryButtonStyle())
+            Button(localization.string(.close)) { dismiss() }
+                .buttonStyle(SecondaryButtonStyle())
+        }
+    }
+
     private func startFlow() {
-        guard coordinator == nil, onlineViewModel == nil else { return }
+        guard coordinator == nil else { return }
         if gameCenter.isAuthenticated {
             showMatchmaker = true
         } else {
@@ -111,8 +142,8 @@ struct OnlineGameContainerView: View {
         coordinator = newCoordinator
 
         if newCoordinator.isHost {
-            let setup = newCoordinator.hostMatchSetup()
-            startGame(players: setup.players, rules: setup.rules, coordinator: newCoordinator)
+            let setup = newCoordinator.hostMatchSetup(mode: selectedMode)
+            startGame(players: setup.players, rules: setup.rules, mode: selectedMode, coordinator: newCoordinator)
         } else {
             waitForRemoteSetup(coordinator: newCoordinator)
         }
@@ -120,17 +151,30 @@ struct OnlineGameContainerView: View {
 
     private func waitForRemoteSetup(coordinator: OnlineGameCoordinator) {
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-            if let players = coordinator.setupPlayers, let rules = coordinator.setupRules {
-                startGame(players: players, rules: rules, coordinator: coordinator)
+            if let players = coordinator.setupPlayers, let rules = coordinator.setupRules, let mode = coordinator.setupMode {
+                startGame(players: players, rules: rules, mode: mode, coordinator: coordinator)
             } else {
                 waitForRemoteSetup(coordinator: coordinator)
             }
         }
     }
 
-    private func startGame(players: [Player], rules: GameRules, coordinator: OnlineGameCoordinator) {
-        let viewModel = GameViewModel(players: players, rules: rules)
-        coordinator.attach(to: viewModel)
-        onlineViewModel = viewModel
+    private func startGame(players: [Player], rules: GameRules, mode: GameMode, coordinator: OnlineGameCoordinator) {
+        switch mode {
+        case .covas:
+            let viewModel = GameViewModel(players: players, rules: rules)
+            coordinator.attach(to: viewModel)
+            onlineViewModel = viewModel
+        case .mound:
+            let viewModel = MoundGameViewModel(players: players, rules: .default)
+            coordinator.attach(to: viewModel)
+            onlineMoundViewModel = viewModel
+        case .chase:
+            let viewModel = ChaseGameViewModel(players: Array(players.prefix(2)), rules: .default)
+            coordinator.attach(to: viewModel)
+            onlineChaseViewModel = viewModel
+        case .tournament:
+            break
+        }
     }
 }

@@ -15,13 +15,20 @@ final class MoundGameViewModel: ObservableObject, MoundSceneDelegate {
     let rules: MoundRules
     let scene: MoundScene
     private var turnManager: TurnManager
-    private var shooterID: UUID?
+    private(set) var shooterID: UUID?
     private var skipNextTurnPlayerIDs: Set<UUID> = []
     var hapticsEnabled = true
     var soundEnabled = true
+    var localPlayerID: String?
+    weak var onlineCoordinator: OnlineGameCoordinator?
+    var isApplyingRemoteEvent = false
 
     private var currentPlayerIndex: Int { turnManager.activePlayerOrderIndex }
     var currentPlayer: Player { players[currentPlayerIndex] }
+    private var isLocalPlayersTurn: Bool {
+        guard let localPlayerID else { return true }
+        return currentPlayer.gamePlayerID == localPlayerID
+    }
 
     private var fieldConfigured = false
     private var circleCenter: CGPoint = .zero
@@ -88,6 +95,7 @@ final class MoundGameViewModel: ObservableObject, MoundSceneDelegate {
     }
 
     private func maybeTakeAITurn() {
+        guard localPlayerID == nil else { return }
         guard !currentPlayer.isHuman, phase == .aiming, let shooterID else { return }
         guard let target = pileMarbles.filter({ !$0.isCaptured }).min(by: {
             $0.position.distance(to: CodablePoint(shooterStartPosition(for: currentPlayerIndex))) <
@@ -102,13 +110,28 @@ final class MoundGameViewModel: ObservableObject, MoundSceneDelegate {
     }
 
     func moundScene(_ scene: MoundScene, canLaunchShooter id: UUID) -> Bool {
-        phase == .aiming && currentPlayer.isHuman && id == shooterID
+        phase == .aiming && currentPlayer.isHuman && isLocalPlayersTurn && id == shooterID
     }
 
     func moundScene(_ scene: MoundScene, didLaunchShooter id: UUID, dragVector: CGVector) {
         phase = .marbleMoving
         currentMessageKey = .moundShotInFlight
         if soundEnabled { SoundManager.shared.play(.launch) }
+        if !isApplyingRemoteEvent {
+            onlineCoordinator?.broadcastMoundLaunch(dragVector: dragVector)
+        }
+    }
+
+    /// Applies a shot broadcast by the remote peer. Mound only ever has one
+    /// launchable shooter at a time, and its id is generated independently
+    /// on each device each turn, so the remote event carries no id — it is
+    /// simply applied to whatever this device's own state already knows is
+    /// the current shooter, kept in sync by the identical turn sequence.
+    func applyRemoteLaunch(dragVector: CGVector) {
+        guard let shooterID else { return }
+        isApplyingRemoteEvent = true
+        scene.launchShooter(id: shooterID, dragVector: dragVector)
+        isApplyingRemoteEvent = false
     }
 
     func moundScene(_ scene: MoundScene, didUpdatePower ratio: Double) {

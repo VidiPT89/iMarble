@@ -15,10 +15,22 @@ final class OnlineMultiplayerTests: XCTestCase {
             Player(name: "A", colorName: "red", isHuman: true, gamePlayerID: "p1"),
             Player(name: "B", colorName: "blue", isHuman: true, gamePlayerID: "p2"),
         ]
-        let event = NetworkGameEvent.matchSetup(players: players, rules: .default, hostPlayerID: "p1")
+        let event = NetworkGameEvent.matchSetup(players: players, rules: .default, mode: .mound, hostPlayerID: "p1")
         let data = try XCTUnwrap(event.encoded())
         let decoded = try XCTUnwrap(NetworkGameEvent.decode(data))
         XCTAssertEqual(event, decoded)
+    }
+
+    func testNetworkGameEventRoundTripsMoundAndChaseLaunch() throws {
+        let events: [NetworkGameEvent] = [
+            .moundLaunch(dragVector: NetworkVector(dx: 3, dy: -4)),
+            .chaseLaunch(dragVector: NetworkVector(dx: -1.5, dy: 9)),
+        ]
+        for event in events {
+            let data = try XCTUnwrap(event.encoded())
+            let decoded = try XCTUnwrap(NetworkGameEvent.decode(data))
+            XCTAssertEqual(event, decoded)
+        }
     }
 
     func testNetworkGameEventRoundTripsTargetAndDisconnect() throws {
@@ -75,6 +87,30 @@ final class OnlineMultiplayerTests: XCTestCase {
 
         viewModel.localPlayerID = "someone-else"
         XCTAssertFalse(viewModel.marbleScene(viewModel.scene, canLaunch: currentMarbleID))
+    }
+
+    func testMoundCanLaunchBlockedWhenItIsNotLocalPlayersTurn() {
+        let localPlayer = Player(name: "Local", colorName: "red", isHuman: true, gamePlayerID: "local-id")
+        let remotePlayer = Player(name: "Remote", colorName: "blue", isHuman: true, gamePlayerID: "remote-id")
+        let viewModel = MoundGameViewModel(players: [localPlayer, remotePlayer], rules: .default)
+        viewModel.configureField(size: CGSize(width: 400, height: 800))
+        let shooterID = try! XCTUnwrap(viewModel.shooterID)
+        XCTAssertTrue(viewModel.moundScene(viewModel.scene, canLaunchShooter: shooterID))
+
+        viewModel.localPlayerID = "remote-id"
+        XCTAssertFalse(viewModel.moundScene(viewModel.scene, canLaunchShooter: shooterID))
+    }
+
+    func testChaseCanLaunchBlockedWhenItIsNotLocalPlayersTurn() {
+        let fleeingPlayer = Player(name: "Fleeing", colorName: "red", isHuman: true, gamePlayerID: "local-id")
+        let chasingPlayer = Player(name: "Chasing", colorName: "blue", isHuman: true, gamePlayerID: "remote-id")
+        let viewModel = ChaseGameViewModel(players: [fleeingPlayer, chasingPlayer], rules: .default)
+        viewModel.configureField(size: CGSize(width: 400, height: 800))
+        let activeID = try! XCTUnwrap(viewModel.activeMarbleID)
+        XCTAssertTrue(viewModel.chaseScene(viewModel.scene, canLaunch: activeID))
+
+        viewModel.localPlayerID = "remote-id"
+        XCTAssertFalse(viewModel.chaseScene(viewModel.scene, canLaunch: activeID))
     }
 
     func testOfflineModeIsUnaffectedByGating() {
