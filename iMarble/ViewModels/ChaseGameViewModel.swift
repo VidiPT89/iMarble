@@ -20,18 +20,26 @@ final class ChaseGameViewModel: ObservableObject, ChaseSceneDelegate {
     let scene: ChaseScene
     var hapticsEnabled = true
     var soundEnabled = true
+    var localPlayerID: String?
+    weak var onlineCoordinator: OnlineGameCoordinator?
+    var isApplyingRemoteEvent = false
 
     private var fleeingIndex = 0
     private var chasingIndex = 1
     private var turnStep: ChaseTurnStep = .flee
     private var fleeMarbleID: UUID?
     private var chaseMarbleID: UUID?
+    var activeMarbleID: UUID? { turnStep == .flee ? fleeMarbleID : chaseMarbleID }
     private var fieldConfigured = false
     private var launchLine: CGPoint = .zero
 
     var fleeingPlayer: Player { players[fleeingIndex] }
     var chasingPlayer: Player { players[chasingIndex] }
     var currentPlayer: Player { turnStep == .flee ? fleeingPlayer : chasingPlayer }
+    private var isLocalPlayersTurn: Bool {
+        guard let localPlayerID else { return true }
+        return currentPlayer.gamePlayerID == localPlayerID
+    }
 
     init(players: [Player], rules: ChaseRules) {
         precondition(players.count == 2, "Chase mode is two-player only")
@@ -75,6 +83,7 @@ final class ChaseGameViewModel: ObservableObject, ChaseSceneDelegate {
     }
 
     private func maybeTakeAITurn() {
+        guard localPlayerID == nil else { return }
         guard !currentPlayer.isHuman, phase == .aiming else { return }
         let activeID = turnStep == .flee ? fleeMarbleID : chaseMarbleID
         guard let activeID else { return }
@@ -97,7 +106,7 @@ final class ChaseGameViewModel: ObservableObject, ChaseSceneDelegate {
     }
 
     func chaseScene(_ scene: ChaseScene, canLaunch id: UUID) -> Bool {
-        guard phase == .aiming, currentPlayer.isHuman else { return false }
+        guard phase == .aiming, currentPlayer.isHuman, isLocalPlayersTurn else { return false }
         let activeID = turnStep == .flee ? fleeMarbleID : chaseMarbleID
         return id == activeID
     }
@@ -106,6 +115,21 @@ final class ChaseGameViewModel: ObservableObject, ChaseSceneDelegate {
         phase = .marbleMoving
         currentMessageKey = .chaseShotInFlight
         if soundEnabled { SoundManager.shared.play(.launch) }
+        if !isApplyingRemoteEvent {
+            onlineCoordinator?.broadcastChaseLaunch(dragVector: dragVector)
+        }
+    }
+
+    /// See MoundGameViewModel.applyRemoteLaunch: the active marble's id is
+    /// generated fresh and independently on each device every step, so the
+    /// remote event carries no id — it targets whichever marble this
+    /// device's own turnStep already considers active.
+    func applyRemoteLaunch(dragVector: CGVector) {
+        let activeID = turnStep == .flee ? fleeMarbleID : chaseMarbleID
+        guard let activeID else { return }
+        isApplyingRemoteEvent = true
+        scene.launch(id: activeID, dragVector: dragVector)
+        isApplyingRemoteEvent = false
     }
 
     func chaseScene(_ scene: ChaseScene, didUpdatePower ratio: Double) {

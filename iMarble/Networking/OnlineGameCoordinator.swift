@@ -5,6 +5,7 @@ import GameKit
 final class OnlineGameCoordinator: NSObject, ObservableObject, GKMatchDelegate {
     @Published var setupPlayers: [Player]?
     @Published var setupRules: GameRules?
+    @Published var setupMode: GameMode?
     @Published var peerDisconnected = false
 
     let match: GKMatch
@@ -12,7 +13,9 @@ final class OnlineGameCoordinator: NSObject, ObservableObject, GKMatchDelegate {
     let isHost: Bool
     let hostPlayerID: String
 
-    weak var viewModel: GameViewModel?
+    private weak var covasViewModel: GameViewModel?
+    private weak var moundViewModel: MoundGameViewModel?
+    private weak var chaseViewModel: ChaseGameViewModel?
 
     init(match: GKMatch, localPlayer: GKPlayer) {
         self.match = match
@@ -29,12 +32,29 @@ final class OnlineGameCoordinator: NSObject, ObservableObject, GKMatchDelegate {
     }
 
     func attach(to viewModel: GameViewModel) {
-        self.viewModel = viewModel
+        covasViewModel = viewModel
         viewModel.localPlayerID = localPlayer.gamePlayerID
         viewModel.onlineCoordinator = self
     }
 
-    func hostMatchSetup() -> (players: [Player], rules: GameRules) {
+    func attach(to viewModel: MoundGameViewModel) {
+        moundViewModel = viewModel
+        viewModel.localPlayerID = localPlayer.gamePlayerID
+        viewModel.onlineCoordinator = self
+    }
+
+    func attach(to viewModel: ChaseGameViewModel) {
+        chaseViewModel = viewModel
+        viewModel.localPlayerID = localPlayer.gamePlayerID
+        viewModel.onlineCoordinator = self
+    }
+
+    /// Torneio is deliberately excluded from online play: it sequences three
+    /// independent matches with their own per-stage setup, which does not
+    /// fit this coordinator's one-match/one-`GKMatch` lifecycle without a
+    /// much larger session-management redesign. `SetupGameView` hides the
+    /// online entry point for `.tournament` accordingly.
+    func hostMatchSetup(mode: GameMode) -> (players: [Player], rules: GameRules) {
         let allPlayers = ([localPlayer] + match.players)
             .sorted { $0.gamePlayerID < $1.gamePlayerID }
         let palette = AppTheme.playerPalette
@@ -49,7 +69,8 @@ final class OnlineGameCoordinator: NSObject, ObservableObject, GKMatchDelegate {
         let rules = GameRules.default
         setupPlayers = players
         setupRules = rules
-        send(.matchSetup(players: players, rules: rules, hostPlayerID: hostPlayerID))
+        setupMode = mode
+        send(.matchSetup(players: players, rules: rules, mode: mode, hostPlayerID: hostPlayerID))
         return (players, rules)
     }
 
@@ -66,24 +87,40 @@ final class OnlineGameCoordinator: NSObject, ObservableObject, GKMatchDelegate {
         send(.selectAttackTarget(marbleID: marbleID, targetID: targetID))
     }
 
+    func broadcastMoundLaunch(dragVector: CGVector) {
+        send(.moundLaunch(dragVector: NetworkVector(dragVector)))
+    }
+
+    func broadcastChaseLaunch(dragVector: CGVector) {
+        send(.chaseLaunch(dragVector: NetworkVector(dragVector)))
+    }
+
     private func apply(_ event: NetworkGameEvent) {
-        guard let viewModel else { return }
         switch event {
-        case let .matchSetup(players, rules, _):
+        case let .matchSetup(players, rules, mode, _):
             setupPlayers = players
             setupRules = rules
+            setupMode = mode
         case let .launch(marbleID, dragVector):
-            viewModel.isApplyingRemoteEvent = true
-            viewModel.scene.launch(marbleID: marbleID, dragVector: dragVector.cgVector)
-            viewModel.isApplyingRemoteEvent = false
+            guard let covasViewModel else { return }
+            covasViewModel.isApplyingRemoteEvent = true
+            covasViewModel.scene.launch(marbleID: marbleID, dragVector: dragVector.cgVector)
+            covasViewModel.isApplyingRemoteEvent = false
         case let .selectAttackTarget(_, targetID):
-            viewModel.isApplyingRemoteEvent = true
-            viewModel.applyRemoteTargetSelection(targetID)
-            viewModel.isApplyingRemoteEvent = false
+            guard let covasViewModel else { return }
+            covasViewModel.isApplyingRemoteEvent = true
+            covasViewModel.applyRemoteTargetSelection(targetID)
+            covasViewModel.isApplyingRemoteEvent = false
+        case let .moundLaunch(dragVector):
+            moundViewModel?.applyRemoteLaunch(dragVector: dragVector.cgVector)
+        case let .chaseLaunch(dragVector):
+            chaseViewModel?.applyRemoteLaunch(dragVector: dragVector.cgVector)
         case .peerDisconnected:
             peerDisconnected = true
-            viewModel.onlinePeerDisconnected = true
-            viewModel.pause()
+            covasViewModel?.onlinePeerDisconnected = true
+            covasViewModel?.pause()
+            moundViewModel?.pause()
+            chaseViewModel?.pause()
         }
     }
 
@@ -99,8 +136,10 @@ final class OnlineGameCoordinator: NSObject, ObservableObject, GKMatchDelegate {
         DispatchQueue.main.async { [weak self] in
             guard let self else { return }
             self.peerDisconnected = true
-            self.viewModel?.onlinePeerDisconnected = true
-            self.viewModel?.pause()
+            self.covasViewModel?.onlinePeerDisconnected = true
+            self.covasViewModel?.pause()
+            self.moundViewModel?.pause()
+            self.chaseViewModel?.pause()
         }
     }
 }
