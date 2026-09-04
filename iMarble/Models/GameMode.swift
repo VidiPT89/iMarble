@@ -10,11 +10,10 @@ enum GameMode: String, Codable, CaseIterable, Identifiable {
 }
 
 struct MoundRules: Codable, Equatable {
-    var circleRadius: Double
     var marblesPerPlayer: Int
     var burnLosesShooter: Bool
 
-    static let `default` = MoundRules(circleRadius: 70, marblesPerPlayer: 3, burnLosesShooter: false)
+    static let `default` = MoundRules(marblesPerPlayer: 3, burnLosesShooter: false)
 }
 
 struct ChaseRules: Codable, Equatable {

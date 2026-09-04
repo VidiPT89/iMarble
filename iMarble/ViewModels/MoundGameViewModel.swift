@@ -108,6 +108,7 @@ final class MoundGameViewModel: ObservableObject, MoundSceneDelegate {
     func moundScene(_ scene: MoundScene, didLaunchShooter id: UUID, dragVector: CGVector) {
         phase = .marbleMoving
         currentMessageKey = .moundShotInFlight
+        if soundEnabled { SoundManager.shared.play(.launch) }
     }
 
     func moundScene(_ scene: MoundScene, didUpdatePower ratio: Double) {
@@ -127,6 +128,7 @@ final class MoundGameViewModel: ObservableObject, MoundSceneDelegate {
 
         if result.burned {
             currentMessageKey = .moundBurned
+            if hapticsEnabled { HapticsManager.shared.impact(.light) }
             if rules.burnLosesShooter {
                 skipNextTurnPlayerIDs.insert(currentPlayer.id)
             }
@@ -141,6 +143,8 @@ final class MoundGameViewModel: ObservableObject, MoundSceneDelegate {
                 players[idx].score += result.capturedMarbleIDs.count * ScoreRules.captureMarble
             }
             currentMessageKey = .moundCaptured
+            if hapticsEnabled { HapticsManager.shared.impact(.heavy) }
+            if soundEnabled { SoundManager.shared.play(.hit) }
         } else {
             currentMessageKey = .moundMissed
         }
@@ -149,6 +153,7 @@ final class MoundGameViewModel: ObservableObject, MoundSceneDelegate {
             phase = .gameOver
             winner = MoundEngine.winner(players: players)
             currentMessageKey = .gameOver
+            if soundEnabled { SoundManager.shared.play(.victory) }
             if let winner { ProgressStore.shared.recordMatchResult(humanWon: winner.isHuman) }
             return
         }

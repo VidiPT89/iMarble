@@ -105,6 +105,7 @@ final class ChaseGameViewModel: ObservableObject, ChaseSceneDelegate {
     func chaseScene(_ scene: ChaseScene, didLaunch id: UUID, dragVector: CGVector) {
         phase = .marbleMoving
         currentMessageKey = .chaseShotInFlight
+        if soundEnabled { SoundManager.shared.play(.launch) }
     }
 
     func chaseScene(_ scene: ChaseScene, didUpdatePower ratio: Double) {
@@ -130,6 +131,8 @@ final class ChaseGameViewModel: ObservableObject, ChaseSceneDelegate {
         if hit {
             players[chasingIndex].score += ScoreRules.hitOpponent
             currentMessageKey = .chaseHit
+            if hapticsEnabled { HapticsManager.shared.impact(.heavy) }
+            if soundEnabled { SoundManager.shared.play(.hit) }
         } else {
             currentMessageKey = .chaseMissed
         }
@@ -138,6 +141,7 @@ final class ChaseGameViewModel: ObservableObject, ChaseSceneDelegate {
             phase = .gameOver
             winner = winningPlayer
             currentMessageKey = .gameOver
+            if soundEnabled { SoundManager.shared.play(.victory) }
             ProgressStore.shared.recordMatchResult(humanWon: winningPlayer.isHuman)
             return
         }
